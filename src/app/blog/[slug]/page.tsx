@@ -38,7 +38,7 @@ interface Params {
   slug: string;
 }
 
-const Page = async (props: { params: Promise<Params> }) => {
+export default async function BlogPostPage(props: { params: Promise<Params> }) {
   const params = await props.params;
 
   const { slug } = params;
@@ -85,6 +85,4 @@ const Page = async (props: { params: Promise<Params> }) => {
       </div>
     </>
   );
-};
-
-export default Page;
+}

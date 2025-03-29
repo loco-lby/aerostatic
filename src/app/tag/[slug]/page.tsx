@@ -11,11 +11,10 @@ interface Params {
   slug: string;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
+export async function generateMetadata(props: {
+  params: Promise<Params>;
 }) {
+  const params = await props.params;
   const { slug } = params;
 
   return {
@@ -24,13 +23,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function TagPage({
-  params,
-  searchParams,
-}: {
-  params: Params;
-  searchParams: { [key: string]: string | string[] | undefined };
+export default async function TagPage(props: {
+  params: Promise<Params>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const { slug } = params;
   const page = typeof searchParams.page === 'string'
     ? parseInt(searchParams.page)

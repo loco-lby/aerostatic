@@ -4,11 +4,10 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { wisp } from "@/lib/wisp";
 
-export default async function BlogPage({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | string[] | undefined };
+export default async function BlogPage(props: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
+    const searchParams = await props.searchParams;
     const page = typeof searchParams.page === 'string'
         ? parseInt(searchParams.page)
         : 1;

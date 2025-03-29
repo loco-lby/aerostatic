@@ -25,8 +25,9 @@ export default function Home() {
           <div className="border p-6 rounded-lg shadow-sm">
             <h2 className="text-2xl font-gelica mb-4">Our Values</h2>
             <p>
-              Authenticity in our stories, courage in challenging conventions, and meaningful connections. We're committed to creating experiences that inspire positive change.
-            </p>          </div>
+              Authenticity in our stories, courage in challenging conventions, and meaningful connections. We&apos;re committed to creating experiences that inspire positive change.
+            </p>
+          </div>
         </div>
       </div>
       <Footer />

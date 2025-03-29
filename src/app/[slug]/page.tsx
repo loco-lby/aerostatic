@@ -5,7 +5,8 @@ interface Params {
     slug: string;
 }
 
-export default async function LegacyBlogPostPage({ params }: { params: Params }) {
+export default async function LegacyBlogPostPage(props: { params: Promise<Params> }) {
+    const params = await props.params;
     const { slug } = params;
 
     // Check if this is a valid blog post
