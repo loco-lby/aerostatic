@@ -24,7 +24,7 @@ export default function Home() {
           <div className="border p-6 rounded-lg shadow-sm">
             <h2 className="text-2xl font-gin mb-4">Our Values</h2>
             <p>
-              Rebellion through slowness, rock & roll in the sky, legacy through innovation, nature's collaboration over conquest, and perspective as transformation define our approach at Aerostatic.            </p>
+              Rebellion through slowness, rock &amp; roll in the sky, legacy through innovation, nature&apos;s collaboration over conquest, and perspective as transformation define our approach at Aerostatic.            </p>
           </div>
         </div>
       </div>
