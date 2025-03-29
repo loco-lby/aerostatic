@@ -22,7 +22,7 @@ export const BlogPostPreview: FunctionComponent<{
         </div>
       </Link>
       <div className="grid grid-cols-1 gap-3 md:col-span-2 mt-4">
-        <h2 className="font-sans font-semibold tracking-tighter text-primary text-2xl md:text-3xl">
+        <h2 className="font-gelica tracking-tighter text-primary text-2xl md:text-3xl">
           <Link href={`/blog/${post.slug}`}>{post.title}</Link>
         </h2>
         <div className="prose lg:prose-lg italic tracking-tighter text-muted-foreground">
