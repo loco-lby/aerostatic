@@ -55,8 +55,8 @@ export const BlogPostContent = ({ post }: { post: GetPostResult["post"] }) => {
   const { title, publishedAt, createdAt, content, tags } = post;
   return (
     <div>
-      <div className="prose lg:prose-xl dark:prose-invert mx-auto lg:prose-h1:text-4xl lg:prose-h1:font-gelica mb-10 lg:mt-20 break-words">
-        <h1 className="font-gelica">{title}</h1>
+      <div className="prose lg:prose-xl dark:prose-invert mx-auto lg:prose-h1:text-4xl lg:prose-h1:font-gin mb-10 lg:mt-20 break-words">
+        <h1 className="font-gin">{title}</h1>
         <PostContent content={content} />
 
         <div className="mt-10 opacity-40 text-sm">

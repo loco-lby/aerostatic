@@ -4,57 +4,47 @@ import { config } from "@/config";
 import { signOgImageUrl } from "@/lib/og-image";
 import Markdown from "react-markdown";
 
-const content = `# About The Condor Collective
+const content = `# What is Aerostatic?
 
-Our mission is to catalyze a global movement of purpose-driven living through immersive experiences, authentic storytelling, and tools for transformation.
-
+Our mission is to revitalize the ancient art of ballooning by creating experiences that challenge modern perspectives on time, nature, and our relationship with the world around us.
 ## Our Story
-
-The Condor Collective was born from a simple yet profound realization: too many people are sleepwalking through life—following scripts written by society rather than authoring their own stories.
-
-Our founder's personal journey from corporate success to spiritual awakening revealed a truth that now fuels our work: genuine fulfillment comes not from checking society's boxes, but from aligning with one's deepest purpose and living with radical authenticity.
-
-This insight sparked a vision: to create experiences, media, and tools that awaken people to their unique purpose and empower them to live it fully.
-
+Aerostatic was born from a pivotal realization: in an era where everything is accelerating—travel, communication, entertainment, life itself—something magical has been lost. The modern world races forward on highways and jet streams, always seeking the fastest route, the most efficient path.
+As a second-generation pilot carrying the torch of this remarkable tradition, our founder discovered a profound truth: ballooning offers more than just flight—it offers liberation from the tyranny of speed and control that defines modern life.
+This insight ignited a vision: to preserve the wisdom of ballooning while boldly reimagining how this ancient art can speak to contemporary culture and transform how we experience the world.
 ## What We Do
-
-The Condor Collective operates at the intersection of transformation, adventure, and storytelling:
-
-### Transformative Experiences
-We design and facilitate immersive journeys—both physical and digital—that challenge participants to break free from limiting patterns and connect with their authentic selves.
-
-### Purpose-Driven Media
-Through our podcast, films, and publishing platform, we amplify stories of those who have broken from convention to pursue lives of meaning—inspiring others to do the same.
-
-### Tools for Awakening
-We develop practical resources that help individuals discover their purpose, overcome barriers to authentic living, and build lives that reflect their deepest values.
-
+Aerostatic operates at the intersection of adventure, perspective, and rebellion:
+### Sky-Bound Experiences
+We create immersive ballooning journeys that challenge participants to surrender control, embrace nature's rhythm, and see familiar landscapes from entirely new perspectives.
+### Cultural Rebellion
+Through our content and experiences, we infuse ballooning with fresh energy—bringing humor, irreverence, and rock & roll attitude to the skies, making this ancient art accessible to new generations.
+### Legacy Preservation
+We document and share the rich heritage, techniques, and wisdom of ballooning while innovating to ensure this remarkable tradition remains relevant in a changing world.
 ## Our Approach
+Aerostatic is guided by core principles that inform everything we do:
 
-The Condor Collective is guided by core principles that inform everything we do:
+- Embracing slowness as a revolutionary act in a speed-obsessed world
+- Celebrating the dance between human ingenuity and natural forces
+- Viewing physical perspective as a catalyst for mental and spiritual perspective
+- Honoring tradition while fearlessly evolving
+- Creating experiences that don't just fill your social media feed but genuinely shift your relationship with the world
 
-- Honoring both ancient wisdom and modern innovation
-- Embracing challenge as the pathway to growth
-- Celebrating authenticity over perfection
-- Fostering genuine connection in an age of digital distraction
-- Modeling regenerative business practices that benefit all stakeholders
-- Remaining radically honest about both the challenges and rewards of purpose-driven living
-
-In a world increasingly defined by distraction, division, and disconnect, The Condor Collective stands for something vital: the profound belief that each person has a unique purpose to discover, and that collectively, these awakened purposes have the power to transform our world.
-
-Join us in catalyzing a global movement of purpose-driven living—one story, one experience, one transformation at a time.`;
+In a civilization increasingly defined by speed, efficiency, and digital distance from natural forces, Aerostatic stands for something radical:
+---
+the profound belief that sometimes the most revolutionary act is to slow down, look around, and allow yourself to be carried by forces larger than yourself.
+---
+Join us in rediscovering the lost art of drifting with purpose—one flame, one flight, one perspective shift at a time.`;
 
 export async function generateMetadata() {
   return {
     title: "About Us",
-    description: "Learn more about The Condor Collective",
+    description: "Learn more about Aerostatic",
     openGraph: {
       title: "About Us",
-      description: "Learn more about The Condor Collective",
+      description: "Learn more about Aerostatic",
       images: [
         signOgImageUrl({
           title: "About",
-          label: "The Condor Collective",
+          label: "Aerostatic",
           brand: config.blog.name,
         }),
       ],
@@ -67,7 +57,7 @@ export default async function AboutPage() {
     <div className="container mx-auto px-5 flex flex-col min-h-screen">
       <Header />
       <div className="flex-grow">
-        <div className="prose lg:prose-lg dark:prose-invert prose-headings:font-gelica m-auto mt-20 mb-10 blog-content">
+        <div className="prose lg:prose-lg dark:prose-invert prose-headings:font-gin m-auto mt-20 mb-10 blog-content">
           <Markdown>{content}</Markdown>
         </div>
       </div>

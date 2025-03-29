@@ -18,7 +18,7 @@ export default async function BlogPage(props: {
         <div className="container mx-auto px-5 flex flex-col min-h-screen">
             <Header />
             <div className="flex-grow">
-                <h1 className="text-3xl md:text-4xl font-gelica mb-8">Blog</h1>
+                <h1 className="text-3xl md:text-4xl font-gin mb-8">Blog</h1>
                 <BlogPostsPreview posts={result.posts} />
                 <BlogPostsPagination pagination={result.pagination} basePath="/blog?page=" />
             </div>

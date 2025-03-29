@@ -87,28 +87,26 @@ export const Header: FunctionComponent = () => {
 
   // Choose the logo based on the current theme
   const logoSrc = mounted && (theme === 'dark' || resolvedTheme === 'dark')
-    ? '/images/condor-logo-dark.svg'
-    : '/images/condor-logo-light.svg';
+    ? '/images/aerostatic-logo-dark.svg'
+    : '/images/aerostatic-logo-light.svg';
 
   return (
     <section className="flex items-center justify-between mt-8 md:mt-16 mb-12">
       <Link href="/" className="flex items-center gap-2">
-        <div className="relative w-20 h-20 mr-4">
+        <div className="relative w-100 h-10 mr-4">
           {mounted ? (
             <Image
               src={logoSrc}
-              alt="Condor Collective Logo"
-              width={80}
-              height={80}
+              alt="Aerostatic Logo"
+              width={220}
+              height={220}
               className="text-current"
             />
           ) : (
             <div className="w-10 h-10" /> // Placeholder while mounting to prevent layout shift
           )}
         </div>
-        <h1 className="text-4xl md:text-6xl font-gelica tracking-tighter leading-tight">
-          {config.blog.name}
-        </h1>
+
       </Link>
       <Navigation />
     </section>

@@ -43,7 +43,7 @@ export default async function TagPage(props: {
         <Link href="/blog">
           <Badge className="px-2 py-1">
             <CircleX className="inline-block w-4 h-4 mr-2" />
-            Posts tagged with <strong className="mx-2 font-gelica">#{slug}</strong>{" "}
+            Posts tagged with <strong className="mx-2 font-gin">#{slug}</strong>{" "}
           </Badge>
         </Link>
         <BlogPostsPreview posts={result.posts} />

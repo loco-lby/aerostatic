@@ -76,6 +76,7 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         gelica: ["gelica", "sans-serif"],
+        gin: ["gin", "serif"],
       },
     },
   },

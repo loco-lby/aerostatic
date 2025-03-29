@@ -30,7 +30,7 @@ export default async function TagsPage() {
       <Header />
       <div className="flex-grow">
         <div className="mt-20 mb-12 text-center">
-          <h1 className="mb-2 text-5xl font-gelica font-bold">Tags</h1>
+          <h1 className="mb-2 text-5xl font-gin font-bold">Tags</h1>
           <p className="text-lg opacity-50">List of all tags</p>
         </div>
         <div className="my-10 max-w-6xl text-balance text-center text-xl mb-48">
