@@ -252,8 +252,9 @@ export const Header: FunctionComponent = () => {
             </motion.div>
           </Link>
 
-          {/* Navigation */}
-          <Navigation />
+          {/* Navigation */}<div className="hidden md:block">
+            <Navigation />
+          </div>
 
           {/* CTA Section */}
           <div className="flex items-center gap-4">

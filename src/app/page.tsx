@@ -100,7 +100,7 @@ export default function HomePage() {
             className="w-full h-full object-cover"
             style={{ filter: 'brightness(0.4) contrast(1.1)' }}
           >
-            <source src="/videos/balloon-hero.mp4" type="video/mp4" />
+            <source src="/videos/hero.mp4" type="video/mp4" />
             {/* Fallback gradient if video doesn't load */}
             <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
           </video>
@@ -370,9 +370,22 @@ export default function HomePage() {
             <h2 className="text-5xl md:text-6xl font-gelica font-bold mb-6">
               See Our Work
             </h2>
+
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
               Every flight tells a story
             </p>
+            <div className="text-center mt-8">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-lg px-10 py-4 cinematic-glow hover-lift animate-fade-in-up animation-delay-700"
+                asChild
+              >
+                <Link href="/fallery">
+                  View Gallery
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Media reel placeholder */}
