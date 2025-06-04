@@ -1,26 +1,22 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import dynamic from "next/dynamic";
+import React from 'react'
+import { ThemeProvider } from 'next-themes'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { Toaster } from 'sonner'
 
-const NextThemeProvider = dynamic(
-  () => import("next-themes").then((mod) => mod.ThemeProvider),
-  {
-    ssr: false,
-  }
-);
+const queryClient = new QueryClient()
 
-const queryClient = new QueryClient();
-
-export const Providers = ({ children }: { children: React.ReactNode }) => {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <NextThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </NextThemeProvider>
-  );
-};
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  )
+}

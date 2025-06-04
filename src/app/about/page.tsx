@@ -1,66 +1,422 @@
+"use client";
+
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { config } from "@/config";
-import { signOgImageUrl } from "@/lib/og-image";
-import Markdown from "react-markdown";
+import { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowRight, Camera, Users, Shield, Award, MapPin, Calendar, Star } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
 
-const content = `# What is Aerostatic?
+export default function AboutPage() {
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
-Our mission is to revitalize the ancient art of ballooning by creating experiences that challenge modern perspectives on time, nature, and our relationship with the world around us.
-## Our Story
-Aerostatic was born from a pivotal realization: in an era where everything is accelerating—travel, communication, entertainment, life itself—something magical has been lost. The modern world races forward on highways and jet streams, always seeking the fastest route, the most efficient path.
-As a second-generation pilot carrying the torch of this remarkable tradition, our founder discovered a profound truth: ballooning offers more than just flight—it offers liberation from the tyranny of speed and control that defines modern life.
-This insight ignited a vision: to preserve the wisdom of ballooning while boldly reimagining how this ancient art can speak to contemporary culture and transform how we experience the world.
-## What We Do
-Aerostatic operates at the intersection of adventure, perspective, and rebellion:
-### Sky-Bound Experiences
-We create immersive ballooning journeys that challenge participants to surrender control, embrace nature's rhythm, and see familiar landscapes from entirely new perspectives.
-### Cultural Rebellion
-Through our content and experiences, we infuse ballooning with fresh energy—bringing humor, irreverence, and rock & roll attitude to the skies, making this ancient art accessible to new generations.
-### Legacy Preservation
-We document and share the rich heritage, techniques, and wisdom of ballooning while innovating to ensure this remarkable tradition remains relevant in a changing world.
-## Our Approach
-Aerostatic is guided by core principles that inform everything we do:
+  useEffect(() => {
+    // Add structured data for the team
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      mainEntity: {
+        "@type": "Organization",
+        name: "Aerostatic",
+        employee: [
+          {
+            "@type": "Person",
+            name: "Colby",
+            jobTitle: "Third-Generation Pilot & Creative Director",
+            description: "Certified instructor and the brain behind design, media, and tech development.",
+            hasCredential: {
+              "@type": "EducationalOccupationalCredential",
+              credentialCategory: "Certified Flight Instructor",
+            },
+          },
+          {
+            "@type": "Person",
+            name: "Matteo",
+            jobTitle: "Pilot & Client Relations Manager",
+            description: "Pilot and gifted communicator with roots in the music industry, managing client relations and crafting custom activations.",
+          },
+        ],
+      },
+    };
 
-- Embracing slowness as a revolutionary act in a speed-obsessed world
-- Celebrating the dance between human ingenuity and natural forces
-- Viewing physical perspective as a catalyst for mental and spiritual perspective
-- Honoring tradition while fearlessly evolving
-- Creating experiences that don't just fill your social media feed but genuinely shift your relationship with the world
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
 
-In a civilization increasingly defined by speed, efficiency, and digital distance from natural forces, Aerostatic stands for something radical:
----
-the profound belief that sometimes the most revolutionary act is to slow down, look around, and allow yourself to be carried by forces larger than yourself.
----
-Join us in rediscovering the lost art of drifting with purpose—one flame, one flight, one perspective shift at a time.`;
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
-export async function generateMetadata() {
-  return {
-    title: "About Us",
-    description: "Learn more about Aerostatic",
-    openGraph: {
-      title: "About Us",
-      description: "Learn more about Aerostatic",
-      images: [
-        signOgImageUrl({
-          title: "About",
-          label: "Aerostatic",
-          brand: config.blog.name,
-        }),
-      ],
-    },
-  };
-}
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(prev => ({
+              ...prev,
+              [entry.target.id]: true
+            }));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
 
-export default async function AboutPage() {
+    const sections = document.querySelectorAll('[data-animate]');
+    sections.forEach((section) => {
+      if (observerRef.current) {
+        observerRef.current.observe(section);
+      }
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleNewsletterSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setIsSubmitting(true)
+
+    try {
+      const supabase = createClient()
+
+      const { error } = await supabase
+        .from('newsletter_signups')
+        .insert({
+          email: email,
+          source: 'about_page'
+        })
+
+      if (error) {
+        if (error.code === '23505') {
+          toast.success("You&apos;re already on our list!")
+        } else {
+          console.error("Error signing up for newsletter:", error)
+          toast.error("Failed to sign up. Please try again.")
+        }
+      } else {
+        toast.success("Thanks for signing up!")
+        setEmail("")
+      }
+    } catch (error) {
+      console.error("Error:", error)
+      toast.error("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
-    <div className="container mx-auto px-5 flex flex-col min-h-screen">
+    <div className="min-h-screen bg-black">
       <Header />
-      <div className="flex-grow">
-        <div className="prose lg:prose-lg dark:prose-invert prose-headings:font-gin m-auto mt-20 mb-10 blog-content">
-          <Markdown>{content}</Markdown>
+
+      {/* Hero Section */}
+      <section className="relative pt-60 pb-20 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-900/10 to-transparent"></div>
+
+        <div className="relative z-10 max-w-6xl mx-auto text-center">
+          <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6 animate-glow-pulse">
+            Meet the Team
+          </Badge>
+          <h1 className="hero-text text-white mb-6 animate-fade-in-up">
+            We&apos;re Aeronauts and Storytellers
+          </h1>
+          <p className="subhead-text my-12 max-w-4xl mx-auto animate-fade-in-up animation-delay-300">
+            Industry born balloon crew blending aircraft with storycraft.
+          </p>
         </div>
-      </div>
+      </section>
+
+      {/* Our Story Section */}
+      <section
+        id="story"
+        data-animate
+        className={`py-20 px-6 relative transition-all duration-1000 ${isVisible.story ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-8 leading-tight">
+                They say the only way to shut a pilot up is to tie his hands behind his back.
+              </h2>
+              <div className="space-y-6 text-lg text-white/80 leading-relaxed">
+                <p className="animate-fade-in-up animation-delay-200">
+                  So we found a better way: let the visuals do the talking.
+                </p>
+                <p className="animate-fade-in-up animation-delay-400">
+                  At Aerostatic, we bring our lifelong love of ballooning into the modern age of storytelling. From sky high displays to the ground chase below, our team turns every flight into something worth watching.
+                </p>
+                <p className="animate-fade-in-up animation-delay-600">
+                  Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry-leading safety standards.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-300">
+                  <div className="w-full h-full flex items-center justify-center text-white/60">
+                    <Camera className="w-12 h-12" />
+                  </div>
+                </div>
+                <div className="aspect-square bg-gradient-to-br from-amber-900/20 to-orange-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-700">
+                  <div className="w-full h-full flex items-center justify-center text-white/60">
+                    <Users className="w-10 h-10" />
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4 pt-8">
+                <div className="aspect-square bg-gradient-to-br from-red-900/20 to-orange-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-500">
+                  <div className="w-full h-full flex items-center justify-center text-white/60">
+                    <Shield className="w-10 h-10" />
+                  </div>
+                </div>
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-900">
+                  <div className="w-full h-full flex items-center justify-center text-white/60">
+                    <Award className="w-12 h-12" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Profiles */}
+      <section
+        id="team"
+        data-animate
+        className={`py-20 px-6 bg-white/[0.02] transition-all duration-1000 ${isVisible.team ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-6">
+              The Aeronauts
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              Two dudes bought a balloon.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Colby */}
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-200">
+              <CardHeader className="pb-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow mx-auto">
+                  <span className="text-3xl font-gelica font-bold text-white">C</span>
+                </div>
+                <CardTitle className="text-3xl font-gelica text-white text-center">Colby</CardTitle>
+                <CardDescription className="text-orange-400 text-center font-medium">
+                  Third-Generation Pilot & Creative Director
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex flex-wrap gap-2 justify-center mb-6">
+                  <Badge variant="outline" className="border-orange-500/30 text-orange-400">
+                    <Shield className="w-3 h-3 mr-1" />
+                    Certified Instructor
+                  </Badge>
+                  <Badge variant="outline" className="border-orange-500/30 text-orange-400">
+                    <Camera className="w-3 h-3 mr-1" />
+                    Media Director
+                  </Badge>
+                  <Badge variant="outline" className="border-orange-500/30 text-orange-400">
+                    <Award className="w-3 h-3 mr-1" />
+                    Tech Development
+                  </Badge>
+                </div>
+                <p className="text-white/80 leading-relaxed text-center">
+                  The brain behind our design, media, and tech development. From sunrise flights to sunset editing sessions,
+                  Colby ensures every activation meets industry-leading safety standards while pushing creative boundaries.
+                </p>
+                <p className="text-white/80 leading-relaxed text-center">
+                  Born in a balloon basket, he brings three generations of aviation expertise to every project,
+                  combined with a modern eye for visual storytelling that makes brands soar.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Matteo */}
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-400">
+              <CardHeader className="pb-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow mx-auto">
+                  <span className="text-3xl font-gelica font-bold text-white">M</span>
+                </div>
+                <CardTitle className="text-3xl font-gelica text-white text-center">Matteo</CardTitle>
+                <CardDescription className="text-orange-400 text-center font-medium">
+                  Pilot & Client Relations Director
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex flex-wrap gap-2 justify-center mb-6">
+                  <Badge variant="outline" className="border-orange-500/30 text-orange-400">
+                    <Users className="w-3 h-3 mr-1" />
+                    Client Relations
+                  </Badge>
+                  <Badge variant="outline" className="border-orange-500/30 text-orange-400">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    Operations Director
+                  </Badge>
+                  <Badge variant="outline" className="border-orange-500/30 text-orange-400">
+                    <Star className="w-3 h-3 mr-1" />
+
+                    Merchandise Sales
+                  </Badge>
+                </div>
+                <p className="text-white/80 leading-relaxed text-center">
+                  A gifted communicator with roots in the music industry, bringing a sharp ear for rhythm and detail
+                  to managing client relations and crafting custom activations across the West.
+                </p>
+                <p className="text-white/80 leading-relaxed text-center">
+                  His background in entertainment gives him an intuitive understanding of what makes moments memorable,
+                  ensuring every client experience hits the right notes from first contact to final delivery.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Approach */}
+      <section
+        id="approach"
+        data-animate
+        className={`py-20 px-6 transition-all duration-1000 ${isVisible.approach ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-6">
+              Our Approach
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              Safety first, creativity always, and wonder in every flight
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group text-center animate-fade-in-up animation-delay-200">
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform cinematic-glow mx-auto">
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-xl font-gelica text-white">Safety Standards</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/70 leading-relaxed">
+                  Industry-leading safety protocols with certified instructors and rigorous equipment maintenance.
+                  Every flight meets or exceeds FAA requirements.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group text-center animate-fade-in-up animation-delay-400">
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform cinematic-glow mx-auto">
+                  <Camera className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-xl font-gelica text-white">Visual Storytelling</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/70 leading-relaxed">
+                  Every activation is designed for maximum visual impact. We don&apos;t just fly balloons –
+                  we create moments that demand to be shared.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group text-center animate-fade-in-up animation-delay-600">
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform cinematic-glow mx-auto">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-xl font-gelica text-white">Client Partnership</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/70 leading-relaxed">
+                  We work closely with your team to understand your vision and deliver experiences
+                  that exceed expectations and create lasting memories.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section
+        id="cta"
+        data-animate
+        className={`py-20 px-6 bg-white/[0.02] transition-all duration-1000 ${isVisible.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+      >
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-6">
+            Ready to Elevate Your Event?
+          </h2>
+          <p className="text-xl text-white/70 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Let&apos;s create something unforgettable together. From concept to execution,
+            we&apos;ll help your brand rise above the ordinary.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <Button
+              size="lg"
+              className="text-lg px-10 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 cinematic-glow font-semibold hover-lift"
+              asChild
+            >
+              <Link href="/hire-us">
+                Start Your Project
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-lg px-10 py-4 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm hover-lift"
+              asChild
+            >
+              <Link href="/#services">View Our Services</Link>
+            </Button>
+          </div>
+
+          <div className="max-w-md mx-auto">
+            <p className="text-white/70 mb-4 font-medium">Stay updated on our latest flights</p>
+            <form onSubmit={handleNewsletterSignup} className="flex gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="flex-1 px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder:text-white/50 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
+                required
+              />
+              <Button
+                type="submit"
+                size="default"
+                disabled={isSubmitting}
+                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-6 cinematic-glow"
+              >
+                {isSubmitting ? "..." : "Join"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
