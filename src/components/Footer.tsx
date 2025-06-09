@@ -55,11 +55,11 @@ export const Footer: FunctionComponent = () => {
             <Link href="/" className="flex items-center group">
               <div className="relative h-10 w-auto group-hover:scale-110 transition-transform duration-300">
                 <Image
-                  src="/images/logo.svg"
+                  src="/images/logo2.svg"
                   alt="Aerostatic"
                   width={150}
                   height={40}
-                  className="object-contain filter brightness-0 invert"
+                  className="object-contain"
                 />
               </div>
             </Link>

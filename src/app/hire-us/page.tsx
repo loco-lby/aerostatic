@@ -61,7 +61,7 @@ const serviceTypes = [
     {
         value: "Ride Activations",
         label: "Ride Activations",
-        description: "Tethered balloon rides that give your guests an unforgettable sunrise or sunset perspective. Safe, controlled ascents with breathtaking views and photo opportunities.",
+        description: "Tethered balloon rides that leave your guests with a core memory. Safe, controlled ascents with breathtaking views and photo opportunities.",
         icon: Wind,
         idealFor: "Private Events, VIP Experiences, Corporate Retreats",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_RIDE_ACTIVATIONS)
@@ -77,7 +77,7 @@ const serviceTypes = [
     {
         value: "Content Creators",
         label: "Content Creators",
-        description: "Looking for something visually striking to share? Our balloon activations offer cinematic views, rare experiences, and a backdrop your followers won&apos;t forget.",
+        description: "Need content that stands above the noise? We collaborate with creators to deliver cinematic aerials, unforgettable backdrops, and moments that ignite engagement.",
         icon: Award,
         idealFor: "Influencers, Social Media, Personal Branding",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_CONTENT_CREATORS)
@@ -85,15 +85,15 @@ const serviceTypes = [
     {
         value: "Branded Balloon Flights",
         label: "Branded Balloon Flights",
-        description: "Custom-branded balloon envelopes and flight experiences that put your brand in the sky. Unforgettable marketing that literally rises above the competition.",
+        description: "Put your logo in the sky. We design and fly custom branded envelopes or banners, turning your message into an airborne spectacle. Rise above your competitors... literally.",
         icon: Palette,
         idealFor: "Product Launches, Brand Campaigns, Corporate Events",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_BRANDED_FLIGHTS)
     },
     {
-        value: "Multi-day Activations",
-        label: "Multi-day Activations",
-        description: "Extended balloon presence for festivals, campaigns, or multi-city events. Content and branding that build momentum throughout your activation.",
+        value: "Custom Services",
+        label: "Custom Services",
+        description: "Need something off the beaten flight path? From aerial cinematography to fully tailored balloon ops, we bring experience, flexibility, and a knack for making magic from scratch.",
         icon: Globe,
         idealFor: "Festivals, Multi-City Tours, Extended Campaigns",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_MULTI_DAY)

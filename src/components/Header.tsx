@@ -18,7 +18,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { name: "Services", href: "#services", isSection: true },
-  { name: "Our Work", href: "/gallery" },
+  // { name: "Gallery", href: "/gallery" },
   { name: "Meet the Aeronauts", href: "/about" },
 ];
 
@@ -242,11 +242,11 @@ export const Header: FunctionComponent = () => {
               className="relative h-12 w-auto transition-transform duration-300"
             >
               <Image
-                src="/images/logo.svg"
+                src="/images/logo2.svg"
                 alt="Aerostatic"
                 width={180}
                 height={48}
-                className="object-contain filter brightness-0 invert"
+                className="object-contain"
                 priority
               />
             </motion.div>

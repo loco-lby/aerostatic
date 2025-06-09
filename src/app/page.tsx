@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Camera, Palette, Wind, Globe, Users, Shield, Award, Play } from 'lucide-react';
@@ -13,9 +14,49 @@ import { toast } from "sonner";
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
+  const [isMounted, setIsMounted] = useState(false);
+  const [typedText, setTypedText] = useState("");
+  const [showCursor, setShowCursor] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
+  const heroText = " We create unforgettable hot air balloon displays and cinematic coverage for festivals, brand launches, and private experiences.";
+
+  // Ensure component is mounted before running client-side code
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Typewriter effect for hero text - only starts after mounting
+  useEffect(() => {
+    if (!isMounted) return;
+
+    // Small delay to ensure hydration is complete
+    const startDelay = setTimeout(() => {
+      setShowCursor(true);
+
+      let index = 0;
+      const timer = setInterval(() => {
+        if (index <= heroText.length) {
+          setTypedText(heroText.slice(0, index));
+          index++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 50);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }, 500); // Wait 500ms after mount before starting animation
+
+    return () => {
+      clearTimeout(startDelay);
+    };
+  }, [isMounted, heroText]);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -43,7 +84,7 @@ export default function HomePage() {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [isMounted]);
 
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -83,6 +124,19 @@ export default function HomePage() {
     }
   }
 
+  // Helper function to get animation classes with hydration safety
+  const getAnimationClass = (sectionId: string, baseClass: string = '') => {
+    // Always return the same initial state for SSR consistency
+    const baseClasses = `${baseClass} transition-all duration-1000`;
+
+    if (!isMounted) {
+      // Server-side: return neutral state without transforms
+      return `${baseClasses} opacity-100`;
+    }
+
+    // Client-side: apply visibility-based animations
+    return `${baseClasses} ${isVisible[sectionId] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`;
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -92,53 +146,64 @@ export default function HomePage() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-            style={{ filter: 'brightness(0.4) contrast(1.1)' }}
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-            {/* Fallback gradient if video doesn't load */}
-            <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
-          </video>
+          {isMounted && (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+              style={{ filter: 'brightness(0.4) contrast(1.1)' }}
+            >
+              <source src="/videos/hero1.mp4" type="video/mp4" />
+            </video>
+          )}
+          {/* Fallback gradient - always rendered for SSR */}
+          <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
         </div>
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70 z-10"></div>
 
         {/* Hero Content */}
-        <div className="relative z-20 text-center max-w-6xl mx-auto px-6">
-          <h1 className="hero-text text-white mb-6 animate-fade-in-up">
-            The Sky Is Our Canvas
-          </h1>
-          <p className="subhead-text mb-12 max-w-4xl mx-auto animate-fade-in-up animation-delay-300">
-            We create unforgettable hot air balloon displays and cinematic coverage for festivals, brand launches, and private experiences.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up animation-delay-600">
+        <div className="relative z-20 text-center max-w-2xl mx-auto px-0">
+          <div className="mb-8">
+            <div className="text-2xl md:text-3xl font-gelica font-light text-white/90 tracking-wide mb-2 min-h-[2.5rem]">
+              {isMounted ? (
+                <>
+                  {typedText}
+                  {showCursor && <span className="animate-pulse">|</span>}
+                </>
+              ) : (
+                <span className="opacity-0">placeholder</span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-4 justify-center opacity-80">
             <Button
-              size="lg"
-              className="text-lg px-10 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 cinematic-glow font-semibold hover-lift"
+              size="sm"
+              variant="outline"
+              className="text-sm px-6 py-2 border-white/20 text-white/80 hover:text-white hover:bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-orange-400/30"
               asChild
             >
               <Link href="/hire-us">
-                Hire Us for Your Event
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Drop us a line
               </Link>
             </Button>
             <Button
-              variant="outline"
-              size="lg"
-              className="text-lg px-10 py-4 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm hover-lift cursor-pointer"
+              variant="ghost"
+              size="sm"
+              className="text-sm px-6 py-2 text-white/60 hover:text-white/80 transition-all duration-300"
               onClick={() => {
-                const element = document.getElementById('mission');
-                if (element) {
-                  element.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                  });
+                if (typeof window !== 'undefined') {
+                  const element = document.getElementById('mission');
+                  if (element) {
+                    element.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }
                 }
               }}
             >
@@ -148,9 +213,9 @@ export default function HomePage() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce opacity-60">
+          <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/40 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
@@ -159,15 +224,14 @@ export default function HomePage() {
       <section
         id="mission"
         data-animate
-        className={`py-32 px-6 relative transition-all duration-1000 ${isVisible.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
+        className={`py-32 px-6 relative ${getAnimationClass('mission')}`}
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content */}
             <div className="space-y-8">
               <div>
-                <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6 animate-glow-pulse">
+                <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6">
                   Meet the Aeronauts
                 </Badge>
                 <h2 className="text-5xl md:text-6xl font-gelica font-bold mb-8 leading-tight">
@@ -178,23 +242,23 @@ export default function HomePage() {
               <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                 They say the only way to shut a pilot up is to tie his hands behind his back. So we found a better way: let the visuals do the talking.
                 <p />
-                <p className="animate-fade-in-up animation-delay-200">
+                <p>
                   At Aerostatic, we bring our lifelong love of ballooning into the modern age of storytelling. From sky high displays to the ground chase below, our team turns every flight into something worth watching.
                 </p>
-                <p className="animate-fade-in-up animation-delay-400">
+                <p>
                   <strong className="text-white">Colby</strong> is a third-generation pilot, certified instructor, and the brain behind our design, media, and tech development.
                 </p>
-                <p className="animate-fade-in-up animation-delay-600">
+                <p>
                   <strong className="text-white">Matteo</strong> is a pilot and gifted communicator. With roots in the music industry, he brings a sharp ear for rhythm and detail to managing client relations and crafting custom activations across the West.
                 </p>
-                <p className="animate-fade-in-up animation-delay-800">
-                  Together, we help brands and event teams rediscover what wonder feels like. One balloon at a time
+                <p>
+                  Together, we help brands and event teams rediscover what wonder feels like.
                 </p>
               </div>
 
               <Button
                 variant="outline"
-                className="border-white/20 text-white hover:bg-white/10 mt-8 hover-lift animate-fade-in-up animation-delay-800"
+                className="border-white/20 text-white hover:bg-white/10 mt-8"
                 asChild
               >
                 {/* <Link href="/about">
@@ -207,27 +271,49 @@ export default function HomePage() {
             {/* Retro Photo Grid */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-300">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Camera className="w-12 h-12" />
-                  </div>
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  <Image
+                    src="/images/stinky.jpg"
+                    alt="Hot air balloon flight"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                 </div>
-                <div className="aspect-square bg-gradient-to-br from-amber-900/20 to-orange-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-700">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Users className="w-10 h-10" />
-                  </div>
+                <div className="aspect-square bg-gradient-to-br from-amber-900/20 to-orange-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  {isMounted && (
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    >
+                      <source src="/videos/wine_train.mp4" type="video/mp4" />
+                    </video>
+                  )}
                 </div>
               </div>
               <div className="space-y-4 pt-8">
-                <div className="aspect-square bg-gradient-to-br from-red-900/20 to-orange-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-500">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Wind className="w-10 h-10" />
-                  </div>
+                <div className="aspect-square bg-gradient-to-br from-red-900/20 to-orange-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  {isMounted && (
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    >
+                      <source src="/videos/thailand.mp4" type="video/mp4" />
+                    </video>
+                  )}
                 </div>
-                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-900">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Shield className="w-12 h-12" />
-                  </div>
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  <Image
+                    src="/images/me_and_matteo.jpg"
+                    alt="Professional balloon operations"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                 </div>
               </div>
             </div>
@@ -239,8 +325,7 @@ export default function HomePage() {
       <section
         id="services"
         data-animate
-        className={`py-32 px-6 bg-white/[0.02] relative transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
+        className={`py-32 px-6 bg-white/[0.02] relative ${getAnimationClass('services')}`}
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -254,9 +339,9 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Static Displays */}
-            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-100">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Palette className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-gelica text-white">Static Displays</CardTitle>
@@ -269,24 +354,24 @@ export default function HomePage() {
             </Card>
 
             {/* Ride Tethering */}
-            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-200">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Wind className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-gelica text-white">Ride Activations</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-white/70 text-base leading-relaxed">
-                  Tethered balloon rides that give your guests an unforgettable sunrise or sunset perspective. Safe, controlled ascents with breathtaking views and photo opportunities.
+                  Tethered balloon rides that leave your guests with a core memory. Safe, controlled ascents with breathtaking views and photo opportunities.
                 </CardDescription>
               </CardContent>
             </Card>
 
             {/* Media Coverage */}
-            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-300">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Camera className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-gelica text-white">Media Coverage</CardTitle>
@@ -298,47 +383,44 @@ export default function HomePage() {
             </Card>
 
             {/* Branded Flights */}
-            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-400">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Award className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-gelica text-white">Content Creators</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-white/70 text-base leading-relaxed">
-                  Looking for something visually striking to share? Our balloon activations offer cinematic views, rare experiences, and a backdrop your followers won&apos;t forget.
-                </CardDescription>
+                  Need content that stands above the noise? We collaborate with creators to deliver cinematic aerials, unforgettable backdrops, and moments that ignite engagement.              </CardDescription>
               </CardContent>
             </Card>
 
             {/* Custom Design */}
-            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-500">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Palette className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-gelica text-white">Branded Balloon Flights</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-white/70 text-base leading-relaxed">
-                  Custom-branded balloon envelopes and flight experiences that put your brand in the sky. Unforgettable marketing that literally rises above the competition.
-                </CardDescription>
+                  Put your logo in the sky. We design and fly custom branded envelopes or banners, turning your message into an airborne spectacle. Rise above your competitors... literally.                </CardDescription>
               </CardContent>
             </Card>
 
             {/* Multi-day Events */}
-            <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-600">
+            <Card className="glass hover:glass-warm smooth-transition hover-lift group">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform cinematic-glow">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Globe className="w-8 h-8 text-white" />
                 </div>
-                <CardTitle className="text-2xl font-gelica text-white">Multi-day Activations</CardTitle>
+                <CardTitle className="text-2xl font-gelica text-white">Custom Services</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-white/70 text-base leading-relaxed">
-                  Extended balloon presence for festivals, campaigns, or multi-city events. Content and branding that build momentum throughout your activation.
-                </CardDescription>
+                  Need something off the beaten flight path? From aerial cinematography to fully tailored balloon ops, we bring experience, flexibility, and a knack for making magic from scratch.                </CardDescription>
               </CardContent>
             </Card>
           </div>
@@ -346,7 +428,7 @@ export default function HomePage() {
           <div className="text-center mt-16">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-lg px-10 py-4 cinematic-glow hover-lift animate-fade-in-up animation-delay-700"
+              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-lg px-10 py-4"
               asChild
             >
               <Link href="/hire-us">
@@ -359,11 +441,10 @@ export default function HomePage() {
       </section>
 
       {/* Media Reel Section */}
-      <section
+      {/* <section
         id="media"
         data-animate
-        className={`py-32 px-6 transition-all duration-1000 ${isVisible.media ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
+        className={`py-32 px-6 ${getAnimationClass('media')}`}
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
@@ -388,7 +469,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Media reel placeholder */}
           <div className="relative aspect-video bg-gradient-to-br from-orange-900/10 to-red-900/10 rounded-3xl overflow-hidden glass hover-lift group">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
@@ -401,18 +481,73 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section> */}
+
+      {/* Second Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          {isMounted && (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+              style={{ filter: 'brightness(0.4) contrast(1.1)' }}
+            >
+              <source src="/videos/your_event.mp4" type="video/mp4" />
+            </video>
+          )}
+          {/* Fallback gradient - always rendered for SSR */}
+          <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
+        </div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70 z-10"></div>
+
+        {/* Hero Content */}
+        <div className="relative z-20 text-center max-w-2xl mx-auto px-6">
+          <div className="mb-8">
+            <div className="text-2xl md:text-3xl font-gelica font-light text-white/90 tracking-wide mb-2">
+              Elevate your event with a spectacle the whole county can see
+            </div>
+          </div>
+
+          <div className="flex gap-4 justify-center opacity-80">
+            <Button
+              size="sm"
+              variant="outline"
+              className="text-sm px-6 py-2 border-white/20 text-white/80 hover:text-white hover:bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-orange-400/30"
+              asChild
+            >
+              <Link href="/hire-us">
+                Let&apos;s Talk
+              </Link>
+            </Button>
+            {/* <Button
+              variant="ghost"
+              size="sm"
+              className="text-sm px-6 py-2 text-white/60 hover:text-white/80 transition-all duration-300"
+              asChild
+            >
+              <Link href="/gallery">
+                View Gallery
+              </Link>
+            </Button> */}
+          </div>
+        </div>
       </section>
 
       {/* Platform Teaser Section */}
       <section
         id="platform"
         data-animate
-        className={`py-32 px-6 bg-white/[0.02] transition-all duration-1000 ${isVisible.platform ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}
+        className={`py-32 px-6 bg-white/[0.02] ${getAnimationClass('platform')}`}
       >
         <div className="max-w-5xl mx-auto text-center">
           <div className="mb-12">
-            <Globe className="w-20 h-20 mx-auto mb-8 text-orange-500 animate-glow-pulse" />
+            <Globe className="w-20 h-20 mx-auto mb-8 text-orange-500" />
             <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-6">
               This is more than a show in the sky.
             </h2>
@@ -435,32 +570,13 @@ export default function HomePage() {
                   type="submit"
                   size="default"
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-6 cinematic-glow"
+                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-6"
                 >
                   {isSubmitting ? "..." : "Join"}
                 </Button>
               </form>
             </div>
           </div>
-
-          {/* <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-10 py-4 border-orange-500/30 text-orange-400 hover:bg-orange-500/10 hover-lift"
-              asChild
-            >
-              <Link href="/adventures">Explore Adventures</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="ghost"
-              className="text-lg px-10 py-4 text-white/70 hover:text-white hover:bg-white/10 hover-lift"
-              asChild
-            >
-              <Link href="/submit">Submit an Adventure</Link>
-            </Button>
-          </div> */}
         </div>
       </section>
 
