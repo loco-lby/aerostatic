@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Camera, Users, Shield, Award, MapPin, Calendar, Star } from 'lucide-react';
@@ -13,7 +14,13 @@ import { toast } from "sonner";
 
 export default function AboutPage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
+  const [isMounted, setIsMounted] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Ensure component is mounted before running client-side code
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     // Add structured data for the team
@@ -55,6 +62,8 @@ export default function AboutPage() {
   }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -81,7 +90,7 @@ export default function AboutPage() {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [isMounted]);
 
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -121,6 +130,17 @@ export default function AboutPage() {
     }
   }
 
+  // Helper function to get animation classes with hydration safety
+  const getAnimationClass = (sectionId: string, baseClass: string = '') => {
+    const baseClasses = `${baseClass} transition-all duration-1000`;
+
+    if (!isMounted) {
+      return `${baseClasses} opacity-100`;
+    }
+
+    return `${baseClasses} ${isVisible[sectionId] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`;
+  };
+
   return (
     <div className="min-h-screen bg-black">
       <Header />
@@ -130,13 +150,13 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-orange-900/10 to-transparent"></div>
 
         <div className="relative z-10 max-w-6xl mx-auto text-center">
-          <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6 animate-glow-pulse">
+          <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6">
             Meet the Team
           </Badge>
-          <h1 className="hero-text text-white mb-6 animate-fade-in-up">
+          <h1 className="hero-text text-white mb-6">
             We&apos;re Aeronauts and Storytellers
           </h1>
-          <p className="subhead-text my-12 max-w-4xl mx-auto animate-fade-in-up animation-delay-300">
+          <p className="subhead-text my-12 max-w-4xl mx-auto">
             Industry born balloon crew blending aircraft with storycraft.
           </p>
         </div>
@@ -146,7 +166,7 @@ export default function AboutPage() {
       <section
         id="story"
         data-animate
-        className={`py-20 px-6 relative transition-all duration-1000 ${isVisible.story ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+        className={`py-20 px-6 relative ${getAnimationClass('story')}`}
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -155,41 +175,64 @@ export default function AboutPage() {
                 They say the only way to shut a pilot up is to tie his hands behind his back.
               </h2>
               <div className="space-y-6 text-lg text-white/80 leading-relaxed">
-                <p className="animate-fade-in-up animation-delay-200">
+                <p>
                   So we found a better way: let the visuals do the talking.
                 </p>
-                <p className="animate-fade-in-up animation-delay-400">
+                <p>
                   At Aerostatic, we bring our lifelong love of ballooning into the modern age of storytelling. From sky high displays to the ground chase below, our team turns every flight into something worth watching.
                 </p>
-                <p className="animate-fade-in-up animation-delay-600">
+                <p>
                   Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry-leading safety standards.
                 </p>
               </div>
             </div>
 
+            {/* Photo Grid - Updated to match home page */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-300">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Camera className="w-12 h-12" />
-                  </div>
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  <Image
+                    src="/images/stinky.jpg"
+                    alt="Hot air balloon flight"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                 </div>
-                <div className="aspect-square bg-gradient-to-br from-amber-900/20 to-orange-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-700">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Users className="w-10 h-10" />
-                  </div>
+                <div className="aspect-square bg-gradient-to-br from-amber-900/20 to-orange-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  {isMounted && (
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    >
+                      <source src="/videos/wine_train.mp4" type="video/mp4" />
+                    </video>
+                  )}
                 </div>
               </div>
               <div className="space-y-4 pt-8">
-                <div className="aspect-square bg-gradient-to-br from-red-900/20 to-orange-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-500">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Shield className="w-10 h-10" />
-                  </div>
+                <div className="aspect-square bg-gradient-to-br from-red-900/20 to-orange-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  {isMounted && (
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    >
+                      <source src="/videos/thailand.mp4" type="video/mp4" />
+                    </video>
+                  )}
                 </div>
-                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg polaroid hover-lift animate-fade-in-up animation-delay-900">
-                  <div className="w-full h-full flex items-center justify-center text-white/60">
-                    <Award className="w-12 h-12" />
-                  </div>
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg polaroid hover-lift overflow-hidden relative group">
+                  <Image
+                    src="/images/me_and_matteo.jpg"
+                    alt="Professional balloon operations"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                 </div>
               </div>
             </div>
