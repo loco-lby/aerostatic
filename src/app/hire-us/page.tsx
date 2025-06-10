@@ -314,9 +314,9 @@ export default function HireUsPage() {
                                                     <CardDescription className="text-orange-400 text-sm font-medium">
                                                         {service.idealFor}
                                                     </CardDescription>
-                                                    <Badge variant="outline" className="border-green-500/30 text-green-400 text-xs mt-3 ">
+                                                    {/* <Badge variant="outline" className="border-green-500/30 text-green-400 text-xs mt-3 ">
                                                         Starting at {service.startingPrice}
-                                                    </Badge>
+                                                    </Badge> */}
                                                 </div>
                                             </div>
                                         </CardHeader>
