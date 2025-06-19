@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FunctionComponent, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useContent } from "@/hooks/useContent";
 
 interface MenuItem {
   name: string;
@@ -15,12 +16,6 @@ interface MenuItem {
   isSection?: boolean;
   openInNewTab?: boolean;
 }
-
-const menuItems: MenuItem[] = [
-  { name: "Services", href: "#services", isSection: true },
-  // { name: "Gallery", href: "/gallery" },
-  { name: "Meet the Aeronauts", href: "/about" },
-];
 
 const smoothScrollToSection = (sectionId: string) => {
   const element = document.getElementById(sectionId);
@@ -36,6 +31,7 @@ export const Navigation: FunctionComponent = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const content = useContent();
 
   const handleNavClick = (item: MenuItem) => {
     if (item.isSection) {
@@ -71,7 +67,7 @@ export const Navigation: FunctionComponent = () => {
     <>
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8">
-        {menuItems.map((item) => (
+        {content.navigation.menuItems.map((item) => (
           <motion.div
             key={item.href}
             whileHover={{ scale: 1.05 }}
@@ -131,7 +127,7 @@ export const Navigation: FunctionComponent = () => {
                 <X size="24" />
               </Button>
 
-              {menuItems.map((item, index) => (
+              {content.navigation.menuItems.map((item, index) => (
                 <motion.div
                   key={item.href}
                   initial={{ opacity: 0, y: 20 }}
@@ -169,21 +165,13 @@ export const Navigation: FunctionComponent = () => {
                 transition={{ delay: 0.3 }}
                 className="flex flex-col gap-4 mt-8"
               >
-                {/* <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-white/20 text-white hover:bg-white/10"
-                  onClick={handleMeetAeronautsClick}
-                >
-                  Meet the Aeronauts
-                </Button> */}
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
                   asChild
                 >
                   <Link href="/hire-us" onClick={() => setIsOpen(false)}>
-                    Hire Us
+                    {content.navigation.cta}
                   </Link>
                 </Button>
               </motion.div>
@@ -198,6 +186,7 @@ export const Navigation: FunctionComponent = () => {
 export const Header: FunctionComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+  const content = useContent();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -243,7 +232,7 @@ export const Header: FunctionComponent = () => {
             >
               <Image
                 src="/images/logo2.svg"
-                alt="Aerostatic"
+                alt={content.site.name}
                 width={180}
                 height={48}
                 className="object-contain"
@@ -252,30 +241,20 @@ export const Header: FunctionComponent = () => {
             </motion.div>
           </Link>
 
-          {/* Navigation */}<div className="hidden md:block">
+          {/* Navigation */}
+          <div className="hidden md:block">
             <Navigation />
           </div>
 
           {/* CTA Section */}
           <div className="flex items-center gap-4">
-            {/* Secondary CTA - Meet the Aeronauts */}
-            {/* <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="ghost"
-                onClick={handleMeetAeronautsClick}
-                className="text-white/80 hover:text-white hover:bg-white/10 hidden lg:inline-flex font-medium cursor-pointer"
-              >
-                Meet the Aeronauts
-              </Button>
-            </motion.div> */}
-
             {/* Primary CTA - Hire Us */}
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 asChild
                 className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold px-6 py-2 cinematic-glow"
               >
-                <Link href="/hire-us">Hire Us</Link>
+                <Link href="/hire-us">{content.navigation.cta}</Link>
               </Button>
             </motion.div>
           </div>

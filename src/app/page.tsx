@@ -11,6 +11,7 @@ import { ArrowRight, Camera, Palette, Wind, Globe, Users, Shield, Award, Play } 
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { useContent } from "@/hooks/useContent";
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
@@ -18,8 +19,9 @@ export default function HomePage() {
   const [typedText, setTypedText] = useState("");
   const [showCursor, setShowCursor] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const content = useContent();
 
-  const heroText = " We create unforgettable hot air balloon displays and cinematic coverage for festivals, brand launches, and private experiences.";
+  const heroText = content.home.hero.title;
 
   // Ensure component is mounted before running client-side code
   useEffect(() => {
@@ -107,7 +109,7 @@ export default function HomePage() {
 
       if (error) {
         if (error.code === '23505') { // Unique constraint violation
-          toast.success("You&apos;re already on our list!")
+          toast.success("You're already on our list!")
         } else {
           console.error("Error signing up for newsletter:", error)
           toast.error("Failed to sign up. Please try again.")
@@ -188,7 +190,7 @@ export default function HomePage() {
               asChild
             >
               <Link href="/hire-us">
-                Drop us a line
+                {content.home.hero.primaryButton}
               </Link>
             </Button>
             <Button
@@ -207,7 +209,7 @@ export default function HomePage() {
                 }
               }}
             >
-              Meet the Aeronauts
+              {content.home.hero.secondaryButton}
             </Button>
           </div>
         </div>
@@ -232,28 +234,17 @@ export default function HomePage() {
             <div className="space-y-8">
               <div>
                 <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6">
-                  Meet the Aeronauts
+                  {content.home.mission.badge}
                 </Badge>
                 <h2 className="text-5xl md:text-6xl font-gelica font-bold mb-8 leading-tight">
-                  We&apos;re Aeronauts and Storytellers
+                  {content.home.mission.title}
                 </h2>
               </div>
 
               <div className="space-y-6 text-lg text-white/80 leading-relaxed">
-                They say the only way to shut a pilot up is to tie his hands behind his back. So we found a better way: let the visuals do the talking.
-                <p />
-                <p>
-                  At Aerostatic, we bring our lifelong love of ballooning into the modern age of storytelling. From sky high displays to the ground chase below, our team turns every flight into something worth watching.
-                </p>
-                <p>
-                  <strong className="text-white">Colby</strong> is a third-generation pilot, certified instructor, and the brain behind our design, media, and tech development.
-                </p>
-                <p>
-                  <strong className="text-white">Matteo</strong> is a pilot and gifted communicator. With roots in the music industry, he brings a sharp ear for rhythm and detail to managing client relations and crafting custom activations across the West.
-                </p>
-                <p>
-                  Together, we help brands and event teams rediscover what wonder feels like.
-                </p>
+                {content.home.mission.content.map((paragraph, index) => (
+                  <p key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
+                ))}
               </div>
 
               <Button
@@ -333,7 +324,7 @@ export default function HomePage() {
               What We Offer
             </h2>
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              We&apos;ve flown in tight spaces, wild places, and everything in between... this isn&apos;t our first rodeo.
+              We've flown in tight spaces, wild places, and everything in between... this isn't our first rodeo.
             </p>
           </div>
 
@@ -378,7 +369,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-white/70 text-base leading-relaxed">
-                  A balloon floating over your event doesn&apos;t just turn heads, it elevates the entire experience. Our team provides crafted content that lives far beyond the moment.                </CardDescription>
+                  A balloon floating over your event doesn't just turn heads, it elevates the entire experience. Our team provides crafted content that lives far beyond the moment.                </CardDescription>
               </CardContent>
             </Card>
 

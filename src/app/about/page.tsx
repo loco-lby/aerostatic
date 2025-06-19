@@ -172,17 +172,17 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-8 leading-tight">
-                They say the only way to shut a pilot up is to tie his hands behind his back.
+                We work in the field.
               </h2>
               <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                 <p>
-                  So we found a better way: let the visuals do the talking.
+                  Aerostatic didn’t start with a pitch deck. For Colby, it began on a stepping stool he used to reach the burner when he was 10. For Matteo, it started with a pieced together trailer, a stinky balloon, and a weird obsession with whatever this is that we do.
                 </p>
                 <p>
-                  At Aerostatic, we bring our lifelong love of ballooning into the modern age of storytelling. From sky high displays to the ground chase below, our team turns every flight into something worth watching.
+                  We film as we go, partly to share the experience, partly so we don’t forget how wild this all felt at the beginning.
                 </p>
                 <p>
-                  Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry-leading safety standards.
+                  Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry leading safety standards.
                 </p>
               </div>
             </div>
@@ -272,7 +272,7 @@ export default function AboutPage() {
                 <div className="flex flex-wrap gap-2 justify-center mb-6">
                   <Badge variant="outline" className="border-orange-500/30 text-orange-400">
                     <Shield className="w-3 h-3 mr-1" />
-                    Certified Instructor
+                    Instructor & Commercial Pilot
                   </Badge>
                   <Badge variant="outline" className="border-orange-500/30 text-orange-400">
                     <Camera className="w-3 h-3 mr-1" />
@@ -284,12 +284,10 @@ export default function AboutPage() {
                   </Badge>
                 </div>
                 <p className="text-white/80 leading-relaxed text-center">
-                  The brain behind our design, media, and tech development. From sunrise flights to sunset editing sessions,
-                  Colby ensures every activation meets industry-leading safety standards while pushing creative boundaries.
+                  Leads design, tech, media, and operations. Background in aviation and software. Pockets full of dust (for wind checks) and loose SD cards (not for wind checks).
                 </p>
                 <p className="text-white/80 leading-relaxed text-center">
-                  Born in a balloon basket, he brings three generations of aviation expertise to every project,
-                  combined with a modern eye for visual storytelling that makes brands soar.
+                  <strong>Quote:</strong> "Think with your hands"
                 </p>
               </CardContent>
             </Card>
@@ -317,17 +315,14 @@ export default function AboutPage() {
                   </Badge>
                   <Badge variant="outline" className="border-orange-500/30 text-orange-400">
                     <Star className="w-3 h-3 mr-1" />
-
-                    Merchandise Sales
+                    Private Pilot
                   </Badge>
                 </div>
                 <p className="text-white/80 leading-relaxed text-center">
-                  A gifted communicator with roots in the music industry, bringing a sharp ear for rhythm and detail
-                  to managing client relations and crafting custom activations across the West.
+                  Handles communications, logistics, and event planning. Background in music and production. Can back a trailer better than your uncle Steve.
                 </p>
                 <p className="text-white/80 leading-relaxed text-center">
-                  His background in entertainment gives him an intuitive understanding of what makes moments memorable,
-                  ensuring every client experience hits the right notes from first contact to final delivery.
+                  <strong>Quote:</strong> "Dance like no one is watching"
                 </p>
               </CardContent>
             </Card>
@@ -347,7 +342,7 @@ export default function AboutPage() {
               Our Approach
             </h2>
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Safety first, creativity always, and wonder in every flight
+              Safety first, creativity always
             </p>
           </div>
 
@@ -361,7 +356,7 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-white/70 leading-relaxed">
-                  Industry-leading safety protocols with certified instructors and rigorous equipment maintenance.
+                  Industry leading safety protocols with certified instructors and rigorous equipment maintenance.
                   Every flight meets or exceeds FAA requirements.
                 </p>
               </CardContent>
