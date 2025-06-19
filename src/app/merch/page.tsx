@@ -456,13 +456,13 @@ export default function MerchPage() {
 
                             <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                                 <p>
-                                    Napa Valley isn't just where we learned to fly—it's where we learned what it means to chase the wind with purpose.
+                                    Napa Valley isn&apos;t just where we learned to fly—it&apos;s where we learned what it means to chase the wind with purpose.
                                 </p>
                                 <p>
                                     Working as crew chiefs in those rolling vineyards, we discovered that every sunrise brought new possibilities. Every flight was a chance to see the world differently.
                                 </p>
                                 <p>
-                                    This hat carries that spirit. It's embroidered with the balloons that float over Napa's endless rows of vines, a reminder that adventure starts wherever you decide to look up.
+                                    This hat carries that spirit. It&apos;s embroidered with the balloons that float over Napa&apos;s endless rows of vines, a reminder that adventure starts wherever you decide to look up.
                                 </p>
                                 <p className="text-orange-400 font-semibold">
                                     Every purchase helps fund the next generation of pilots. Because the sky belongs to those bold enough to claim it.

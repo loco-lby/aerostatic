@@ -287,7 +287,7 @@ export default function AboutPage() {
                   Leads design, tech, media, and operations. Background in aviation and software. Pockets full of dust (for wind checks) and loose SD cards (not for wind checks).
                 </p>
                 <p className="text-white/80 leading-relaxed text-center">
-                  <strong>Quote:</strong> "Think with your hands"
+                  <strong>Quote:</strong> &quot;Think with your hands&quot;
                 </p>
               </CardContent>
             </Card>
@@ -322,7 +322,7 @@ export default function AboutPage() {
                   Handles communications, logistics, and event planning. Background in music and production. Can back a trailer better than your uncle Steve.
                 </p>
                 <p className="text-white/80 leading-relaxed text-center">
-                  <strong>Quote:</strong> "Dance like no one is watching"
+                  <strong>Quote:</strong> &quot;Dance like no one is watching&quot;
                 </p>
               </CardContent>
             </Card>

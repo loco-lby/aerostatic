@@ -324,7 +324,7 @@ export default function HomePage() {
               What We Offer
             </h2>
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              We've flown in tight spaces, wild places, and everything in between... this isn't our first rodeo.
+              We&apos;ve flown in tight spaces, wild places, and everything in between... this isn&apos;t our first rodeo.
             </p>
           </div>
 
@@ -369,7 +369,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-white/70 text-base leading-relaxed">
-                  A balloon floating over your event doesn't just turn heads, it elevates the entire experience. Our team provides crafted content that lives far beyond the moment.                </CardDescription>
+                  A balloon floating over your event doesn&apos;t just turn heads, it elevates the entire experience. Our team provides crafted content that lives far beyond the moment.                </CardDescription>
               </CardContent>
             </Card>
 
