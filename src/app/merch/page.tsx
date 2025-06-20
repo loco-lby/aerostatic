@@ -456,16 +456,14 @@ export default function MerchPage() {
 
                             <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                                 <p>
-                                    Napa Valley isn&apos;t just where we learned to fly—it&apos;s where we learned what it means to chase the wind with purpose.
+                                    This hat won't fly itself, but it'll help us get there.
                                 </p>
                                 <p>
-                                    Working as crew chiefs in those rolling vineyards, we discovered that every sunrise brought new possibilities. Every flight was a chance to see the world differently.
+                                    The Napa Valley operation is ballooning's version of a grand cru. Precision, tradition, and daily risk all before 6am. It's where we learned the ropes, earned our checkers, and started building this from the ground up.
                                 </p>
-                                <p>
-                                    This hat carries that spirit. It&apos;s embroidered with the balloons that float over Napa&apos;s endless rows of vines, a reminder that adventure starts wherever you decide to look up.
-                                </p>
+
                                 <p className="text-orange-400 font-semibold">
-                                    Every purchase helps fund the next generation of pilots. Because the sky belongs to those bold enough to claim it.
+                                    Every purchase helps fund the next generation of pilots.
                                 </p>
                             </div>
                         </div>
