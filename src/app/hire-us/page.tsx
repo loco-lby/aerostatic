@@ -102,29 +102,29 @@ const serviceTypes = [
 
 const budgetRanges = [
     {
-        value: "Under $5,000",
-        label: "Under $5,000",
-        description: "Ideal for static displays and cinematic photo/video shoots"
+        value: "$500 - $1,000",
+        label: "$500 - $1,000",
+        description: "Ideal for static displays and basic photo/video shoots"
+    },
+    {
+        value: "$1,000 - $2,000",
+        label: "$1,000 - $2,000",
+        description: "Covers short tethered flights and single-day events"
+    },
+    {
+        value: "$2,000 - $5,000",
+        label: "$2,000 - $5,000",
+        description: "Multi-day events and specialized activations"
     },
     {
         value: "$5,000 - $10,000",
         label: "$5,000 - $10,000",
-        description: "Covers tethered flights and shorter multi-day events"
+        description: "Custom branded balloons and extended campaigns"
     },
     {
-        value: "$10,000 - $30,000",
-        label: "$10,000 - $30,000",
-        description: "Larger activations and regional campaigns"
-    },
-    {
-        value: "$30,000 - $50,000",
-        label: "$30,000 - $50,000",
-        description: "Custom activations with specialized media or branding"
-    },
-    {
-        value: "$50,000+",
-        label: "$50,000+",
-        description: "Full custom balloon advertising packages with branded envelopes and extended campaigns"
+        value: "$10,000+",
+        label: "$10,000+",
+        description: "Full custom balloon advertising packages with extensive branding"
     }
 ]
 
@@ -222,7 +222,8 @@ export default function HireUsPage() {
         try {
             const supabase = createClient()
 
-            const { error } = await supabase
+            // Insert the hire request into the database
+            const { error: insertError } = await supabase
                 .from('hire_requests')
                 .insert({
                     name: formData.name,
@@ -239,13 +240,49 @@ export default function HireUsPage() {
                     status: 'pending'
                 })
 
-            if (error) {
-                console.error("Error submitting form:", error)
+            if (insertError) {
+                console.error("Error submitting form:", insertError)
                 toast.error("Failed to submit your request. Please try again.")
-            } else {
-                toast.success("Thank you! We'll get back to you soon.")
-                router.push('/hire-us/confirmation')
+                return
             }
+
+            // Try to send email notification (don't fail if this doesn't work)
+            let emailSent = false
+            try {
+                const { data, error: functionError } = await supabase.functions.invoke('send-hire-request-email', {
+                    body: {
+                        name: formData.name,
+                        email: formData.email,
+                        companyOrganization: formData.companyOrganization,
+                        eventName: formData.eventName,
+                        eventDate: formData.eventDate,
+                        location: formData.location,
+                        serviceType: formData.serviceType,
+                        budgetRange: formData.budgetRange,
+                        eventDescription: formData.eventDescription,
+                        isRecurring: formData.isRecurring,
+                        additionalNotes: formData.additionalNotes
+                    }
+                })
+
+                if (!functionError) {
+                    emailSent = true
+                    console.log("Email notification sent successfully")
+                } else {
+                    console.warn("Email notification failed:", functionError)
+                }
+            } catch (emailError) {
+                console.warn("Email function error:", emailError)
+            }
+
+            // Always show success message, but indicate email status
+            if (emailSent) {
+                toast.success("Thank you! We'll get back to you soon.")
+            } else {
+                toast.success("Thank you! We'll get back to you soon. (Email notification will be sent separately)")
+            }
+
+            router.push('/hire-us/confirmation')
         } catch (error) {
             console.error("Error:", error)
             toast.error("An unexpected error occurred. Please try again.")
