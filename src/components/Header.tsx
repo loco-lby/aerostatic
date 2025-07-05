@@ -51,18 +51,6 @@ export const Navigation: FunctionComponent = () => {
     setIsOpen(false);
   };
 
-  const handleMeetAeronautsClick = () => {
-    if (pathname === '/') {
-      smoothScrollToSection('mission');
-    } else {
-      router.push('/');
-      setTimeout(() => {
-        smoothScrollToSection('mission');
-      }, 100);
-    }
-    setIsOpen(false);
-  };
-
   return (
     <>
       {/* Desktop Navigation */}
@@ -73,27 +61,15 @@ export const Navigation: FunctionComponent = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {item.isSection ? (
-              <button
-                onClick={() => handleNavClick(item)}
-                className={cn(
-                  "text-white/80 hover:text-white transition-colors font-medium tracking-wide cursor-pointer",
-                  pathname === '/' && "text-white"
-                )}
-              >
-                {item.name}
-              </button>
-            ) : (
-              <Link
-                href={item.href}
-                className={cn(
-                  "text-white/80 hover:text-white transition-colors font-medium tracking-wide",
-                  pathname === item.href && "text-white"
-                )}
-              >
-                {item.name}
-              </Link>
-            )}
+            <Link
+              href={item.href}
+              className={cn(
+                "text-white/80 hover:text-white transition-colors font-medium tracking-wide",
+                pathname === item.href && "text-white"
+              )}
+            >
+              {item.name}
+            </Link>
           </motion.div>
         ))}
       </nav>
@@ -134,28 +110,16 @@ export const Navigation: FunctionComponent = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  {item.isSection ? (
-                    <button
-                      onClick={() => handleNavClick(item)}
-                      className={cn(
-                        "text-2xl font-gelica text-white/80 hover:text-white transition-colors cursor-pointer",
-                        pathname === '/' && "text-orange-400"
-                      )}
-                    >
-                      {item.name}
-                    </button>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "text-2xl font-gelica text-white/80 hover:text-white transition-colors",
-                        pathname === item.href && "text-orange-400"
-                      )}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "text-2xl font-gelica text-white/80 hover:text-white transition-colors",
+                      pathname === item.href && "text-orange-400"
+                    )}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
                 </motion.div>
               ))}
 
@@ -170,7 +134,7 @@ export const Navigation: FunctionComponent = () => {
                   className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
                   asChild
                 >
-                  <Link href="/hire-us" onClick={() => setIsOpen(false)}>
+                  <Link href="/events" onClick={() => setIsOpen(false)}>
                     {content.navigation.cta}
                   </Link>
                 </Button>
@@ -197,66 +161,51 @@ export const Header: FunctionComponent = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleMeetAeronautsClick = () => {
-    const pathname = window.location.pathname;
-    if (pathname === '/') {
-      smoothScrollToSection('mission');
-    } else {
-      router.push('/');
-      setTimeout(() => {
-        smoothScrollToSection('mission');
-      }, 100);
-    }
-  };
-
   return (
     <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-black/90 backdrop-blur-md border-b border-white/10"
+          ? "bg-black/80 backdrop-blur-md border-b border-white/10"
           : "bg-transparent"
       )}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative h-12 w-auto transition-transform duration-300"
-            >
-              <Image
-                src="/images/logo2.svg"
-                alt={content.site.name}
-                width={180}
-                height={48}
-                className="object-contain"
-                priority
-              />
-            </motion.div>
-          </Link>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="relative h-10 w-auto group-hover:scale-110 transition-transform duration-300">
+                <Image
+                  src="/images/logo2.svg"
+                  alt={content.site.name}
+                  width={150}
+                  height={40}
+                  className="object-contain"
+                />
+              </div>
+            </Link>
+          </motion.div>
 
           {/* Navigation */}
-          <div className="hidden md:block">
-            <Navigation />
-          </div>
+          <Navigation />
 
-          {/* CTA Section */}
-          <div className="flex items-center gap-4">
-            {/* Primary CTA - Hire Us */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                asChild
-                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold px-6 py-2 cinematic-glow"
-              >
-                <Link href="/hire-us">{content.navigation.cta}</Link>
-              </Button>
-            </motion.div>
+          {/* CTA Button */}
+          <div className="hidden md:flex items-center gap-4">
+            <Button
+              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+              asChild
+            >
+              <Link href="/events">
+                {content.navigation.cta}
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

@@ -261,8 +261,9 @@ export default function MerchPage() {
                         {currentProduct.name}
                     </h1>
                     <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        Flat white embroidery of the Napa Valley, featuring one of the largest balloon operations in the country. A stitched tribute to the skies we cut our teeth in.
+                        Tested in the field and designed by pilots. Every sale funds the next flight. Grab it, then get out there.
                     </p>
+
                     <div className="flex gap-4 justify-center">
                         <Button
                             size="lg"
@@ -358,11 +359,11 @@ export default function MerchPage() {
                                 </div>
                             </div>
 
-                            <div className="prose prose-invert max-w-none">
+                            {/* <div className="prose prose-invert max-w-none">
                                 <p className="text-lg text-white/80 leading-relaxed whitespace-pre-line">
                                     {currentProduct.description}
                                 </p>
-                            </div>
+                            </div> */}
 
                             {/* Size Selection */}
                             <div className="space-y-4">
@@ -456,10 +457,10 @@ export default function MerchPage() {
 
                             <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                                 <p>
-                                    This hat won't fly itself, but it'll help us get there.
+                                    This hat won&apos;t fly itself, but it&apos;ll help us get there.
                                 </p>
                                 <p>
-                                    The Napa Valley operation is ballooning's version of a grand cru. Precision, tradition, and daily risk all before 6am. It's where we learned the ropes, earned our checkers, and started building this from the ground up.
+                                    The Napa Valley operation is ballooning&apos;s version of a grand cru. Precision, tradition, and daily risk all before 6am. It&apos;s where we learned the ropes, earned our checkers, and started building this from the ground up.
                                 </p>
 
                                 <p className="text-orange-400 font-semibold">

@@ -105,7 +105,7 @@ export const Footer: FunctionComponent = () => {
                   asChild
                 >
                   <Link href={social.href} target="_blank">
-                    {social.name === 'Twitter' && <Twitter className="h-5 w-5" />}
+                    {/* {social.name === 'Twitter' && <Twitter className="h-5 w-5" />} */}
                     {social.name === 'Instagram' && <Instagram className="h-5 w-5" />}
                     {social.name === 'YouTube' && <Youtube className="h-5 w-5" />}
                     {social.name === 'Email' && <Mail className="h-5 w-5" />}
