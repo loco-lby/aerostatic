@@ -52,7 +52,7 @@ export default function MerchPage() {
     useEffect(() => {
         setIsMounted(true);
         fetchProducts();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (products.length > 0 && products[0].variants.length > 0) {
@@ -60,7 +60,7 @@ export default function MerchPage() {
         } else if (fallbackProduct.variants.length > 0) {
             setSelectedVariant(fallbackProduct.variants[0].id);
         }
-    }, [products]);
+    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchProducts = async () => {
         try {
@@ -258,10 +258,10 @@ export default function MerchPage() {
                         Support the Mission
                     </Badge>
                     <h1 className="text-6xl md:text-7xl font-gelica font-bold mb-6 leading-tight">
-                        You Don't Need a Hat to Be Part of This
+                        You Don&apos;t Need a Hat to Be Part of This
                     </h1>
                     <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        But it helps fund the next flight. Every piece supports the mission, proof that flight still matters. We'll fly it forward.
+                        But it helps fund the next flight. Every piece supports the mission, proof that flight still matters. We&apos;ll fly it forward.
                     </p>
 
                     <div className="flex gap-4 justify-center">
@@ -451,20 +451,20 @@ export default function MerchPage() {
                                     Why We Build
                                 </Badge>
                                 <h2 className="text-5xl md:text-6xl font-gelica font-bold mb-8 leading-tight text-white">
-                                    This Isn't About the Hat
+                                    This Isn&apos;t About the Hat
                                 </h2>
                             </div>
 
                             <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                                 <p>
-                                    It's about keeping a disappearing craft alive through field-tested tools and cinematic storytelling.
+                                    It&apos;s about keeping a disappearing craft alive through field-tested tools and cinematic storytelling.
                                 </p>
                                 <p>
                                     We fly before dawn, build in our off-hours, and fund it all ourselves. Our media arm produces content that reignites public imagination. Our tech tools, Aerostatus and Aether, are built in the field and quietly offered to others walking the same path.
                                 </p>
 
                                 <p className="text-orange-400 font-semibold">
-                                    Every purchase directly funds this mission. You're not buying merch, you're investing in the future of flight.
+                                    Every purchase directly funds this mission. You&apos;re not buying merch, you&apos;re investing in the future of flight.
                                 </p>
                             </div>
                         </div>

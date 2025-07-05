@@ -78,8 +78,7 @@ export const Footer: FunctionComponent = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`block text-white/70 hover:text-orange-400 transition-colors ${link.disabled ? 'opacity-35 pointer-events-none' : ''
-                    }`}
+                  className="block text-white/70 hover:text-orange-400 transition-colors"
                 >
                   {link.name}
                 </Link>

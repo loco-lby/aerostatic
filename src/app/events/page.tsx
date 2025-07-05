@@ -231,7 +231,7 @@ export default function EventsPage() {
                         Every Event We Fly Becomes a Story
                     </h1>
                     <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        We don't just show up, we document the magic. Static displays that stop traffic. Tethered rides that create memories. Content that lives forever.
+                        We don&apos;t just show up, we document the magic. Static displays that stop traffic. Tethered rides that create memories. Content that lives forever.
                     </p>
                     <div className="flex gap-4 justify-center">
                         <Button
@@ -275,7 +275,7 @@ export default function EventsPage() {
                             Media-Powered Balloon Services
                         </h2>
                         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            Every service includes professional documentation. We capture the spectacle, craft the narrative, and deliver content that extends your event's impact beyond the moment.
+                            Every service includes professional documentation. We capture the spectacle, craft the narrative, and deliver content that extends your event&apos;s impact beyond the moment.
                         </p>
                     </div>
 
@@ -319,7 +319,7 @@ export default function EventsPage() {
                             Let&apos;s Create Something Unforgettable
                         </h2>
                         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            Tell us about your vision. We'll bring the balloon, the cameras, and the expertise to turn your event into a story worth sharing.
+                            Tell us about your vision. We&apos;ll bring the balloon, the cameras, and the expertise to turn your event into a story worth sharing.
                         </p>
                     </div>
 

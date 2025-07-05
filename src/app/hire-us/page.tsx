@@ -93,7 +93,7 @@ const serviceTypes = [
     {
         value: "Custom Services",
         label: "Custom Services",
-        description: "From multi-day productions to experimental concepts. We bring the tools, the expertise, and the commitment to document every moment."
+        description: "From multi-day productions to experimental concepts. We bring the tools, the expertise, and the commitment to document every moment.",
         icon: Globe,
         idealFor: "Festivals, Multi-City Tours, Extended Campaigns",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_MULTI_DAY)

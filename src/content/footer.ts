@@ -9,7 +9,7 @@ export const footerContent = {
         { name: "Tech & Tools", href: "/tech" },
         { name: "Balloon Displays", href: "/events" },
         { name: "Support the Mission", href: "/merch" },
-        { name: "Work With Us", href: "/work-with-us" },
+        { name: "Work With Us", href: "/hire-us" },
         { name: "About", href: "/about" }
       ]
     },

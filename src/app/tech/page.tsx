@@ -569,12 +569,12 @@ export default function TechPage() {
                         </h2>
                         <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
                             Quietly offered to others walking the same path. Help us build the tools
-                            we all wish existed. Your daily frustrations become tomorrow's features.
+                            we all wish existed. Your daily frustrations become tomorrow&apos;s features.
                         </p>
 
                         <div className="mt-12 p-6 bg-white/5 border border-white/10 rounded-2xl">
                             <p className="text-white/60 text-sm">
-                                This isn't about disrupting an industry. It's about preserving a craft.
+                                This isn&apos;t about disrupting an industry. It&apos;s about preserving a craft.
                                 <br />
                                 Questions? Email us at <span className="text-orange-400">info@aerostatus.io</span>
                             </p>
