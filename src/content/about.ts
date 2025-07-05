@@ -1,28 +1,28 @@
 export const aboutContent = {
   hero: {
     badge: "Meet the Aeronauts",
-    title: "We're Aeronauts and Storytellers",
-    subtitle: "Industry-born crew blending aircraft with storycraft."
+    title: "Pilots Who Build, Builders Who Fly",
+    subtitle: "A pilot-run production and technology project at the intersection of adventure and infrastructure."
   },
   story: {
-    title: "We work in the field.",
+    title: "We don't manufacture a vibe, we document a reality.",
     content: [
-      "Aerostatic didn't start with a pitch deck. It started with a pieced-together trailer, a stinky balloon, and a weird obsession with whatever this is that we do.",
-      "We film as we go, partly for the brand, partly so we don't forget how wild this all felt at the beginning.",
-      "We're not viral, not famous, not fully funded—but we're airborne."
+      "Aerostatic operates at the intersection of adventure and infrastructure, capturing the magic of flight while quietly engineering the systems that make it repeatable. We fly before dawn, build in our off-hours, and fund it all ourselves.",
+      "Our media arm produces short-form videos, long-form episodes, and branded event coverage designed to reignite public imagination about what ballooning can be. Our tools, like Aerostatus for operations and Aether for pilot certification, are built in the field, refined through daily use, and quietly offered to others walking the same path.",
+      "This isn't nostalgia. It's proof that flight still matters. You just have to look up."
     ]
   },
   team: {
     colby: {
       name: "Colby",
       role: "Pilot / Design & Media",
-      description: "Leads design, media, and operations. Background in aviation and software. Usually covered in dust or SD cards.",
+      description: "Leads media production and tool development. Background in aviation and software. Filming every launch and building the tools we wish existed.",
       quote: "We think with our hands."
     },
     matteo: {
       name: "Matteo",
       role: "Pilot / Client Relations",
-      description: "Handles communications, logistics, and event planning. Background in music and production. Can back a trailer better than most.",
+      description: "Handles field operations and client services. Background in music and production. Ensuring every flight is both safe and cinematic.",
       quote: "We meet people where the work is."
     }
   }

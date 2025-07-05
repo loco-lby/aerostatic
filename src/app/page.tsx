@@ -253,12 +253,32 @@ export default function HomePage() {
 
                   {/* Visual */}
                   <div className={index % 2 === 1 ? 'lg:col-start-1' : ''}>
-                    <div className="relative aspect-square bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-2xl overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-600/10"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-6xl text-white/20 font-gelica">
+                    <div className="relative aspect-square bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-2xl overflow-hidden group">
+                      {isMounted && (
+                        <video
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 grayscale"
+                        >
+                          <source
+                            src={
+                              pillar.id === 'media' ? "/videos/wine_train.mp4" :
+                                pillar.id === 'tech' ? "/videos/your_event.mp4" :
+                                  pillar.id === 'events' ? "/videos/tether.mp4" :
+                                    pillar.id === 'gear' ? "/videos/thailand.mp4" :
+                                      "/videos/hero.mp4"
+                            }
+                            type="video/mp4"
+                          />
+                        </video>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
+                      <div className="absolute bottom-6 left-6">
+                        <Badge variant="outline" className="text-white border-white/30">
                           {String(index + 1).padStart(2, '0')}
-                        </div>
+                        </Badge>
                       </div>
                     </div>
                   </div>

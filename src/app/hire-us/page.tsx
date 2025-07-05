@@ -53,7 +53,7 @@ const serviceTypes = [
     {
         value: "Static Displays",
         label: "Static Displays",
-        description: "Our checkered 'billboard in the sky' balloon draws attention wherever it stands. Perfect for festivals, races, and outdoor events looking for something iconic.",
+        description: "Our checkered 'billboard in the sky' balloon draws attention wherever it stands. Includes professional documentation of your event from unique angles.",
         icon: Palette,
         idealFor: "Festivals, Brand Activations, Outdoor Events",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_STATIC_DISPLAYS)
@@ -61,7 +61,7 @@ const serviceTypes = [
     {
         value: "Ride Activations",
         label: "Ride Activations",
-        description: "Tethered balloon rides that leave your guests with a core memory. Safe, controlled ascents with breathtaking views and photo opportunities.",
+        description: "Tethered balloon rides that leave your guests with a core memory. Safe, controlled ascents with breathtaking views, all professionally captured.",
         icon: Wind,
         idealFor: "Private Events, VIP Experiences, Corporate Retreats",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_RIDE_ACTIVATIONS)
@@ -69,7 +69,7 @@ const serviceTypes = [
     {
         value: "Media Coverage",
         label: "Media Coverage",
-        description: "A balloon floating over your event doesn't just turn heads, it elevates the entire experience. Our team provides crafted content that lives far beyond the moment.",
+        description: "Our core media offering: cinematic coverage of your event with aerial perspectives. We don't just document, we craft narratives that extend your impact.",
         icon: Camera,
         idealFor: "Brand Campaigns, Event Documentation, Marketing Content",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_MEDIA_COVERAGE)
@@ -77,7 +77,7 @@ const serviceTypes = [
     {
         value: "Content Creators",
         label: "Content Creators",
-        description: "Need content that stands above the noise? We collaborate with creators to deliver cinematic aerials, unforgettable backdrops, and moments that ignite engagement.",
+        description: "Partner with us for content that rises above. We bring field-tested production expertise to capture moments that resonate across platforms.",
         icon: Award,
         idealFor: "Influencers, Social Media, Personal Branding",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_CONTENT_CREATORS)
@@ -85,7 +85,7 @@ const serviceTypes = [
     {
         value: "Branded Balloon Flights",
         label: "Branded Balloon Flights",
-        description: "Put your logo in the sky. We design and fly custom branded envelopes or banners, turning your message into an airborne spectacle. Rise above your competitors... literally.",
+        description: "Put your brand in the sky while we capture every moment. Custom branded balloons with full media coverage create stories worth sharing.",
         icon: Palette,
         idealFor: "Product Launches, Brand Campaigns, Corporate Events",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_BRANDED_FLIGHTS)
@@ -93,7 +93,7 @@ const serviceTypes = [
     {
         value: "Custom Services",
         label: "Custom Services",
-        description: "Need something off the beaten flight path? From aerial cinematography to fully tailored balloon ops, we bring experience, flexibility, and a knack for making magic from scratch.",
+        description: "From multi-day productions to experimental concepts. We bring the tools, the expertise, and the commitment to document every moment."
         icon: Globe,
         idealFor: "Festivals, Multi-City Tours, Extended Campaigns",
         startingPrice: formatPrice(process.env.NEXT_PUBLIC_PRICE_MULTI_DAY)
@@ -302,10 +302,10 @@ export default function HireUsPage() {
                     {/* Header */}
                     <div className="text-center mb-16">
                         <h1 className="text-5xl md:text-6xl font-gelica font-bold bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent mb-6">
-                            Let&apos;s Create Magic Together
+                            Work With Us
                         </h1>
                         <p className="text-xl text-white/70 mb-12 max-w-3xl mx-auto leading-relaxed">
-                            We don&apos;t just show up with a balloon. We craft experiences that become the stories people tell for years. From sunrise displays that stop traffic to aerial cinematography that captures your brand&apos;s biggest moments, we bring the magic that makes events unforgettable.
+                            We offer two distinct services: cinematic media production and balloon displays. Both come with the same field-tested expertise and commitment to documenting magic. Whether you need aerial storytelling or a spectacle that stops traffic, every event we fly becomes a story.
                         </p>
                         <div className="flex items-center justify-center gap-2 text-sm text-white/60">
                             <Info className="w-4 h-4" />

@@ -189,6 +189,9 @@ export default function FilmsPage() {
                     <p className="text-2xl md:text-3xl text-orange-400 font-medium mb-8">
                         {filmsPillar?.content}
                     </p>
+                    <p className="text-lg text-white/70 max-w-3xl mx-auto">
+                        {filmsPillar?.description}
+                    </p>
                 </div>
             </section>
 
@@ -197,10 +200,10 @@ export default function FilmsPage() {
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Latest from Our Adventures
+                            Living Record of a Disappearing Craft
                         </h2>
                         <p className="text-xl text-white/70 max-w-2xl mx-auto mb-8">
-                            Follow our journey through aerial storytelling and behind-the-scenes moments.
+                            From pre-dawn launches to post-flight breakdowns. We document reality, not manufacture vibes.
                         </p>
                         <a
                             href="https://www.instagram.com/aerostatic.io/"

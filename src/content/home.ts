@@ -1,42 +1,42 @@
 export const homeContent = {
   hero: {
     title: "Adventure is in the air... just look up.",
-    subtitle: "Built by working pilots. Focused on keeping ballooning alive through merch, media, and tools.",
+    subtitle: "A pilot-run production and technology project keeping ballooning alive through field-tested tools and cinematic storytelling.",
     cta: "Get on board"
   },
   
   pillars: [
     {
-      id: "gear",
-      title: "Merch",
-      description: "Wear the mission.",
-      content: "Tested in the field and designed by pilots. Every sale funds the next flight. Grab it, then get out there.",
-      cta: "Shop the drop",
-      href: "/merch"
-    },
-    {
       id: "media",
-      title: "Media", 
-      // description: "Just look up isn't a slogan, it's a plea.",
-      content: "Watch, share, then write your own chapter.",
+      title: "Media & Stories",
+      description: "Documenting reality, not manufacturing vibes.",
+      content: "Short-form videos, long-form episodes, and branded event coverage designed to reignite public imagination about what ballooning can be. Watch, share, then write your own chapter.",
       cta: "Stream the latest episode",
       href: "/media"
     },
     {
       id: "tech",
       title: "Tech & Tools",
-      description: "Learn how to fly.",
-      content: "We build what we need: Aerostatus for ops, Aether for certification. Tools for sky people... request early access.",
+      description: "Built in the field, refined through daily use.",
+      content: "We build what we need: Aerostatus for ops, Aether for certification. Tools for sky people, quietly offered to others walking the same path. Request early access.",
       cta: "Request beta invite",
       href: "/tech"
     },
     {
       id: "events",
-      title: "Events & Displays",
-      description: "Spectacles that stop traffic.",
-      content: "Elevate your event with a sight the whole county can see. We just want to share the view and will work with you to make it happen.",
+      title: "Events",
+      description: "Every event we fly becomes a story.",
+      content: "We don't just show up, we document the magic. Elevate your event with a sight the whole county can see while we capture it for the world.",
       cta: "Book an event",
       href: "/events"
+    },
+    {
+      id: "gear",
+      title: "Support the Mission",
+      description: "You don't need a hat to be part of this.",
+      content: "But it helps fund the next flight. Every piece supports the mission, proof that flight still matters. We'll fly it forward.",
+      cta: "Shop merch",
+      href: "/merch"
     },
    
     // {

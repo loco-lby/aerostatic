@@ -1,16 +1,16 @@
 export const footerContent = {
-  description: "Dedicated aeronauts floating upstream against a disappearing craft.",
+  description: "Operating at the intersection of adventure and infrastructure, capturing the magic of flight while quietly engineering the systems that make it repeatable.",
   
   sections: {
     services: {
       title: "Services",
       links: [
-        { name: "Events & Displays", href: "/events" },
-        { name: "Media", href: "/media" },
-        { name: "Gear & Merch", href: "/merch" },
-        { name: "Tech & Tools", href: "/tech", disabled: true },
-        { name: "Adventure Kits", href: "/kits" },
-        { name: "Partnerships", href: "/collabs" }
+        { name: "Media Production", href: "/media" },
+        { name: "Tech & Tools", href: "/tech" },
+        { name: "Balloon Displays", href: "/events" },
+        { name: "Support the Mission", href: "/merch" },
+        { name: "Work With Us", href: "/work-with-us" },
+        { name: "About", href: "/about" }
       ]
     },
     connect: {

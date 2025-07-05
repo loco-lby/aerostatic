@@ -33,7 +33,7 @@ const serviceTypes = [
     {
         value: "Media Coverage",
         label: "Media Coverage",
-        description: "A balloon floating over your event doesn't just turn heads, it elevates the entire experience. Our team provides crafted content that lives far beyond the moment.",
+        description: "Our core offering: A balloon floating over your event doesn't just turn heads, it elevates the entire experience. Full coverage with cinematic quality that lives far beyond the moment.",
         icon: Camera,
         idealFor: "Brand Campaigns, Event Documentation, Marketing Content"
     },
@@ -228,10 +228,10 @@ export default function EventsPage() {
                         03
                     </Badge>
                     <h1 className="text-6xl md:text-7xl font-gelica font-bold mb-6 leading-tight text-white">
-                        Elevate Your Event
+                        Every Event We Fly Becomes a Story
                     </h1>
                     <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        Static displays that stop traffic. Tethered rides that create memories. Media coverage that lives forever.
+                        We don't just show up, we document the magic. Static displays that stop traffic. Tethered rides that create memories. Content that lives forever.
                     </p>
                     <div className="flex gap-4 justify-center">
                         <Button
@@ -272,10 +272,10 @@ export default function EventsPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Our Services
+                            Media-Powered Balloon Services
                         </h2>
                         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            From static displays to custom balloon flights, we bring the wow factor to your event.
+                            Every service includes professional documentation. We capture the spectacle, craft the narrative, and deliver content that extends your event's impact beyond the moment.
                         </p>
                     </div>
 
@@ -316,10 +316,10 @@ export default function EventsPage() {
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Let&apos;s Plan Your Event
+                            Let&apos;s Create Something Unforgettable
                         </h2>
                         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            Tell us about your vision and we&apos;ll craft a proposal that takes your event to new heights.
+                            Tell us about your vision. We'll bring the balloon, the cameras, and the expertise to turn your event into a story worth sharing.
                         </p>
                     </div>
 

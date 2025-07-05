@@ -53,12 +53,12 @@ export default function TechPage() {
                                 AeroStatus
                             </h1>
                             <p className="text-2xl md:text-3xl text-orange-400 font-medium mb-8">
-                                The future of balloon operations
+                                Built in the field, refined through daily use
                             </p>
                             <p className="text-xl text-white/70 leading-relaxed mb-12">
-                                A comprehensive mobile application for managing hot air balloon operations.
-                                Streamline crew coordination, equipment tracking, and daily flight operations
-                                with real-time communication and safety compliance.
+                                Not another app pitched by consultants. AeroStatus was born from pre-dawn launches,
+                                chase crew chaos, and the real needs of working balloon operations. Every feature
+                                exists because we needed it ourselves.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4">
@@ -88,7 +88,7 @@ export default function TechPage() {
                                         Built for Balloon Crews
                                     </h3>
                                     <p className="text-white/70">
-                                        Designed by pilots, for pilots. Every feature crafted from real operational needs.
+                                        We fly before dawn, build in our off-hours, and test everything in the field.
                                     </p>
                                 </div>
                             </div>
@@ -220,10 +220,10 @@ export default function TechPage() {
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Built with Modern Tech
+                            Engineered for Reality
                         </h2>
                         <p className="text-xl text-white/70 max-w-3xl mx-auto">
-                            Cutting-edge technology stack for performance, reliability, and scalability
+                            Tech stack chosen for field reliability, not conference talks
                         </p>
                     </div>
 
@@ -330,7 +330,7 @@ export default function TechPage() {
                         <p className="text-xl text-white mb-8">
                             You want to fly? You&apos;ll need a license.
                             <br />
-                            <span className="text-orange-400">Aether gets you there—fast.</span>
+                            <span className="text-orange-400">Aether gets you there, fast.</span>
                         </p>
 
                         <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -445,7 +445,7 @@ export default function TechPage() {
 
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 mb-8">
                             <p className="text-xl text-white/80 mb-6 leading-relaxed">
-                                If you like your schedule, your routine, your group chats—
+                                If you like your schedule, your routine, your group chats,
                                 <br />
                                 <span className="text-orange-400">Aether&apos;s not for you.</span>
                             </p>
@@ -565,16 +565,16 @@ export default function TechPage() {
                 <section className="py-20 px-6">
                     <div className="container mx-auto max-w-4xl text-center">
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Ready to Transform Your Operations?
+                            Join the Beta
                         </h2>
                         <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
-                            Join balloon operators who are already testing AeroStatus.
-                            Beta access includes direct input on features and priority support.
+                            Quietly offered to others walking the same path. Help us build the tools
+                            we all wish existed. Your daily frustrations become tomorrow's features.
                         </p>
 
                         <div className="mt-12 p-6 bg-white/5 border border-white/10 rounded-2xl">
                             <p className="text-white/60 text-sm">
-                                Built by balloon enthusiasts for the community.
+                                This isn't about disrupting an industry. It's about preserving a craft.
                                 <br />
                                 Questions? Email us at <span className="text-orange-400">info@aerostatus.io</span>
                             </p>

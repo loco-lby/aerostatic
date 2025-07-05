@@ -38,7 +38,7 @@ export default function MerchPage() {
         id: 'napa-valley-exclusive',
         name: 'Napa Valley – Exclusive',
         price: 30,
-        description: 'A stitched window into the valley that started it all. This hat features embroidered hot air balloons floating over Napa\'s rolling vineyards. It\'s a tribute to our roots, where we first worked as crew chiefs and built this life in the sky.\n\nThe back carries the Aerostatic logo, a stamp of adventure for anyone bold enough to wear it.\n\nThis is our first drop, designed to fund this life support system for young pilots. Every purchase helps keep the journey airborne.',
+        description: 'A stitched window into the valley that started it all. This hat features embroidered hot air balloons floating over Napa\'s rolling vineyards, a tribute to where we first worked as crew chiefs and built this life in the sky.\n\nThis isn\'t about manufacturing a vibe. It\'s about funding the tools, media, and infrastructure that keep ballooning alive. Every purchase directly supports our mission: preserving and evolving a disappearing craft through field-tested technology and cinematic storytelling.\n\nMerch exists, but not as a core offering. It\'s there if you want it, to support the mission and signal alignment. What matters most is keeping the craft alive.',
         images: [
             '/images/placeholder.webp', // Will be replaced with actual product images
             '/images/placeholder.webp',
@@ -255,13 +255,13 @@ export default function MerchPage() {
                 {/* Hero Content */}
                 <div className="relative z-20 text-center max-w-4xl mx-auto px-6">
                     <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6 text-sm">
-                        First Drop
+                        Support the Mission
                     </Badge>
                     <h1 className="text-6xl md:text-7xl font-gelica font-bold mb-6 leading-tight">
-                        {currentProduct.name}
+                        You Don't Need a Hat to Be Part of This
                     </h1>
                     <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        Tested in the field and designed by pilots. Every sale funds the next flight. Grab it, then get out there.
+                        But it helps fund the next flight. Every piece supports the mission, proof that flight still matters. We'll fly it forward.
                     </p>
 
                     <div className="flex gap-4 justify-center">
@@ -288,7 +288,7 @@ export default function MerchPage() {
                                 }
                             }}
                         >
-                            Learn Our Story
+                            Why We Build
                         </Button>
                     </div>
                 </div>
@@ -448,23 +448,23 @@ export default function MerchPage() {
                         <div className="space-y-8">
                             <div>
                                 <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6">
-                                    Our Story
+                                    Why We Build
                                 </Badge>
                                 <h2 className="text-5xl md:text-6xl font-gelica font-bold mb-8 leading-tight text-white">
-                                    Where It All Began
+                                    This Isn't About the Hat
                                 </h2>
                             </div>
 
                             <div className="space-y-6 text-lg text-white/80 leading-relaxed">
                                 <p>
-                                    This hat won&apos;t fly itself, but it&apos;ll help us get there.
+                                    It's about keeping a disappearing craft alive through field-tested tools and cinematic storytelling.
                                 </p>
                                 <p>
-                                    The Napa Valley operation is ballooning&apos;s version of a grand cru. Precision, tradition, and daily risk all before 6am. It&apos;s where we learned the ropes, earned our checkers, and started building this from the ground up.
+                                    We fly before dawn, build in our off-hours, and fund it all ourselves. Our media arm produces content that reignites public imagination. Our tech tools, Aerostatus and Aether, are built in the field and quietly offered to others walking the same path.
                                 </p>
 
                                 <p className="text-orange-400 font-semibold">
-                                    Every purchase helps fund the next generation of pilots.
+                                    Every purchase directly funds this mission. You're not buying merch, you're investing in the future of flight.
                                 </p>
                             </div>
                         </div>
