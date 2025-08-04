@@ -4,11 +4,14 @@ export const navigationContent = {
     { name: "Tech", href: "/tech" },
     { name: "Events", href: "/events" },
     { name: "About", href: "/about" },
-    { name: "Merch", href: "/merch" },
     
     // { name: "Collabs", href: "/collabs" },
   ],
-  cta: "Work With Us"
+  cta: "Work With Us",
+  secondaryCta: {
+    text: "Access Your Photos",
+    href: "/tools/aeromedia"
+  }
 };
 
 export type NavigationContent = typeof navigationContent; 

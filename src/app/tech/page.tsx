@@ -23,21 +23,30 @@ import {
     Settings,
     Bell,
     Database,
-    Wind,
-    Navigation,
-    Target,
-    Map,
-    Compass,
-    Plane
+    Lock,
+    Camera,
+    Upload,
+    Share2
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useContent } from "@/hooks/useContent";
 import { useState } from "react";
+import { CustomSolutionsContent } from "./CustomSolutionsContent";
 
 export default function TechPage() {
     const content = useContent();
     const techPillar = content.home.pillars.find(p => p.id === 'tech');
     const [activeTab, setActiveTab] = useState('aerostatus');
+    
+    // Handle AeroMedia redirect
+    const handleTabChange = (tab: string) => {
+        if (tab === 'aeromedia') {
+            window.location.href = '/tools/aeromedia';
+        } else {
+            setActiveTab(tab);
+        }
+    };
 
     const AeroStatusContent = () => (
         <>
@@ -297,227 +306,353 @@ export default function TechPage() {
         </>
     );
 
-    const AetherContent = () => (
+    const AeroMediaContentOld = () => (
         <>
             {/* Hero Section */}
             <section className="pt-32 pb-20 px-6">
-                <div className="container mx-auto max-w-4xl text-center">
-                    <div className="mb-8">
-                        <span className="text-6xl text-orange-400 font-mono">✦</span>
-                    </div>
-                    <h1 className="text-6xl md:text-8xl font-gelica font-bold text-white mb-8 tracking-tight">
-                        AETHER
-                    </h1>
-                    <p className="text-2xl md:text-3xl text-white mb-4 font-medium">
-                        Learn to Fly. Navigate Everything.
-                    </p>
-                    <p className="text-xl text-orange-400 mb-16 font-mono">
-                        Not a course. Not a map. A way out.
-                    </p>
-                </div>
-            </section>
-
-            {/* Start with Basics */}
-            <section className="py-16 px-6">
-                <div className="container mx-auto max-w-4xl">
-                    <div className="border-l-4 border-orange-400 pl-8 mb-16">
-                        <div className="flex items-center mb-6">
-                            <span className="text-2xl text-orange-400 font-mono mr-4">✦</span>
-                            <h2 className="text-3xl md:text-4xl font-gelica font-bold text-white">
-                                START WITH THE BASICS
-                            </h2>
-                        </div>
-                        <p className="text-xl text-white mb-8">
-                            You want to fly? You&apos;ll need a license.
-                            <br />
-                            <span className="text-orange-400">Aether gets you there, fast.</span>
-                        </p>
-
-                        <div className="grid md:grid-cols-2 gap-8 mb-12">
-                            <div className="space-y-6">
-                                <div className="flex items-start space-x-4">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-3"></div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white mb-2">FAA prep that doesn&apos;t feel like punishment</h3>
-                                    </div>
-                                </div>
-                                <div className="flex items-start space-x-4">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-3"></div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white mb-2">Actual test questions</h3>
-                                    </div>
-                                </div>
-                                <div className="flex items-start space-x-4">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-3"></div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white mb-2">AI coaching that talks like a real human</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                                <Plane className="w-12 h-12 text-orange-400 mb-4" />
-                                <p className="text-white/80 mb-4">
-                                    Study in your truck. Or the field. Or nowhere at all.
-                                </p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-2xl font-bold text-orange-400">$9.99/month</span>
-                                    <span className="text-sm text-white/60">Cancel anytime</span>
-                                </div>
-                                <p className="text-xs text-white/50 mt-2">
-                                    Cancel the second you pass. Or don&apos;t. Up to you.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Toolkit Section */}
-            <section className="py-16 px-6 bg-white/[0.02]">
-                <div className="container mx-auto max-w-4xl">
-                    <div className="border-l-4 border-orange-400 pl-8">
-                        <div className="flex items-center mb-6">
-                            <span className="text-2xl text-orange-400 font-mono mr-4">✦</span>
-                            <h2 className="text-3xl md:text-4xl font-gelica font-bold text-white">
-                                THEN UNLOCK THE TOOLKIT
-                            </h2>
-                        </div>
-                        <p className="text-xl text-white mb-12">
-                            Once you pass, Aether opens up.
-                        </p>
-
-                        <div className="grid md:grid-cols-2 gap-8 mb-12">
-                            <div>
-                                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                                    <Map className="w-12 h-12 text-orange-400 mb-4" />
-                                    <h3 className="text-xl font-bold text-white mb-2">A world map built for flight</h3>
-                                    <p className="text-white/70">Complete global coverage optimized for aerial navigation</p>
-                                </div>
-
-                                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                                    <Wind className="w-12 h-12 text-orange-400 mb-4" />
-                                    <h3 className="text-xl font-bold text-white mb-2">Offline overlays</h3>
-                                    <p className="text-white/70">Wind, terrain, airspace, public land</p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-6">
-                                <div className="flex items-start space-x-4">
-                                    <Target className="w-6 h-6 text-orange-400 mt-1 flex-shrink-0" />
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white">Drop markers. Draw lines. Plan exits.</h3>
-                                    </div>
-                                </div>
-                                <div className="flex items-start space-x-4">
-                                    <Users className="w-6 h-6 text-orange-400 mt-1 flex-shrink-0" />
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white">Coordinate with chase. Replay your flights.</h3>
-                                    </div>
-                                </div>
-                                <div className="flex items-start space-x-4">
-                                    <Compass className="w-6 h-6 text-orange-400 mt-1 flex-shrink-0" />
-                                    <div>
-                                        <h3 className="text-lg font-bold text-white">Explore overlay packs</h3>
-                                        <p className="text-white/60">Made by pilots who don&apos;t post about it</p>
-                                    </div>
-                                </div>
-
-                                <div className="bg-orange-400/10 border border-orange-400/30 rounded-xl p-4 mt-8">
-                                    <p className="text-white font-bold mb-2">One-time fee. Lifetime access.</p>
-                                    <p className="text-white/80 text-sm">No bloat. No tutorials. Just tools.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Not for Everyone */}
-            <section className="py-16 px-6">
-                <div className="container mx-auto max-w-4xl">
-                    <div className="border-l-4 border-orange-400 pl-8">
-                        <div className="flex items-center mb-6">
-                            <span className="text-2xl text-orange-400 font-mono mr-4">✦</span>
-                            <h2 className="text-3xl md:text-4xl font-gelica font-bold text-white">
-                                THIS WASN&apos;T BUILT FOR EVERYONE
-                            </h2>
-                        </div>
-
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 mb-8">
-                            <p className="text-xl text-white/80 mb-6 leading-relaxed">
-                                If you like your schedule, your routine, your group chats,
-                                <br />
-                                <span className="text-orange-400">Aether&apos;s not for you.</span>
+                <div className="container mx-auto max-w-6xl">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
+                                Media Delivery Platform
+                            </Badge>
+                            <h1 className="text-5xl md:text-7xl font-gelica font-bold text-white mb-6">
+                                AeroMedia
+                            </h1>
+                            <p className="text-2xl md:text-3xl text-orange-400 font-medium mb-8">
+                                Memories delivered with care
+                            </p>
+                            <p className="text-xl text-white/70 leading-relaxed mb-12">
+                                A seamless media delivery platform for balloon ride photos and videos. 
+                                Passengers access their flight memories with a simple 6-digit code - 
+                                no apps, no accounts, just beautiful memories.
                             </p>
 
-                            <div className="space-y-4">
-                                <p className="text-lg text-white">
-                                    This is for people who check the wind before the news.
-                                </p>
-                                <p className="text-lg text-white">
-                                    For those who&apos;ve already looked up and wondered, <span className="text-orange-400">&quot;What if I could?&quot;</span>
-                                </p>
-                                <p className="text-2xl font-bold text-orange-400 mt-8">
-                                    You can.
-                                </p>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <Link href="/tools/aeromedia">
+                                    <Button
+                                        size="lg"
+                                        className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+                                    >
+                                        Try Demo
+                                        <ArrowRight className="ml-2 h-5 w-5" />
+                                    </Button>
+                                </Link>
+                                <Link href="/tools/aeromedia/admin">
+                                    <Button
+                                        size="lg"
+                                        variant="outline"
+                                        className="border-white/20 text-white hover:bg-white/10 px-8 py-4"
+                                    >
+                                        <Lock className="mr-2 h-5 w-5" />
+                                        Admin Portal
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="relative">
+                            <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-3xl p-8 backdrop-blur-sm border border-white/10">
+                                <Camera className="w-24 h-24 text-orange-400 mx-auto mb-6" />
+                                <div className="text-center">
+                                    <h3 className="text-2xl font-gelica font-bold text-white mb-4">
+                                        Simple. Secure. Beautiful.
+                                    </h3>
+                                    <p className="text-white/70">
+                                        Professional media delivery that matches the magic of your flights.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Early Access */}
-            <section className="py-16 px-6 bg-white/[0.02]">
-                <div className="container mx-auto max-w-4xl text-center">
-                    <div className="flex items-center justify-center mb-6">
-                        <span className="text-2xl text-orange-400 font-mono mr-4">⬇️</span>
-                        <h2 className="text-3xl md:text-4xl font-gelica font-bold text-white">
-                            EARLY ACCESS IS NEAR
+            {/* Key Features Grid */}
+            <section className="py-20 px-6 bg-white/[0.02]">
+                <div className="container mx-auto max-w-6xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
+                            Key Features
                         </h2>
+                        <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                            Everything you need to deliver flight memories professionally
+                        </p>
                     </div>
 
-                    <p className="text-xl text-white mb-12">
-                        Drop your email. We&apos;ll let you know when to suit up.
-                    </p>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 group hover:bg-white/10 transition-all duration-300">
+                            <Upload className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Easy Upload</h3>
+                            <p className="text-white/70 mb-4">
+                                Drag and drop interface for bulk media uploads. Automatic categorization and thumbnail generation.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Bulk Upload
+                                </Badge>
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Auto-Optimize
+                                </Badge>
+                            </div>
+                        </div>
 
-                    <div className="max-w-md mx-auto mb-8">
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <input
-                                type="email"
-                                placeholder="your@email.com"
-                                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-orange-400 transition-colors"
-                            />
-                            <Button
-                                size="lg"
-                                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
-                            >
-                                Get Notified →
-                            </Button>
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 group hover:bg-white/10 transition-all duration-300">
+                            <Lock className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Secure Access</h3>
+                            <p className="text-white/70 mb-4">
+                                6-digit access codes with automatic expiration. No accounts needed for passengers.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    30-Day Access
+                                </Badge>
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    No Sign-up
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 group hover:bg-white/10 transition-all duration-300">
+                            <Camera className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Smart Gallery</h3>
+                            <p className="text-white/70 mb-4">
+                                Beautiful responsive galleries with categorized views. Photos, videos, and drone footage organized.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Categories
+                                </Badge>
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Lightbox
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 group hover:bg-white/10 transition-all duration-300">
+                            <Download className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Easy Downloads</h3>
+                            <p className="text-white/70 mb-4">
+                                Individual downloads or bulk ZIP packages. High-resolution originals preserved.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Bulk Download
+                                </Badge>
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Full Quality
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 group hover:bg-white/10 transition-all duration-300">
+                            <Share2 className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Easy Sharing</h3>
+                            <p className="text-white/70 mb-4">
+                                Share galleries with a simple link. Perfect for social media or email.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Link Sharing
+                                </Badge>
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Social Ready
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 group hover:bg-white/10 transition-all duration-300">
+                            <Database className="w-12 h-12 text-orange-400 mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Analytics</h3>
+                            <p className="text-white/70 mb-4">
+                                Track views, downloads, and engagement. Know which memories matter most.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Download Stats
+                                </Badge>
+                                <Badge variant="outline" className="text-orange-400/70 border-orange-400/30 text-xs">
+                                    Insights
+                                </Badge>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* How It Works */}
+            <section className="py-20 px-6">
+                <div className="container mx-auto max-w-6xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
+                            How It Works
+                        </h2>
+                        <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                            From flight to memories in three simple steps
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        <div className="text-center">
+                            <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                                <span className="text-3xl font-bold text-orange-400">1</span>
+                            </div>
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Upload Media</h3>
+                            <p className="text-white/70">
+                                After the flight, upload photos and videos to create a media package with passenger details.
+                            </p>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                                <span className="text-3xl font-bold text-orange-400">2</span>
+                            </div>
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Share Code</h3>
+                            <p className="text-white/70">
+                                Send passengers their unique 6-digit access code via email or text message.
+                            </p>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                                <span className="text-3xl font-bold text-orange-400">3</span>
+                            </div>
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Enjoy Memories</h3>
+                            <p className="text-white/70">
+                                Passengers access their gallery instantly, download photos, and share with friends.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Technical Stack */}
+            <section className="py-20 px-6 bg-white/[0.02]">
+                <div className="container mx-auto max-w-6xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
+                            Built for Scale
+                        </h2>
+                        <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                            Modern tech stack designed for reliability and performance
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                        <div className="text-center">
+                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
+                                <Zap className="w-12 h-12 text-orange-400 mx-auto" />
+                            </div>
+                            <h3 className="text-xl font-gelica font-bold text-white mb-2">Next.js 15</h3>
+                            <p className="text-white/60 text-sm">React 19 with App Router</p>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
+                                <Database className="w-12 h-12 text-orange-400 mx-auto" />
+                            </div>
+                            <h3 className="text-xl font-gelica font-bold text-white mb-2">Supabase</h3>
+                            <p className="text-white/60 text-sm">PostgreSQL & Storage</p>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
+                                <Shield className="w-12 h-12 text-orange-400 mx-auto" />
+                            </div>
+                            <h3 className="text-xl font-gelica font-bold text-white mb-2">Row Level Security</h3>
+                            <p className="text-white/60 text-sm">Secure by design</p>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
+                                <Cloud className="w-12 h-12 text-orange-400 mx-auto" />
+                            </div>
+                            <h3 className="text-xl font-gelica font-bold text-white mb-2">Edge Functions</h3>
+                            <p className="text-white/60 text-sm">Global CDN delivery</p>
                         </div>
                     </div>
 
-                    <p className="text-sm text-white/60">
-                        No spam. Just a single ping when it&apos;s time.
-                    </p>
-
-                    <div className="mt-16 py-8 border-t border-white/10">
-                        <div className="font-mono text-white/40 text-lg mb-4">
-                            ▒▒▒
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                        <h3 className="text-2xl font-gelica font-bold text-white mb-6 text-center">
+                            Key Technologies
+                        </h3>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-white/80">TypeScript</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-white/80">Tailwind CSS</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-white/80">Framer Motion</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-white/80">React Hook Form</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-white/80">Zod Validation</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-white/80">shadcn/ui</span>
+                            </div>
                         </div>
-                        <p className="text-white font-gelica font-bold mb-2">
-                            AETHER by AEROSTATIC
+                    </div>
+                </div>
+            </section>
+
+            {/* Perfect For */}
+            <section className="py-20 px-6">
+                <div className="container mx-auto max-w-6xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
+                            Perfect For
+                        </h2>
+                        <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                            Any balloon operation that values passenger experience
                         </p>
-                        <p className="text-white/80 mb-4">
-                            We don&apos;t teach dreams. We teach flight.
-                        </p>
-                        <div className="flex justify-center gap-6">
-                            <Link href="/" className="text-orange-400 hover:text-orange-300 transition-colors">
-                                aerostatic.io
-                            </Link>
-                            <span className="text-white/30">|</span>
-                            <Link href="#" className="text-orange-400 hover:text-orange-300 transition-colors">
-                                @aerostatic_
-                            </Link>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Tour Operators</h3>
+                            <ul className="space-y-3">
+                                <li className="flex items-start">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                    <span className="text-white/80">Deliver memories that match your premium experience</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                    <span className="text-white/80">Reduce support requests with simple access codes</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                    <span className="text-white/80">Track engagement and improve offerings</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                            <h3 className="text-2xl font-gelica font-bold text-white mb-4">Event Flights</h3>
+                            <ul className="space-y-3">
+                                <li className="flex items-start">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                    <span className="text-white/80">Perfect for festivals and special events</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                    <span className="text-white/80">Handle multiple flights with ease</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                                    <span className="text-white/80">Professional presentation for sponsors</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -535,7 +670,7 @@ export default function TechPage() {
                     <div className="flex justify-center mb-8">
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-2 flex">
                             <button
-                                onClick={() => setActiveTab('aerostatus')}
+                                onClick={() => handleTabChange('aerostatus')}
                                 className={`px-8 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === 'aerostatus'
                                     ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg'
                                     : 'text-white/70 hover:text-white hover:bg-white/10'
@@ -544,13 +679,19 @@ export default function TechPage() {
                                 AeroStatus
                             </button>
                             <button
-                                onClick={() => setActiveTab('aether')}
-                                className={`px-8 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === 'aether'
+                                onClick={() => handleTabChange('aeromedia')}
+                                className={`px-8 py-3 rounded-xl font-medium transition-all duration-300 text-white/70 hover:text-white hover:bg-white/10`}
+                            >
+                                AeroMedia
+                            </button>
+                            <button
+                                onClick={() => handleTabChange('custom')}
+                                className={`px-8 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === 'custom'
                                     ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg'
                                     : 'text-white/70 hover:text-white hover:bg-white/10'
                                     }`}
                             >
-                                Aether
+                                Custom Solutions
                             </button>
                         </div>
                     </div>
@@ -558,7 +699,7 @@ export default function TechPage() {
             </section>
 
             {/* Content */}
-            {activeTab === 'aerostatus' ? <AeroStatusContent /> : <AetherContent />}
+            {activeTab === 'aerostatus' ? <AeroStatusContent /> : <CustomSolutionsContent />}
 
             {/* Beta Access CTA - Only for AeroStatus */}
             {activeTab === 'aerostatus' && (
@@ -582,6 +723,7 @@ export default function TechPage() {
                     </div>
                 </section>
             )}
+
 
             <Footer />
         </div>

@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Camera, Users, Shield, Award, MapPin, Calendar, Star } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase/client";
-import { toast } from "sonner";
 
 export default function AboutPage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
@@ -92,43 +90,7 @@ export default function AboutPage() {
     };
   }, [isMounted]);
 
-  const [email, setEmail] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleNewsletterSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email) return
-
-    setIsSubmitting(true)
-
-    try {
-      const supabase = createClient()
-
-      const { error } = await supabase
-        .from('newsletter_signups')
-        .insert({
-          email: email,
-          source: 'about_page'
-        })
-
-      if (error) {
-        if (error.code === '23505') {
-          toast.success("You&apos;re already on our list!")
-        } else {
-          console.error("Error signing up for newsletter:", error)
-          toast.error("Failed to sign up. Please try again.")
-        }
-      } else {
-        toast.success("Thanks for signing up!")
-        setEmail("")
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      toast.error("An unexpected error occurred. Please try again.")
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
   // Helper function to get animation classes with hydration safety
   const getAnimationClass = (sectionId: string, baseClass: string = '') => {
@@ -416,7 +378,7 @@ export default function AboutPage() {
               className="text-lg px-10 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 cinematic-glow font-semibold hover-lift"
               asChild
             >
-              <Link href="/hire-us">
+              <Link href="/work-with-us">
                 Start Your Project
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
@@ -431,27 +393,6 @@ export default function AboutPage() {
             </Button>
           </div>
 
-          <div className="max-w-md mx-auto">
-            <p className="text-white/70 mb-4 font-medium">Stay updated on our latest flights</p>
-            <form onSubmit={handleNewsletterSignup} className="flex gap-3">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="flex-1 px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder:text-white/50 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
-                required
-              />
-              <Button
-                type="submit"
-                size="default"
-                disabled={isSubmitting}
-                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-6 cinematic-glow"
-              >
-                {isSubmitting ? "..." : "Join"}
-              </Button>
-            </form>
-          </div>
         </div>
       </section>
 

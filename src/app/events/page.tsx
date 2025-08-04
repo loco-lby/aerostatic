@@ -13,52 +13,139 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
-import { MapPin, Mail, Phone, Calendar, Users, DollarSign, Clock, CheckCircle, ArrowRight, Palette, Wind, Camera, Award, Globe } from 'lucide-react';
+import { motion } from 'framer-motion';
+import {
+    MapPin,
+    Calendar,
+    Users,
+    ArrowRight,
+    Palette,
+    Wind,
+    Camera,
+    Award,
+    Globe,
+    Play,
+    Image as ImageIcon,
+    Clock,
+    Star,
+    ChevronRight
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+// Past Events Data
+const pastEvents = [
+    {
+        id: 1,
+        title: "Cathedral City Balloon Festival",
+        date: "November 2020-2024",
+        location: "Cathedral City, CA",
+        type: "Media Coverage & Ride Activations",
+        description: "Annual festival coverage with spectacular sunrise flights over the desert",
+        images: ["/videos/your_event.mp4"],
+        testimonial: "Five years of incredible aerial coverage and passenger experiences.",
+        highlights: ["5 consecutive years", "2nd place 2023", "3rd place 2024"]
+    },
+    {
+        id: 2,
+        title: "Singha International Festival",
+        date: "February 2020-2024",
+        location: "Chiang Rai, Thailand",
+        type: "International Media Production",
+        description: "Documenting one of Asia's premier balloon festivals with cinematic storytelling",
+        images: ["/videos/thailand.mp4"],
+        stats: { flights: 60, countries: 15, mediaReach: "5M+" },
+        testimonial: "Their ability to capture the scale and beauty of our international event is unmatched.",
+        client: "Singha Festival Committee"
+    },
+    {
+        id: 3,
+        title: "Balloons Over Bend",
+        date: "July 2023-2024",
+        location: "Bend, OR",
+        type: "Static Display & Media Coverage",
+        description: "Showcasing Oregon's natural beauty from above with our signature checkered balloon",
+        images: ["/videos/hero1.mp4"],
+        highlights: ["Cascade Mountains backdrop", "Dawn patrol flights", "Community engagement"]
+    }
+];
+
+// Future Events Data
+const futureEvents = [
+    {
+        id: 1,
+        title: "Burning Man",
+        date: "August 25 - September 2, 2025",
+        location: "Black Rock City, NV",
+        type: "Art Installation & Coverage",
+        status: "planning",
+        description: "Experimental balloon art installation and desert documentation"
+    },
+    {
+        id: 2,
+        title: "Albuquerque International Balloon Fiesta",
+        date: "October 4-12, 2025",
+        location: "Albuquerque, NM",
+        type: "Media Production & Flights",
+        status: "confirmed",
+        description: "Capturing the world's largest balloon festival from the inside"
+    },
+    {
+        id: 3,
+        title: "Your Event",
+        date: "Dates Flexible",
+        location: "Anywhere",
+        type: "Custom Services",
+        status: "available",
+        description: "Let's create something unforgettable together",
+        isCustom: true
+    }
+];
 
 const serviceTypes = [
     {
         value: "Static Displays",
         label: "Static Displays",
-        description: "Our checkered 'billboard in the sky' balloon draws attention wherever it stands. Perfect for festivals, races, and outdoor events looking for something iconic.",
+        description: "Our checkered 'billboard in the sky' balloon draws attention wherever it stands.",
         icon: Palette,
         idealFor: "Festivals, Brand Activations, Outdoor Events"
     },
     {
         value: "Ride Activations",
         label: "Ride Activations",
-        description: "Tethered balloon rides that leave your guests with a core memory. Safe, controlled ascents with breathtaking views and photo opportunities.",
+        description: "Tethered balloon rides that leave your guests with a core memory.",
         icon: Wind,
         idealFor: "Private Events, VIP Experiences, Corporate Retreats"
     },
     {
         value: "Media Coverage",
         label: "Media Coverage",
-        description: "Our core offering: A balloon floating over your event doesn't just turn heads, it elevates the entire experience. Full coverage with cinematic quality that lives far beyond the moment.",
+        description: "Cinematic aerial coverage that elevates your entire event.",
         icon: Camera,
         idealFor: "Brand Campaigns, Event Documentation, Marketing Content"
     },
     {
         value: "Content Creators",
         label: "Content Creators",
-        description: "Need content that stands above the noise? We collaborate with creators to deliver cinematic aerials, unforgettable backdrops, and moments that ignite engagement.",
+        description: "Collaborate with creators for unforgettable aerial content.",
         icon: Award,
         idealFor: "Influencers, Social Media, Personal Branding"
     },
     {
         value: "Branded Balloon Flights",
         label: "Branded Balloon Flights",
-        description: "Put your logo in the sky. We design and fly custom branded envelopes or banners, turning your message into an airborne spectacle. Rise above your competitors... literally.",
+        description: "Put your logo in the sky with custom branded envelopes.",
         icon: Palette,
         idealFor: "Product Launches, Brand Campaigns, Corporate Events"
     },
     {
         value: "Custom Services",
         label: "Custom Services",
-        description: "Need something off the beaten flight path? From aerial cinematography to fully tailored balloon ops, we bring experience, flexibility, and a knack for making magic from scratch.",
+        description: "Tailored balloon operations for unique requirements.",
         icon: Globe,
         idealFor: "Festivals, Multi-City Tours, Extended Campaigns"
     }
-]
+];
 
 export default function EventsPage() {
     const [formData, setFormData] = useState({
@@ -77,68 +164,30 @@ export default function EventsPage() {
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
-    const [isMounted, setIsMounted] = useState(false);
+    const [selectedPastEvent, setSelectedPastEvent] = useState<number | null>(null);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    interface FutureEvent {
+        id: number;
+        title: string;
+        date: string;
+        location: string;
+        type: string;
+        status: string;
+        description: string;
+        isCustom?: boolean;
+    }
 
-    useEffect(() => {
-        if (!isMounted) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(prev => ({
-                            ...prev,
-                            [entry.target.id]: true
-                        }));
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '50px' }
-        );
-
-        const sections = document.querySelectorAll('[data-animate]');
-        sections.forEach((section) => {
-            observer.observe(section);
-        });
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [isMounted]);
-
-    const getAnimationClass = (sectionId: string, baseClass: string = '') => {
-        const baseClasses = `${baseClass} transition-all duration-1000`;
-
-        if (!isMounted) {
-            return `${baseClasses} opacity-100`;
-        }
-
-        const isIntersected = isVisible[sectionId];
-        if (isIntersected === undefined) {
-            return `${baseClasses} opacity-100 translate-y-0`;
-        }
-
-        return `${baseClasses} ${isIntersected ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`;
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleInputChange = (field: string, value: string) => {
+    const handleServiceToggle = (service: string) => {
         setFormData(prev => ({
             ...prev,
-            [field]: value
-        }));
-    };
-
-    const handleServiceToggle = (service: string, checked: boolean) => {
-        setFormData(prev => ({
-            ...prev,
-            services: checked
-                ? [...prev.services, service]
-                : prev.services.filter(s => s !== service)
+            services: prev.services.includes(service)
+                ? prev.services.filter(s => s !== service)
+                : [...prev.services, service]
         }));
     };
 
@@ -148,50 +197,37 @@ export default function EventsPage() {
 
         try {
             const supabase = createClient();
-
             const { error } = await supabase
-                .from('event_inquiries')
-                .insert({
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    company: formData.company,
-                    event_type: formData.eventType,
-                    event_date: formData.eventDate,
-                    location: formData.location,
-                    attendees: formData.attendees,
-                    services: formData.services,
-                    description: formData.description,
-                    timeline: formData.timeline,
-                    additional_requests: formData.additionalRequests,
-                    status: 'new'
-                });
+                .from('hire_requests')
+                .insert([{
+                    ...formData,
+                    services: formData.services.join(', '),
+                    source: 'events_page',
+                    status: 'pending'
+                }]);
 
-            if (error) {
-                console.error('Error submitting inquiry:', error);
-                toast.error('Failed to submit inquiry. Please try again.');
-            } else {
-                toast.success('Inquiry submitted successfully! We\'ll be in touch within 24 hours.');
+            if (error) throw error;
 
-                // Reset form
-                setFormData({
-                    name: '',
-                    email: '',
-                    phone: '',
-                    company: '',
-                    eventType: '',
-                    eventDate: '',
-                    location: '',
-                    attendees: '',
-                    services: [],
-                    description: '',
-                    timeline: '',
-                    additionalRequests: ''
-                });
-            }
+            toast.success('Request submitted! We\'ll be in touch within 24 hours.');
+
+            // Reset form
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                company: '',
+                eventType: '',
+                eventDate: '',
+                location: '',
+                attendees: '',
+                services: [],
+                description: '',
+                timeline: '',
+                additionalRequests: ''
+            });
         } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to submit inquiry. Please try again.');
+            console.error('Error submitting form:', error);
+            toast.error('Something went wrong. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -202,326 +238,489 @@ export default function EventsPage() {
             <Header />
 
             {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                {/* Video Background */}
-                <div className="absolute inset-0 z-0">
-                    {isMounted && (
-                        <video
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="w-full h-full object-cover"
-                            style={{ filter: 'brightness(0.4) contrast(1.2)' }}
-                        >
-                            <source src="/videos/hero2.mp4" type="video/mp4" />
-                        </video>
-                    )}
+            <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-600/10" />
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="container mx-auto max-w-7xl relative z-10"
+                >
+                    <div className="text-center mb-16">
+                        <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
+                            Balloon Event Services
+                        </Badge>
+                        <h1 className="text-5xl md:text-7xl font-gelica font-bold text-white mb-6">
+                            Elevate Your Event
+                        </h1>
+                        <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto">
+                            From intimate gatherings to massive festivals, we bring the magic of flight
+                            to create unforgettable experiences and capture perspectives others can&apos;t.
+                        </p>
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* Past Events Section */}
+            <section className="py-20 px-6 bg-white/[0.02]">
+                <div className="container mx-auto max-w-7xl">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="mb-16"
+                    >
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6 text-center">
+                            Our Track Record
+                        </h2>
+                        <p className="text-xl text-white/70 text-center max-w-3xl mx-auto">
+                            We&apos;ve had the privilege of elevating some of the world&apos;s most iconic events
+                        </p>
+                    </motion.div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {pastEvents.map((event, index) => (
+                            <motion.div
+                                key={event.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                viewport={{ once: true }}
+                            >
+                                <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer group h-full"
+                                    onClick={() => setSelectedPastEvent(event.id)}
+                                >
+                                    <div className="aspect-video relative overflow-hidden">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
+                                        {event.images?.[0]?.endsWith('.mp4') ? (
+                                            <video
+                                                src={event.images[0]}
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                autoPlay
+                                                muted
+                                                loop
+                                                playsInline
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={event.images?.[0] || "/images/events/placeholder.jpg"}
+                                                alt={event.title}
+                                                fill
+                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        )}
+                                        <div className="absolute top-4 right-4 z-20">
+                                            <div className="bg-black/50 backdrop-blur-sm rounded-full p-2">
+                                                <Play className="w-4 h-4 text-white" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <CardContent className="p-6">
+                                        <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-3 text-xs">
+                                            {event.type}
+                                        </Badge>
+                                        <h3 className="text-2xl font-gelica font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
+                                            {event.title}
+                                        </h3>
+                                        <div className="flex items-center gap-4 text-sm text-white/60 mb-4">
+                                            <span className="flex items-center gap-1">
+                                                <Calendar className="w-4 h-4" />
+                                                {event.date}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <MapPin className="w-4 h-4" />
+                                                {event.location}
+                                            </span>
+                                        </div>
+                                        <p className="text-white/70 mb-4">
+                                            {event.description}
+                                        </p>
+
+                                        {event.highlights && (
+                                            <div className="space-y-1">
+                                                {event.highlights.map((highlight, i) => (
+                                                    <div key={i} className="flex items-center gap-2 text-sm text-white/60">
+                                                        <Star className="w-3 h-3 text-orange-400" />
+                                                        {highlight}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {event.testimonial && (
+                                            <blockquote className="border-l-2 border-orange-400 pl-4 mt-4 italic text-white/60">
+                                                &quot;{event.testimonial}&quot;
+                                                {event.client && <cite className="block text-sm mt-2 not-italic">- {event.client}</cite>}
+                                            </blockquote>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
+            </section>
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-10"></div>
+            {/* Future Events Section */}
+            <section className="py-20 px-6">
+                <div className="container mx-auto max-w-7xl">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="mb-16"
+                    >
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6 text-center">
+                            Upcoming Adventures
+                        </h2>
+                        <p className="text-xl text-white/70 text-center max-w-3xl mx-auto">
+                            Join us at these upcoming events or book us for your own
+                        </p>
+                    </motion.div>
 
-                {/* Hero Content */}
-                <div className="relative z-20 text-center max-w-4xl mx-auto px-6">
-                    <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6">
-                        03
-                    </Badge>
-                    <h1 className="text-6xl md:text-7xl font-gelica font-bold mb-6 leading-tight text-white">
-                        Every Event We Fly Becomes a Story
-                    </h1>
-                    <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        We don&apos;t just show up, we document the magic. Static displays that stop traffic. Tethered rides that create memories. Content that lives forever.
-                    </p>
-                    <div className="flex gap-4 justify-center">
+                    <div className="space-y-4 max-w-4xl mx-auto mb-16">
+                        {futureEvents.map((event, index) => (
+                            <motion.div
+                                key={event.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                viewport={{ once: true }}
+                            >
+                                <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
+                                    <CardContent className="p-6">
+                                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <h3 className="text-xl font-gelica font-bold text-white">
+                                                        {event.title}
+                                                    </h3>
+                                                    <Badge
+                                                        variant={event.status === 'confirmed' ? 'default' : 'outline'}
+                                                        className={event.status === 'confirmed'
+                                                            ? 'bg-green-500/20 text-green-400 border-green-400/30'
+                                                            : 'text-orange-400 border-orange-400/30'
+                                                        }
+                                                    >
+                                                        {event.status}
+                                                    </Badge>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-4 text-sm text-white/60 mb-2">
+                                                    <span className="flex items-center gap-1">
+                                                        <Calendar className="w-4 h-4" />
+                                                        {event.date}
+                                                    </span>
+                                                    <span className="flex items-center gap-1">
+                                                        <MapPin className="w-4 h-4" />
+                                                        {event.location}
+                                                    </span>
+                                                    <span className="flex items-center gap-1">
+                                                        <Wind className="w-4 h-4" />
+                                                        {event.type}
+                                                    </span>
+                                                </div>
+                                                <p className="text-white/70">
+                                                    {event.description}
+                                                </p>
+                                                {event.isCustom && (
+                                                    <Button
+                                                        size="sm"
+                                                        className="mt-3 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const element = document.getElementById('booking-form');
+                                                            element?.scrollIntoView({ behavior: 'smooth' });
+                                                        }}
+                                                    >
+                                                        Book Now
+                                                        <ArrowRight className="ml-2 w-4 h-4" />
+                                                    </Button>
+                                                )}
+                                            </div>
+                                            {!event.isCustom && <ChevronRight className="w-5 h-5 text-orange-400 md:block hidden" />}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-2xl font-gelica text-white mb-4">
+                            Want to see us at your event?
+                        </p>
                         <Button
                             size="lg"
-                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-8"
+                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
                             onClick={() => {
-                                const element = document.getElementById('services');
-                                if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
+                                const element = document.getElementById('booking-form');
+                                element?.scrollIntoView({ behavior: 'smooth' });
                             }}
                         >
-                            View Services
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="border-white/20 text-white hover:bg-white/10 px-8"
-                            onClick={() => {
-                                const element = document.getElementById('inquiry');
-                                if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                            }}
-                        >
-                            Get Quote
+                            Book Us Now
+                            <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </div>
                 </div>
             </section>
 
-            {/* Services Section */}
-            <section
-                id="services"
-                data-animate
-                className={`py-32 px-6 ${getAnimationClass('services')}`}
-            >
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
+            {/* Services Grid */}
+            <section className="py-20 px-6 bg-white/[0.02]">
+                <div className="container mx-auto max-w-7xl">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Media-Powered Balloon Services
+                            How We Elevate Events
                         </h2>
-                        <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            Every service includes professional documentation. We capture the spectacle, craft the narrative, and deliver content that extends your event&apos;s impact beyond the moment.
+                        <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                            Choose from our signature services or let us create something custom
                         </p>
-                    </div>
+                    </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {serviceTypes.map((service, index) => {
-                            const IconComponent = service.icon;
+                            const Icon = service.icon;
                             return (
-                                <Card key={service.value} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 group">
-                                    <CardHeader>
-                                        <div className="flex items-center gap-4 mb-4">
-                                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <IconComponent className="w-6 h-6 text-white" />
-                                            </div>
-                                            <div>
-                                                <CardTitle className="text-white text-lg">{service.label}</CardTitle>
-                                            </div>
-                                        </div>
-                                        <CardDescription className="text-white/70 mb-4">
-                                            {service.description}
-                                        </CardDescription>
-                                        <div className="text-sm text-white/50">
-                                            <span className="font-medium">Ideal for:</span> {service.idealFor}
-                                        </div>
-                                    </CardHeader>
-                                </Card>
+                                <motion.div
+                                    key={service.value}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    viewport={{ once: true }}
+                                >
+                                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full group">
+                                        <CardHeader>
+                                            <Icon className="w-12 h-12 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
+                                            <CardTitle className="text-2xl font-gelica text-white">
+                                                {service.label}
+                                            </CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <p className="text-white/70 mb-4">
+                                                {service.description}
+                                            </p>
+                                            <p className="text-sm text-orange-400">
+                                                Ideal for: {service.idealFor}
+                                            </p>
+                                        </CardContent>
+                                    </Card>
+                                </motion.div>
                             );
                         })}
                     </div>
                 </div>
             </section>
 
-            {/* Inquiry Form Section */}
-            <section
-                id="inquiry"
-                data-animate
-                className={`py-32 px-6 bg-white/[0.02] ${getAnimationClass('inquiry')}`}
-            >
-                <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-16">
+            {/* Booking Form Section */}
+            <section className="py-20 px-6" id="booking-form">
+                <div className="container mx-auto max-w-4xl">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-12"
+                    >
                         <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                            Let&apos;s Create Something Unforgettable
+                            Your Event Could Be Next
                         </h2>
                         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            Tell us about your vision. We&apos;ll bring the balloon, the cameras, and the expertise to turn your event into a story worth sharing.
+                            Tell us about your vision and let&apos;s create something extraordinary together
+                        </p>
+                    </motion.div>
+
+                    <Card className="bg-white/5 border-white/10">
+                        <CardContent className="p-8">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="name">Your Name *</Label>
+                                        <Input
+                                            id="name"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="bg-white/5 border-white/10 focus:border-orange-500"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="email">Email *</Label>
+                                        <Input
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="bg-white/5 border-white/10 focus:border-orange-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="phone">Phone</Label>
+                                        <Input
+                                            id="phone"
+                                            name="phone"
+                                            type="tel"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            className="bg-white/5 border-white/10 focus:border-orange-500"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="company">Company/Organization</Label>
+                                        <Input
+                                            id="company"
+                                            name="company"
+                                            value={formData.company}
+                                            onChange={handleInputChange}
+                                            className="bg-white/5 border-white/10 focus:border-orange-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="eventType">Event Type</Label>
+                                    <Select
+                                        value={formData.eventType}
+                                        onValueChange={(value) => setFormData(prev => ({ ...prev, eventType: value }))}
+                                    >
+                                        <SelectTrigger className="bg-white/5 border-white/10 focus:border-orange-500">
+                                            <SelectValue placeholder="Select event type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="festival">Music Festival</SelectItem>
+                                            <SelectItem value="corporate">Corporate Event</SelectItem>
+                                            <SelectItem value="private">Private Party</SelectItem>
+                                            <SelectItem value="sports">Sporting Event</SelectItem>
+                                            <SelectItem value="charity">Charity/Fundraiser</SelectItem>
+                                            <SelectItem value="marketing">Marketing Campaign</SelectItem>
+                                            <SelectItem value="other">Other</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="eventDate">Event Date(s)</Label>
+                                        <Input
+                                            id="eventDate"
+                                            name="eventDate"
+                                            type="text"
+                                            placeholder="e.g., June 15-17, 2024"
+                                            value={formData.eventDate}
+                                            onChange={handleInputChange}
+                                            className="bg-white/5 border-white/10 focus:border-orange-500"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="location">Location *</Label>
+                                        <Input
+                                            id="location"
+                                            name="location"
+                                            value={formData.location}
+                                            onChange={handleInputChange}
+                                            required
+                                            placeholder="City, State"
+                                            className="bg-white/5 border-white/10 focus:border-orange-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Services Interested In</Label>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {serviceTypes.map((service) => (
+                                            <div key={service.value} className="flex items-center space-x-2">
+                                                <Checkbox
+                                                    id={service.value}
+                                                    checked={formData.services.includes(service.value)}
+                                                    onCheckedChange={() => handleServiceToggle(service.value)}
+                                                />
+                                                <Label
+                                                    htmlFor={service.value}
+                                                    className="text-sm font-normal cursor-pointer"
+                                                >
+                                                    {service.label}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="description">Tell Us About Your Event *</Label>
+                                    <Textarea
+                                        id="description"
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleInputChange}
+                                        required
+                                        rows={4}
+                                        placeholder="Describe your event, goals, and how you envision balloon services enhancing the experience..."
+                                        className="bg-white/5 border-white/10 focus:border-orange-500"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="attendees">Expected Attendance</Label>
+                                    <Select
+                                        value={formData.attendees}
+                                        onValueChange={(value) => setFormData(prev => ({ ...prev, attendees: value }))}
+                                    >
+                                        <SelectTrigger className="bg-white/5 border-white/10 focus:border-orange-500">
+                                            <SelectValue placeholder="Select range" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="<100">Less than 100</SelectItem>
+                                            <SelectItem value="100-500">100-500</SelectItem>
+                                            <SelectItem value="500-1000">500-1,000</SelectItem>
+                                            <SelectItem value="1000-5000">1,000-5,000</SelectItem>
+                                            <SelectItem value="5000-10000">5,000-10,000</SelectItem>
+                                            <SelectItem value="10000+">10,000+</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                                    size="lg"
+                                >
+                                    {isSubmitting ? 'Sending...' : 'Submit Event Request'}
+                                </Button>
+                            </form>
+                        </CardContent>
+                    </Card>
+
+                    <div className="text-center mt-8">
+                        <p className="text-white/60">
+                            Questions? Email us at{' '}
+                            <a href="mailto:info@aerostatic.io" className="text-orange-400 hover:text-orange-300 transition-colors">
+                                info@aerostatic.io
+                            </a>
                         </p>
                     </div>
-
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="name" className="text-white">Name *</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    value={formData.name}
-                                    onChange={(e) => handleInputChange('name', e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white placeholder:text-white/50"
-                                    placeholder="Your full name"
-                                    required
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="email" className="text-white">Email *</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) => handleInputChange('email', e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white placeholder:text-white/50"
-                                    placeholder="your@email.com"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="phone" className="text-white">Phone</Label>
-                                <Input
-                                    id="phone"
-                                    type="tel"
-                                    value={formData.phone}
-                                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white placeholder:text-white/50"
-                                    placeholder="(555) 123-4567"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="company" className="text-white">Company/Organization</Label>
-                                <Input
-                                    id="company"
-                                    type="text"
-                                    value={formData.company}
-                                    onChange={(e) => handleInputChange('company', e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white placeholder:text-white/50"
-                                    placeholder="Your company name"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="eventType" className="text-white">Event Type *</Label>
-                                <Select value={formData.eventType} onValueChange={(value) => handleInputChange('eventType', value)}>
-                                    <SelectTrigger className="bg-white/5 border-white/20 text-white">
-                                        <SelectValue placeholder="Select event type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="festival">Festival</SelectItem>
-                                        <SelectItem value="corporate">Corporate Event</SelectItem>
-                                        <SelectItem value="wedding">Wedding</SelectItem>
-                                        <SelectItem value="brand-activation">Brand Activation</SelectItem>
-                                        <SelectItem value="content-creation">Content Creation</SelectItem>
-                                        <SelectItem value="other">Other</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="eventDate" className="text-white">Event Date</Label>
-                                <Input
-                                    id="eventDate"
-                                    type="date"
-                                    value={formData.eventDate}
-                                    onChange={(e) => handleInputChange('eventDate', e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="location" className="text-white">Location *</Label>
-                                <Input
-                                    id="location"
-                                    type="text"
-                                    value={formData.location}
-                                    onChange={(e) => handleInputChange('location', e.target.value)}
-                                    className="bg-white/5 border-white/20 text-white placeholder:text-white/50"
-                                    placeholder="City, State"
-                                    required
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="attendees" className="text-white">Expected Attendees</Label>
-                                <Select value={formData.attendees} onValueChange={(value) => handleInputChange('attendees', value)}>
-                                    <SelectTrigger className="bg-white/5 border-white/20 text-white">
-                                        <SelectValue placeholder="Select attendee count" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="1-50">1-50</SelectItem>
-                                        <SelectItem value="51-100">51-100</SelectItem>
-                                        <SelectItem value="101-500">101-500</SelectItem>
-                                        <SelectItem value="501-1000">501-1,000</SelectItem>
-                                        <SelectItem value="1000+">1,000+</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            <Label className="text-white">Services Interested In</Label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {serviceTypes.map((service) => (
-                                    <div key={service.value} className="flex items-center space-x-3 p-4 rounded-lg border border-white/10 hover:bg-white/5 transition-colors">
-                                        <Checkbox
-                                            id={service.value}
-                                            checked={formData.services.includes(service.value)}
-                                            onCheckedChange={(checked) => handleServiceToggle(service.value, checked as boolean)}
-                                        />
-                                        <div className="flex-1">
-                                            <Label htmlFor={service.value} className="text-white font-medium cursor-pointer">
-                                                {service.label}
-                                            </Label>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="description" className="text-white">Event Description *</Label>
-                            <Textarea
-                                id="description"
-                                value={formData.description}
-                                onChange={(e) => handleInputChange('description', e.target.value)}
-                                className="bg-white/5 border-white/20 text-white placeholder:text-white/50 min-h-[100px]"
-                                placeholder="Tell us about your event, goals, and vision..."
-                                required
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label htmlFor="timeline" className="text-white">Timeline</Label>
-                                <Select value={formData.timeline} onValueChange={(value) => handleInputChange('timeline', value)}>
-                                    <SelectTrigger className="bg-white/5 border-white/20 text-white">
-                                        <SelectValue placeholder="When do you need this?" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="asap">ASAP</SelectItem>
-                                        <SelectItem value="1-2-weeks">1-2 weeks</SelectItem>
-                                        <SelectItem value="1-month">1 month</SelectItem>
-                                        <SelectItem value="2-3-months">2-3 months</SelectItem>
-                                        <SelectItem value="6-months">6+ months</SelectItem>
-                                        <SelectItem value="flexible">Flexible</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="additionalRequests" className="text-white">Additional Requests</Label>
-                            <Textarea
-                                id="additionalRequests"
-                                value={formData.additionalRequests}
-                                onChange={(e) => handleInputChange('additionalRequests', e.target.value)}
-                                className="bg-white/5 border-white/20 text-white placeholder:text-white/50"
-                                placeholder="Any special requirements, accessibility needs, or other details..."
-                            />
-                        </div>
-
-                        <div className="flex justify-center">
-                            <Button
-                                type="submit"
-                                size="lg"
-                                disabled={isSubmitting}
-                                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-12 py-3"
-                            >
-                                {isSubmitting ? (
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                                        Submitting...
-                                    </div>
-                                ) : (
-                                    <>
-                                        Submit Inquiry
-                                        <ArrowRight className="ml-2 h-5 w-5" />
-                                    </>
-                                )}
-                            </Button>
-                        </div>
-                    </form>
                 </div>
             </section>
 
             <Footer />
         </div>
     );
-} 
+}

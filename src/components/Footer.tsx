@@ -1,52 +1,13 @@
 "use client";
 import Link from "next/link";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 import { Button } from "./ui/button";
 import { MapPin, Mail, Twitter, Instagram, Youtube } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
-import { toast } from "sonner";
 import Image from "next/image";
 import { useContent } from "@/hooks/useContent";
 
 export const Footer: FunctionComponent = () => {
-  const [email, setEmail] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const content = useContent();
-
-  const handleNewsletterSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email) return
-
-    setIsSubmitting(true)
-
-    try {
-      const supabase = createClient()
-
-      const { error } = await supabase
-        .from('newsletter_signups')
-        .insert({
-          email: email,
-          source: 'footer'
-        })
-
-      if (error) {
-        if (error.code === '23505') { // Unique constraint violation
-          toast.success(content.footer.newsletter.alreadySubscribed)
-        } else {
-          console.error("Error signing up for newsletter:", error)
-          toast.error(content.footer.newsletter.error)
-        }
-      } else {
-        toast.success(content.footer.newsletter.success)
-        setEmail("")
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      toast.error(content.footer.newsletter.error)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
   return (
     <footer className="bg-black border-t border-white/10">
@@ -113,25 +74,15 @@ export const Footer: FunctionComponent = () => {
               ))}
             </div>
             <div className="pt-4">
-              <p className="text-white/70 mb-4 font-medium">{content.footer.newsletter.title}</p>
-              <form onSubmit={handleNewsletterSignup} className="flex gap-3">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={content.footer.newsletter.placeholder}
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder:text-white/50 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500/50"
-                  required
-                />
-                <Button
-                  type="submit"
-                  size="default"
-                  disabled={isSubmitting}
-                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-6 cinematic-glow"
-                >
-                  {isSubmitting ? content.footer.newsletter.submitting : content.footer.newsletter.button}
-                </Button>
-              </form>
+              <Button
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white w-full"
+              >
+                <Link href="/work-with-us">
+                  Work With Us
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

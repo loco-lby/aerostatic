@@ -68,9 +68,9 @@ export default function PrivacyPage() {
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-4">Introduction</h2>
                 <p className="text-white/80 leading-relaxed">
-                  Aerostatic LLC ("we," "our," or "us") operates the AeroStatus mobile application (the "App"). 
-                  This Privacy Policy explains how we collect, use, disclose, and safeguard your information when 
-                  you use our App. Please read this privacy policy carefully. If you do not agree with the terms 
+                  Aerostatic LLC (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates the AeroStatus mobile application (the &quot;App&quot;).
+                  This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
+                  you use our App. Please read this privacy policy carefully. If you do not agree with the terms
                   of this privacy policy, please do not access the App.
                 </p>
               </section>
@@ -79,11 +79,11 @@ export default function PrivacyPage() {
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-6">Privacy Details Summary</h2>
                 <p className="text-white/80 mb-6">
-                  The following information is provided in compliance with Apple's App Store App Privacy Details requirements:
+                  The following information is provided in compliance with Apple&apos;s App Store App Privacy Details requirements:
                 </p>
-                
+
                 <h3 className="text-xl font-gelica text-orange-400 mb-4">Data We Collect</h3>
-                
+
                 <div className="mb-6">
                   <p className="text-white font-semibold mb-2">Data Linked to Your Identity:</p>
                   <ul className="list-disc pl-6 space-y-1 text-white/80">
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
               {/* Information We Collect */}
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-6">Information We Collect</h2>
-                
+
                 <h3 className="text-xl font-gelica text-orange-400 mb-4">Contact Information</h3>
                 <p className="text-white/80 mb-4">
                   We collect contact information that you voluntarily provide when you:
@@ -177,8 +177,8 @@ export default function PrivacyPage() {
               {/* How We Use Your Information */}
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-6">How We Use Your Information</h2>
-                <p className="text-white/80 mb-4">We use the collected information for the following purposes as defined by Apple's categories:</p>
-                
+                <p className="text-white/80 mb-4">We use the collected information for the following purposes as defined by Apple&apos;s categories:</p>
+
                 <h3 className="text-xl font-gelica text-orange-400 mb-4">App Functionality</h3>
                 <ul className="list-disc pl-6 mb-6 space-y-2 text-white/80">
                   <li>Authenticate users and manage accounts</li>
@@ -256,7 +256,7 @@ export default function PrivacyPage() {
                   <p className="text-orange-400 font-semibold mb-4">This app does not track you.</p>
                   <p className="text-white/80 mb-2">We do not:</p>
                   <ul className="list-disc pl-6 space-y-2 text-white/80">
-                    <li>Link data from our app with data from other companies' apps or websites for advertising purposes</li>
+                    <li>Link data from our app with data from other companies&apos; apps or websites for advertising purposes</li>
                     <li>Share your data with advertising networks or data brokers</li>
                     <li>Use your data for targeted advertising across other apps or websites</li>
                     <li>Combine your data with third-party data for advertising measurement</li>
@@ -297,7 +297,7 @@ export default function PrivacyPage() {
               {/* Your Rights and Choices */}
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-6">Your Rights and Choices</h2>
-                
+
                 <h3 className="text-xl font-gelica text-orange-400 mb-4">Access and Control</h3>
                 <ul className="list-disc pl-6 mb-6 space-y-2 text-white/80">
                   <li><strong className="text-white">Access:</strong> Request a copy of your personal information</li>
@@ -321,9 +321,9 @@ export default function PrivacyPage() {
                   <li>Push notifications can be turned off in app settings or device settings</li>
                   <li>You can request account deletion at any time</li>
                 </ul>
-                
+
                 <p className="text-white/80">
-                  To exercise these rights, contact us at privacy@aerostatic.io
+                  To exercise these rights, contact us at info@aerostatic.io
                 </p>
               </section>
 
@@ -344,7 +344,7 @@ export default function PrivacyPage() {
 
               {/* Children's Privacy */}
               <section className="mb-12">
-                <h2 className="text-2xl font-gelica text-white mb-6">Children's Privacy</h2>
+                <h2 className="text-2xl font-gelica text-white mb-6">Children&apos;s Privacy</h2>
                 <p className="text-white/80">
                   The App is not intended for use by individuals under 18 years of age. We do not knowingly collect personal information from children under 18. If we become aware that we have collected personal information from a child under 18, we will delete such information immediately.
                 </p>
@@ -374,7 +374,7 @@ export default function PrivacyPage() {
                 </p>
                 <ul className="list-disc pl-6 mb-6 space-y-2 text-white/80">
                   <li>Posting the new Privacy Policy in the App</li>
-                  <li>Updating the "Last Updated" date</li>
+                  <li>Updating the &quot;Last Updated&quot; date</li>
                   <li>Sending you a notification for significant changes</li>
                   <li>Displaying a notice in the App</li>
                 </ul>
@@ -391,8 +391,8 @@ export default function PrivacyPage() {
                 </p>
                 <div className="space-y-2 text-white/80">
                   <p><strong className="text-white">Aerostatic LLC</strong></p>
-                  <p>Email: <a href="mailto:privacy@aerostatic.io" className="text-orange-400 hover:text-orange-300">privacy@aerostatic.io</a></p>
-                  <p>Support Email: <a href="mailto:creator@aerostatic.io" className="text-orange-400 hover:text-orange-300">creator@aerostatic.io</a></p>
+                  <p>Email: <a href="mailto:info@aerostatic.io" className="text-orange-400 hover:text-orange-300">info@aerostatic.io</a></p>
+                  <p>Support Email: <a href="mailto:info@aerostatic.io" className="text-orange-400 hover:text-orange-300">info@aerostatic.io</a></p>
                   <p>Phone: 707-302-4475</p>
                   <p>Address: 2108 N ST STE N Sacramento, CA 95816</p>
                 </div>
@@ -401,7 +401,7 @@ export default function PrivacyPage() {
               {/* State-Specific Rights */}
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-6">State-Specific Rights</h2>
-                
+
                 <h3 className="text-xl font-gelica text-orange-400 mb-4">California Residents (CCPA/CPRA)</h3>
                 <p className="text-white/80 mb-4">Under the California Consumer Privacy Act, you have additional rights including:</p>
                 <ul className="list-disc pl-6 mb-6 space-y-2 text-white/80">
@@ -431,7 +431,7 @@ export default function PrivacyPage() {
               <section className="mb-12">
                 <h2 className="text-2xl font-gelica text-white mb-6">Apple-Specific Disclosures</h2>
                 <p className="text-white/80 mb-4">
-                  This app's privacy practices are designed to comply with Apple's App Store requirements:
+                  This app&apos;s privacy practices are designed to comply with Apple&apos;s App Store requirements:
                 </p>
                 <ul className="list-disc pl-6 mb-6 space-y-2 text-white/80">
                   <li>We do not track users across apps and websites owned by other companies</li>

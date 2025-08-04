@@ -185,27 +185,30 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Email Capture Form */}
-          <form onSubmit={handleNewsletterSignup} className="max-w-md mx-auto">
-            <div className="flex gap-4">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm"
-                required
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
-              >
-                {isSubmitting ? "..." : content.home.hero.cta}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </form>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-12 py-6 text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+            >
+              <Link href="/work-with-us">
+                {content.home.hero.cta}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-12 py-6 text-lg"
+            >
+              <Link href="/tools/aeromedia">
+                Access Your Photos
+                <Camera className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
