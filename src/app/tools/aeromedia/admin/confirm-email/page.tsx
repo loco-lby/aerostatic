@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Mail, CheckCircle } from 'lucide-react'
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 
-export default function ConfirmEmailPage() {
+function ConfirmEmailContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isFirstUser = searchParams.get('firstUser') === 'true'
@@ -74,5 +74,17 @@ export default function ConfirmEmailPage() {
         </Card>
       </motion.div>
     </div>
+  )
+}
+
+export default function ConfirmEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    }>
+      <ConfirmEmailContent />
+    </Suspense>
   )
 }
