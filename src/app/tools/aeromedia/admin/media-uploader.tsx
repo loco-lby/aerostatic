@@ -190,10 +190,18 @@ export function MediaUploader({ packageId, onComplete }: MediaUploaderProps) {
                   })
 
                 if (dbError) {
-                  console.error('Database error:', dbError)
-                  setFiles(prev => (prev || []).map((f, idx) =>
-                    idx === i ? { ...f, status: 'error', error: 'Failed to save to database' } : f
-                  ))
+                  // Check if it's a duplicate entry error
+                  if (dbError.code === '23505' || dbError.message?.includes('duplicate')) {
+                    console.log('Media item already exists in database, treating as success')
+                    setFiles(prev => (prev || []).map((f, idx) =>
+                      idx === i ? { ...f, status: 'complete', progress: 100 } : f
+                    ))
+                  } else {
+                    console.error('Database error:', dbError)
+                    setFiles(prev => (prev || []).map((f, idx) =>
+                      idx === i ? { ...f, status: 'error', error: 'Failed to save to database' } : f
+                    ))
+                  }
                 } else {
                   // Update status
                   setFiles(prev => (prev || []).map((f, idx) =>
@@ -251,7 +259,14 @@ export function MediaUploader({ packageId, onComplete }: MediaUploaderProps) {
               thumbnail_url: thumbnailUrl,
             })
 
-          if (dbError) throw dbError
+          if (dbError) {
+            // Check if it's a duplicate entry error
+            if (dbError.code === '23505' || dbError.message?.includes('duplicate')) {
+              console.log('Media item already exists in database, treating as success')
+            } else {
+              throw dbError
+            }
+          }
 
           // Update status
           setFiles(prev => (prev || []).map((f, idx) =>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -51,7 +51,13 @@ export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDel
   const [isDragActive, setIsDragActive] = useState(false)
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
+  const [formattedDate, setFormattedDate] = useState<string>('')
   const supabase = createClient()
+
+  // Format date on client side to avoid hydration mismatch
+  useEffect(() => {
+    setFormattedDate(format(new Date(pkg.flight_date), 'MMM d, yyyy'))
+  }, [pkg.flight_date])
 
   const uploadFile = useCallback(async (file: File, type: string) => {
     const fileName = file.name
@@ -102,10 +108,18 @@ export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDel
               })
 
             if (dbError) {
-              console.error('Database error:', dbError)
-              setUploadingFiles(prev => prev.map(f => 
-                f.name === fileName ? { ...f, status: 'error' } : f
-              ))
+              // Check if it's a duplicate entry error
+              if (dbError.code === '23505' || dbError.message?.includes('duplicate')) {
+                console.log('Media item already exists in database, treating as success')
+                setUploadingFiles(prev => prev.map(f => 
+                  f.name === fileName ? { ...f, status: 'complete', progress: 100 } : f
+                ))
+              } else {
+                console.error('Database error:', dbError)
+                setUploadingFiles(prev => prev.map(f => 
+                  f.name === fileName ? { ...f, status: 'error' } : f
+                ))
+              }
             } else {
               setUploadingFiles(prev => prev.map(f => 
                 f.name === fileName ? { ...f, status: 'complete', progress: 100 } : f
@@ -138,7 +152,14 @@ export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDel
             mime_type: file.type,
           })
 
-        if (dbError) throw dbError
+        if (dbError) {
+          // Check if it's a duplicate entry error
+          if (dbError.code === '23505' || dbError.message?.includes('duplicate')) {
+            console.log('Media item already exists in database, treating as success')
+          } else {
+            throw dbError
+          }
+        }
 
         // Update status
         setUploadingFiles(prev => prev.map(f => 
@@ -254,7 +275,7 @@ export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDel
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                {format(new Date(pkg.flight_date), 'MMM d, yyyy')}
+                {formattedDate || pkg.flight_date}
               </div>
               <div className="flex items-center gap-1">
                 <Users className="w-4 h-4" />

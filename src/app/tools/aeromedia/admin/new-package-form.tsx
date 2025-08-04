@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -25,15 +25,28 @@ interface NewPackageFormProps {
 
 export function NewPackageForm({ onSuccess }: NewPackageFormProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const [defaultDate, setDefaultDate] = useState('')
   const supabase = createClient()
   
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  // Set default date on client side only to avoid hydration mismatch
+  useEffect(() => {
+    setDefaultDate(format(new Date(), 'yyyy-MM-dd'))
+  }, [])
+  
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      flight_date: format(new Date(), 'yyyy-MM-dd'),
+      flight_date: '',
       passenger_names: '',
     }
   })
+  
+  // Set the form value when defaultDate is ready
+  useEffect(() => {
+    if (defaultDate) {
+      setValue('flight_date', defaultDate)
+    }
+  }, [defaultDate, setValue])
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true)

@@ -126,7 +126,7 @@ export function AdminDashboard({ recentPackages, stats }: AdminDashboardProps) {
     const emailBody = `
 Hello ${packageData.passenger_names.join(' and ')},
 
-Thank you for flying with Aerostatic! Your professional photos and videos from your balloon flight on ${format(new Date(packageData.flight_date), 'MMMM d, yyyy')} are now ready.
+Thank you for flying with Aerostatic! Your professional photos and videos from your balloon flight are now ready.
 
 Access your memories here:
 https://aerostatic.io/tools/aeromedia
@@ -290,16 +290,18 @@ The Aerostatic Team
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Media Package</AlertDialogTitle>
             <AlertDialogDescription className="text-gray-400">
-              <p>Are you sure you want to delete this media package?</p>
-              <p className="mt-2">This will permanently delete:</p>
-              <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>The package and access code</li>
-                <li>All media files from storage</li>
-                <li>All download tracking data</li>
-              </ul>
-              <p className="mt-3 font-semibold text-orange-400">This action cannot be undone.</p>
+              Are you sure you want to delete this media package?
             </AlertDialogDescription>
           </AlertDialogHeader>
+          <div className="text-gray-400 text-sm my-4">
+            <p className="mb-2">This will permanently delete:</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li>The package and access code</li>
+              <li>All media files from storage</li>
+              <li>All download tracking data</li>
+            </ul>
+            <p className="mt-3 font-semibold text-orange-400">This action cannot be undone.</p>
+          </div>
           <AlertDialogFooter>
             <AlertDialogCancel 
               className="bg-white/5 border-white/10 text-white hover:bg-white/10"

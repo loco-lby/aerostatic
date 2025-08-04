@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Mail, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -10,6 +10,8 @@ import Link from 'next/link'
 
 export default function ConfirmEmailPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isFirstUser = searchParams.get('firstUser') === 'true'
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
@@ -43,7 +45,7 @@ export default function ConfirmEmailPage() {
                 <li>Click the confirmation link in your email</li>
                 <li>You&apos;ll be redirected back to the login page</li>
                 <li>Sign in with your credentials</li>
-                {typeof window !== 'undefined' && window.location.search.includes('firstUser=true') && (
+                {isFirstUser && (
                   <li className="text-orange-400">As the first user, you&apos;ll automatically have admin access!</li>
                 )}
               </ul>
