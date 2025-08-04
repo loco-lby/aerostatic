@@ -68,23 +68,58 @@ export function AdminDashboard({ recentPackages, stats }: AdminDashboardProps) {
   }
 
   const handleDeletePackage = async (packageId: string) => {
+    setIsDeleting(true)
     try {
-      const { error } = await supabase
+      // First, get all media items for this package to delete from storage
+      const { data: mediaItems, error: fetchError } = await supabase
+        .from('media_items')
+        .select('file_url, file_name')
+        .eq('package_id', packageId)
+
+      if (fetchError) throw fetchError
+
+      // Delete files from storage
+      if (mediaItems && mediaItems.length > 0) {
+        const deletePromises = mediaItems.map(async (item) => {
+          // Extract the path from the file URL
+          // Format: https://[project].supabase.co/storage/v1/object/public/aeromedia-media/[path]
+          const urlParts = item.file_url.split('/aeromedia-media/')
+          if (urlParts.length > 1) {
+            const filePath = urlParts[1]
+            const { error: storageError } = await supabase.storage
+              .from('aeromedia-media')
+              .remove([filePath])
+            
+            if (storageError) {
+              console.error(`Failed to delete file ${filePath}:`, storageError)
+            }
+          }
+        })
+
+        await Promise.all(deletePromises)
+      }
+
+      // Now delete the package (this will cascade delete media_items and download_tracking)
+      const { error: deleteError } = await supabase
         .from('media_packages')
         .delete()
         .eq('id', packageId)
 
-      if (error) throw error
+      if (deleteError) throw deleteError
 
       setPackages((packages || []).filter(pkg => pkg.id !== packageId))
-      toast.success('Package deleted successfully')
+      toast.success('Package and all associated media deleted successfully')
     } catch (error) {
       console.error('Error deleting package:', error)
       toast.error('Failed to delete package')
+    } finally {
+      setIsDeleting(false)
+      setDeleteConfirmId(null)
     }
   }
 
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const sendAccessCode = async (packageData: MediaPackage) => {
     // Placeholder for email integration
@@ -250,29 +285,38 @@ The Aerostatic Team
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+      <AlertDialog open={!!deleteConfirmId} onOpenChange={() => !isDeleting && setDeleteConfirmId(null)}>
         <AlertDialogContent className="bg-black border-white/10">
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Media Package</AlertDialogTitle>
             <AlertDialogDescription className="text-gray-400">
-              Are you sure you want to delete this media package? This action cannot be undone.
-              All associated media files will also be permanently deleted.
+              <p>Are you sure you want to delete this media package?</p>
+              <p className="mt-2">This will permanently delete:</p>
+              <ul className="list-disc list-inside mt-2 space-y-1">
+                <li>The package and access code</li>
+                <li>All media files from storage</li>
+                <li>All download tracking data</li>
+              </ul>
+              <p className="mt-3 font-semibold text-orange-400">This action cannot be undone.</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">
+            <AlertDialogCancel 
+              className="bg-white/5 border-white/10 text-white hover:bg-white/10"
+              disabled={isDeleting}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (deleteConfirmId) {
                   handleDeletePackage(deleteConfirmId)
-                  setDeleteConfirmId(null)
                 }
               }}
-              className="bg-red-500 hover:bg-red-600 text-white"
+              className="bg-red-500 hover:bg-red-600 text-white disabled:opacity-50"
+              disabled={isDeleting}
             >
-              Delete Package
+              {isDeleting ? 'Deleting...' : 'Delete Package'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

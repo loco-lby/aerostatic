@@ -60,9 +60,11 @@ export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDel
     setUploadingFiles(prev => [...prev, { name: fileName, progress: 0, status: 'uploading' }])
 
     try {
-      // Generate unique filename
+      // Generate unique filename with proper sanitization
       const timestamp = Date.now()
-      const filename = `${pkg.id}/${timestamp}_${file.name}`
+      const randomSuffix = Math.random().toString(36).substring(2, 8)
+      const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+      const filename = `${pkg.id}/${timestamp}_${randomSuffix}_${sanitizedName}`
 
       // Use resumable upload for files over 6MB
       if (file.size > 6 * 1024 * 1024) {

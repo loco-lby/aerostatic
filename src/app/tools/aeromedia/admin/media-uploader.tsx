@@ -140,9 +140,11 @@ export function MediaUploader({ packageId, onComplete }: MediaUploaderProps) {
           idx === i ? { ...f, status: 'uploading' } : f
         ))
 
-        // Generate unique filename
+        // Generate unique filename with proper sanitization
         const timestamp = Date.now()
-        const filename = `${packageId}/${timestamp}_${uploadFile.file.name}`
+        const randomSuffix = Math.random().toString(36).substring(2, 8)
+        const sanitizedName = uploadFile.file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+        const filename = `${packageId}/${timestamp}_${randomSuffix}_${sanitizedName}`
 
         // Use resumable upload for files over 6MB
         if (uploadFile.file.size > 6 * 1024 * 1024) {

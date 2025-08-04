@@ -72,11 +72,20 @@ export async function createResumableUpload({
     removeFingerprintOnSuccess: true,
     storeFingerprintForResuming: true,
     onError: (error) => {
-      console.error('Upload error:', error)
+      const errorMessage = String(error)
+      console.error('Upload error:', errorMessage)
+      
+      // Check if this is a 409 conflict error (file already exists)
+      if (errorMessage.includes('409') || errorMessage.includes('resource already exists')) {
+        console.log('File already exists, treating as successful upload')
+        activeUploads.delete(uploadKey)
+        onSuccess?.()
+        return
+      }
+      
       activeUploads.delete(uploadKey)
       
       // Check for 413 error (file too large)
-      const errorMessage = String(error)
       if (errorMessage.includes('413') || errorMessage.includes('Maximum size exceeded')) {
         onError?.(new Error('File size exceeds the maximum allowed limit. Please contact support to increase your storage limits.'))
       } else {
