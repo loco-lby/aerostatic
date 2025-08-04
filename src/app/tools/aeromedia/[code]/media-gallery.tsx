@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Download, Share2, Calendar, Users, Image as ImageIcon, Video, Plane, ChevronLeft, Send, Info } from 'lucide-react'
+import { Download, Share2, Calendar, Users, Image as ImageIcon, Video, Plane, ChevronLeft, Send, Info, Volume2, VolumeX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -21,6 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { PendingDownloads, type DownloadItem } from '@/components/pending-downloads'
 
 interface MediaItem {
   id: string
@@ -70,6 +71,10 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
   const [isDownloading, setIsDownloading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [socialMediaPermission, setSocialMediaPermission] = useState(mediaPackage.social_media_permission ?? true)
+  const [pendingDownloads, setPendingDownloads] = useState<DownloadItem[]>([])
+  const [showDownloads, setShowDownloads] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
+  const [showSoundHint, setShowSoundHint] = useState(true)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -77,6 +82,14 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
     message: ''
   })
   const supabase = createClient()
+
+  // Hide sound hint after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSoundHint(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
 
   const allMedia = [
     ...(groupedMedia.reel || []),
@@ -112,30 +125,51 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
   }
 
   const downloadSingleFile = async (item: MediaItem) => {
+    const downloadId = `${item.id}-${Date.now()}`
+    
+    // Immediately show pending state
+    setPendingDownloads(prev => [...prev, {
+      id: downloadId,
+      fileName: item.file_name,
+      status: 'pending'
+    }])
+    setShowDownloads(true)
+    
+    // Track download in database
     await trackDownload(item.id)
-
+    
     try {
-      // Fetch the file as a blob to force download
+      // Update to downloading status
+      setPendingDownloads(prev => prev.map(d => 
+        d.id === downloadId ? { ...d, status: 'downloading' } : d
+      ))
+      
+      // Download file
       const response = await fetch(item.file_url)
       const blob = await response.blob()
-
-      // Create blob URL
+      
       const blobUrl = window.URL.createObjectURL(blob)
-
-      // Create download link
       const link = document.createElement('a')
       link.href = blobUrl
       link.download = item.file_name
       link.style.display = 'none'
       document.body.appendChild(link)
       link.click()
-
+      
       // Cleanup
       document.body.removeChild(link)
       window.URL.revokeObjectURL(blobUrl)
+      
+      // Update to completed status
+      setPendingDownloads(prev => prev.map(d => 
+        d.id === downloadId ? { ...d, status: 'completed' } : d
+      ))
     } catch (error) {
       console.error('Download error:', error)
-      toast.error('Failed to download file')
+      // Update to error status
+      setPendingDownloads(prev => prev.map(d => 
+        d.id === downloadId ? { ...d, status: 'error', error: 'Download failed' } : d
+      ))
     }
   }
 
@@ -301,98 +335,89 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
           <div className="flex flex-col items-center gap-4 pt-4">
             <Button
               onClick={async () => {
+                const bulkDownloadId = `bulk-${Date.now()}`
+                
+                // Immediately show pending state
+                setPendingDownloads(prev => [...prev, {
+                  id: bulkDownloadId,
+                  fileName: `All Media (${allMedia.length} files)`,
+                  status: 'pending'
+                }])
+                setShowDownloads(true)
                 setIsDownloading(true)
-
-                // Check if on mobile
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-
-                if (isMobile) {
-                  // On mobile, download files individually
-                  toast.info(`Downloading ${allMedia.length} files...`)
-
-                  try {
-                    for (const item of allMedia) {
-                      await downloadSingleFile(item)
-                      // Add delay between downloads to prevent browser blocking
-                      await new Promise(resolve => setTimeout(resolve, 500))
-                    }
-                    toast.success('All media downloaded successfully!')
-                  } catch (error) {
-                    toast.error('Error downloading files')
-                  }
-                } else {
-                  // On desktop, create a zip file
-                  toast.info('Creating zip file...')
-
-                  try {
-                    const zip = new JSZip()
-                    const flightDate = format(new Date(mediaPackage.flight_date), 'yyyy-MM-dd')
-                    const folderName = `Aerostatic_${flightDate}_${mediaPackage.access_code}`
-
-                    // Track all downloads
-                    const downloadPromises = allMedia.map(item => trackDownload(item.id))
-                    await Promise.all(downloadPromises)
-
-                    // Fetch all files and add to zip
-                    for (let i = 0; i < allMedia.length; i++) {
-                      const item = allMedia[i]
-                      toast.info(`Processing ${i + 1} of ${allMedia.length} files...`)
-
-                      try {
-                        const response = await fetch(item.file_url)
-                        const blob = await response.blob()
-
-                        // Organize files by type in folders
-                        let subfolder = ''
-                        switch (item.file_type) {
-                          case 'reel':
-                            subfolder = 'Reels/'
-                            break
-                          case 'video':
-                            subfolder = 'Videos/'
-                            break
-                          case 'drone':
-                            subfolder = 'Drone/'
-                            break
-                          default:
-                            subfolder = 'Photos/'
-                        }
-
-                        zip.file(`${folderName}/${subfolder}${item.file_name}`, blob)
-                      } catch (error) {
-                        console.error(`Error processing ${item.file_name}:`, error)
+                
+                try {
+                  // Update to downloading status
+                  setPendingDownloads(prev => prev.map(d => 
+                    d.id === bulkDownloadId ? { ...d, status: 'downloading' } : d
+                  ))
+                  
+                  const zip = new JSZip()
+                  const flightDate = format(new Date(mediaPackage.flight_date), 'yyyy-MM-dd')
+                  const folderName = `Aerostatic_${flightDate}_${mediaPackage.access_code}`
+                  
+                  // Track all downloads
+                  const trackPromises = allMedia.map(item => trackDownload(item.id))
+                  await Promise.all(trackPromises)
+                  
+                  // Download all files
+                  for (let i = 0; i < allMedia.length; i++) {
+                    const item = allMedia[i]
+                    try {
+                      const response = await fetch(item.file_url)
+                      const blob = await response.blob()
+                      
+                      // Organize files by type
+                      let subfolder = ''
+                      switch (item.file_type) {
+                        case 'reel': subfolder = 'Reels/'; break
+                        case 'video': subfolder = 'Videos/'; break
+                        case 'drone': subfolder = 'Drone/'; break
+                        default: subfolder = 'Photos/'
                       }
+                      
+                      zip.file(`${folderName}/${subfolder}${item.file_name}`, blob)
+                    } catch (error) {
+                      console.error(`Error downloading ${item.file_name}:`, error)
                     }
-
-                    // Generate zip file
-                    toast.info('Generating zip file...')
-                    const zipBlob = await zip.generateAsync({
-                      type: 'blob',
-                      compression: 'DEFLATE',
-                      compressionOptions: { level: 6 }
-                    })
-
-                    // Create download link
-                    const blobUrl = window.URL.createObjectURL(zipBlob)
-                    const link = document.createElement('a')
-                    link.href = blobUrl
-                    link.download = `${folderName}.zip`
-                    link.style.display = 'none'
-                    document.body.appendChild(link)
-                    link.click()
-
-                    // Cleanup
-                    document.body.removeChild(link)
-                    window.URL.revokeObjectURL(blobUrl)
-
-                    toast.success('Zip file downloaded successfully!')
-                  } catch (error) {
-                    console.error('Zip error:', error)
-                    toast.error('Error creating zip file')
                   }
+                  
+                  // Generate zip
+                  toast.info('Creating zip file...')
+                  const zipBlob = await zip.generateAsync({
+                    type: 'blob',
+                    compression: 'DEFLATE',
+                    compressionOptions: { level: 6 }
+                  })
+                  
+                  // Download zip
+                  const blobUrl = window.URL.createObjectURL(zipBlob)
+                  const link = document.createElement('a')
+                  link.href = blobUrl
+                  link.download = `${folderName}.zip`
+                  link.style.display = 'none'
+                  document.body.appendChild(link)
+                  link.click()
+                  
+                  // Cleanup
+                  document.body.removeChild(link)
+                  window.URL.revokeObjectURL(blobUrl)
+                  
+                  // Update to completed status
+                  setPendingDownloads(prev => prev.map(d => 
+                    d.id === bulkDownloadId ? { ...d, status: 'completed' } : d
+                  ))
+                  toast.success('All media downloaded successfully!')
+                } catch (error) {
+                  console.error('Download error:', error)
+                  // Update to error status
+                  setPendingDownloads(prev => prev.map(d => 
+                    d.id === bulkDownloadId ? { ...d, status: 'error', error: 'Download failed' } : d
+                  ))
+                  toast.error('Failed to download media')
+                } finally {
+                  setIsDownloading(false)
                 }
-
-                setIsDownloading(false)
               }}
               disabled={isDownloading || allMedia.length === 0}
               className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
@@ -455,6 +480,77 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
           </div>
         </div>
       </motion.section>
+
+      {/* Main Preview - Reel Autoplay */}
+      {groupedMedia.reel && groupedMedia.reel.length > 0 && (
+        <section className="container mx-auto px-4 pb-8">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative aspect-video bg-black rounded-xl overflow-hidden shadow-2xl"
+            >
+              <video
+                key={groupedMedia.reel[0].id}
+                src={groupedMedia.reel[0].file_url}
+                className="w-full h-full object-cover cursor-pointer"
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                onClick={() => setIsMuted(!isMuted)}
+              />
+              
+              {/* Volume Indicator */}
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                className="absolute bottom-4 right-4 p-3 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-colors"
+                aria-label={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted ? (
+                  <VolumeX className="w-5 h-5 text-white" />
+                ) : (
+                  <Volume2 className="w-5 h-5 text-white" />
+                )}
+              </button>
+
+              {/* Click to unmute hint */}
+              <AnimatePresence>
+                {isMuted && showSoundHint && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                  >
+                    <motion.div 
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1 }}
+                      className="bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full"
+                    >
+                      <p className="text-white text-sm font-medium">Click for sound</p>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Download button for reel */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  downloadSingleFile(groupedMedia.reel[0])
+                }}
+                className="absolute top-4 right-4 p-3 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-colors"
+                aria-label="Download reel"
+              >
+                <Download className="w-5 h-5 text-white" />
+              </button>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Media Tabs */}
       <section className="container mx-auto px-4 pb-4">
@@ -743,6 +839,19 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
               if (fullMediaItem) {
                 downloadSingleFile(fullMediaItem)
               }
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Pending Downloads */}
+      <AnimatePresence>
+        {showDownloads && (
+          <PendingDownloads
+            downloads={pendingDownloads}
+            onClose={() => setShowDownloads(false)}
+            onRemove={(id) => {
+              setPendingDownloads(prev => prev.filter(d => d.id !== id))
             }}
           />
         )}
