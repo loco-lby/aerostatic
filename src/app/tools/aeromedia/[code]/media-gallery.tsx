@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Download, Share2, Calendar, Users, Image as ImageIcon, Video, Plane, ChevronLeft, Send, Info, Volume2, VolumeX } from 'lucide-react'
+import { Download, Share2, Calendar, Users, Image as ImageIcon, Video, Plane, ChevronLeft, Send, Info, Volume2, VolumeX, Film, Camera } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -558,8 +558,8 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
           <div className="inline-flex items-center gap-2 p-1 bg-white/5 rounded-lg">
             {[
               { id: 'all', label: 'All Media', count: allMedia.length },
-              { id: 'reel', label: 'Reel', count: (groupedMedia.reel || []).length, icon: Video },
-              { id: 'photos', label: 'Photos', count: (groupedMedia.photos || []).length, icon: ImageIcon },
+              { id: 'reel', label: 'Reel', count: (groupedMedia.reel || []).length, icon: Film },
+              { id: 'photos', label: 'Photos', count: (groupedMedia.photos || []).length, icon: Camera },
               { id: 'videos', label: 'Videos', count: (groupedMedia.videos || []).length, icon: Video },
               { id: 'drone', label: 'Drone', count: (groupedMedia.drone || []).length, icon: Plane },
             ].map((tab) => (
@@ -604,17 +604,8 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
                   onClick={() => setSelectedMedia(item)}
                 >
                   <div className="aspect-square relative">
-                    {(item.file_type === 'video' || item.file_type === 'reel') ? (
-                      <div className="w-full h-full bg-gradient-to-br from-orange-500/20 to-red-600/20 flex flex-col items-center justify-center">
-                        <Video className="w-16 h-16 text-orange-400 mb-2" />
-                        <p className="text-xs text-white/60 font-medium capitalize">{item.file_type}</p>
-                        {item.duration && (
-                          <span className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-xs">
-                            {Math.floor(item.duration / 60)}:{(item.duration % 60).toString().padStart(2, '0')}
-                          </span>
-                        )}
-                      </div>
-                    ) : (
+                    {/* Photos - Show actual image */}
+                    {item.file_type === 'photo' ? (
                       <Image
                         src={item.thumbnail_url || item.file_url}
                         alt={item.file_name}
@@ -622,6 +613,28 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       />
+                    ) : (
+                      <div className={`w-full h-full flex flex-col items-center justify-center ${
+                        item.file_type === 'reel' 
+                          ? 'bg-gradient-to-br from-purple-500/20 to-pink-500/20' 
+                          : item.file_type === 'video'
+                          ? 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20'
+                          : 'bg-gradient-to-br from-amber-500/20 to-orange-500/20'
+                      }`}>
+                        {item.file_type === 'reel' ? (
+                          <Film className="w-16 h-16 text-purple-400 mb-2" />
+                        ) : item.file_type === 'video' ? (
+                          <Video className="w-16 h-16 text-blue-400 mb-2" />
+                        ) : (
+                          <Plane className="w-16 h-16 text-amber-400 mb-2" />
+                        )}
+                        <p className="text-xs text-white/60 font-medium capitalize">{item.file_type}</p>
+                        {item.duration && (
+                          <span className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-xs">
+                            {Math.floor(item.duration / 60)}:{(item.duration % 60).toString().padStart(2, '0')}
+                          </span>
+                        )}
+                      </div>
                     )}
 
                     {/* Overlay */}
