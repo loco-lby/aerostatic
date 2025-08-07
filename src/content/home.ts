@@ -1,7 +1,7 @@
 export const homeContent = {
   hero: {
     title: "We rise to meet your moment.",
-    subtitle: "Just look up, we're Aerostatic. A media production company built for people in motion.",
+    subtitle: "Tech that works. Media that moves. Just look up, we're Aerostatic.",
     cta: "Work With Us"
   },
   
