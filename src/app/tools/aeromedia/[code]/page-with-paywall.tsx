@@ -17,7 +17,6 @@ import {
   Film,
   Share2,
   ChevronLeft,
-  ShoppingCart,
   Check,
   Lock,
   Clock,
@@ -27,9 +26,6 @@ import Link from 'next/link'
 import { MediaViewerWithPaywall } from './media-viewer-with-paywall'
 import { BulkDownloadDialog } from '@/components/bulk-download-dialog'
 import { MediaPreview } from '@/components/aeromedia/watermark-overlay'
-import { loadStripe } from '@stripe/stripe-js'
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 interface MediaItem {
   id: string
@@ -71,10 +67,7 @@ export default function MediaGalleryWithPaywall() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'reel' | 'photo' | 'video' | 'drone'>('all')
   const [isLoading, setIsLoading] = useState(true)
   const [showBulkDownload, setShowBulkDownload] = useState(false)
-  const [hasAccess, setHasAccess] = useState(false)
-  const [userEmail, setUserEmail] = useState<string>('')
-  const [checkingAccess, setCheckingAccess] = useState(true)
-  const [isProcessingCheckout, setIsProcessingCheckout] = useState(false)
+  const [hasAccess, setHasAccess] = useState(true) // Always grant access since checkout is removed
 
   const supabase = createClient()
 
@@ -106,8 +99,8 @@ export default function MediaGalleryWithPaywall() {
 
       setPackageData(pkg)
 
-      // Check access status
-      await checkAccessStatus(pkg)
+      // Always grant access since checkout is removed
+      setHasAccess(true)
 
       // Fetch media items
       const { data: items, error: itemsError } = await supabase
@@ -138,100 +131,7 @@ export default function MediaGalleryWithPaywall() {
     }
   }
 
-  const checkAccessStatus = async (pkg: MediaPackage) => {
-    setCheckingAccess(true)
-    try {
-      // Check if package is comp or doesn't require purchase
-      if (pkg.is_comp || !pkg.requires_purchase) {
-        setHasAccess(true)
-        return
-      }
 
-      // Check if user has a stored email in localStorage
-      const storedEmail = localStorage.getItem(`aeromedia_email_${pkg.id}`)
-      if (storedEmail) {
-        setUserEmail(storedEmail)
-        
-        // Check if this email has purchased
-        const { data: purchase } = await supabase
-          .from('purchases')
-          .select('*')
-          .eq('package_id', pkg.id)
-          .eq('email', storedEmail)
-          .eq('status', 'succeeded')
-          .single()
-
-        if (purchase) {
-          setHasAccess(true)
-        }
-      }
-    } finally {
-      setCheckingAccess(false)
-    }
-  }
-
-  const handlePurchase = async () => {
-    if (!packageData) return
-
-    setIsProcessingCheckout(true)
-    try {
-      // If no email stored, prompt for it
-      let email = userEmail
-      if (!email) {
-        email = prompt('Please enter your email address:') || ''
-        if (!email) {
-          setIsProcessingCheckout(false)
-          return
-        }
-        setUserEmail(email)
-        localStorage.setItem(`aeromedia_email_${packageData.id}`, email)
-      }
-
-      // Create checkout session
-      const response = await fetch('/api/aeromedia/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          packageId: packageData.id,
-          accessCode: packageData.access_code,
-          email
-        })
-      })
-
-      const data = await response.json()
-
-      if (data.alreadyPurchased) {
-        toast.success('You already have access to this package!')
-        setHasAccess(true)
-        return
-      }
-
-      if (data.error) {
-        toast.error(data.error)
-        return
-      }
-
-      // Redirect to Stripe Checkout
-      const stripe = await stripePromise
-      if (!stripe) {
-        toast.error('Failed to load payment system')
-        return
-      }
-
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: data.sessionId
-      })
-
-      if (error) {
-        toast.error(error.message || 'Failed to redirect to checkout')
-      }
-    } catch (error) {
-      console.error('Checkout error:', error)
-      toast.error('Failed to start checkout')
-    } finally {
-      setIsProcessingCheckout(false)
-    }
-  }
 
 
   const filteredMedia = mediaItems.filter(item => {
@@ -258,7 +158,7 @@ export default function MediaGalleryWithPaywall() {
 
   const isExpired = packageData && new Date(packageData.expires_at) < new Date()
 
-  if (isLoading || checkingAccess) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
@@ -304,44 +204,17 @@ export default function MediaGalleryWithPaywall() {
             </Link>
 
             <div className="flex items-center gap-4">
-              {hasAccess ? (
-                <>
-                  <Badge variant="outline" className="border-green-500/50 text-green-500">
-                    <Check className="w-3 h-3 mr-1" />
-                    Full Access
-                  </Badge>
-                  <Button
-                    onClick={() => setShowBulkDownload(true)}
-                    className="bg-orange-500 hover:bg-orange-600 text-white"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download All
-                  </Button>
-                </>
-              ) : packageData?.requires_purchase ? (
-                <>
-                  <Badge variant="outline" className="border-orange-500/50 text-orange-500">
-                    <Lock className="w-3 h-3 mr-1" />
-                    Preview Mode
-                  </Badge>
-                  <Button
-                    onClick={handlePurchase}
-                    disabled={isProcessingCheckout}
-                    className="bg-orange-500 hover:bg-orange-600 text-white"
-                  >
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Purchase & Download - ${((packageData.price_cents || 0) / 100).toFixed(2)}
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  onClick={() => setShowBulkDownload(true)}
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download All
-                </Button>
-              )}
+              <Badge variant="outline" className="border-green-500/50 text-green-500">
+                <Check className="w-3 h-3 mr-1" />
+                Full Access
+              </Badge>
+              <Button
+                onClick={() => setShowBulkDownload(true)}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download All
+              </Button>
             </div>
           </div>
         </div>
@@ -404,20 +277,6 @@ export default function MediaGalleryWithPaywall() {
 
       {/* Media Grid */}
       <div className="container mx-auto px-4 pb-12">
-        {!hasAccess && packageData?.requires_purchase && (
-          <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-3">
-              <Lock className="w-5 h-5 text-orange-500 flex-shrink-0" />
-              <div>
-                <p className="text-white font-medium">Preview Mode</p>
-                <p className="text-white/60 text-sm">
-                  Purchase to download original quality photos and videos. 
-                  Your download links will be available for {getDaysRemaining()} days.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
         <motion.div 
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
@@ -442,7 +301,7 @@ export default function MediaGalleryWithPaywall() {
                     src={item.thumbnail_url || item.file_url}
                     alt={item.file_name}
                     type={item.file_type === 'photo' || item.file_type === 'drone' ? 'photo' : 'video'}
-                    showWatermark={!hasAccess && packageData?.requires_purchase === true}
+                    showWatermark={false}
                     className="w-full h-full object-cover"
                   />
                   
@@ -459,11 +318,7 @@ export default function MediaGalleryWithPaywall() {
 
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    {hasAccess ? (
-                      <Download className="w-8 h-8 text-white" />
-                    ) : (
-                      <Lock className="w-8 h-8 text-orange-500" />
-                    )}
+                    <Download className="w-8 h-8 text-white" />
                   </div>
                 </div>
               </motion.div>
@@ -479,10 +334,10 @@ export default function MediaGalleryWithPaywall() {
             media={selectedMedia}
             allMedia={filteredMedia}
             packageData={packageData!}
-            hasAccess={hasAccess}
-            userEmail={userEmail}
+            hasAccess={true}
+            userEmail={''}
             onClose={() => setSelectedMedia(null)}
-            onPurchase={handlePurchase}
+            onPurchase={() => {}}
           />
         )}
       </AnimatePresence>

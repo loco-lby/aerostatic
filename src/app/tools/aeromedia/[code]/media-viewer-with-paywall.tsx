@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { X, Download, ChevronLeft, ChevronRight, Expand, Lock, ShoppingCart } from 'lucide-react'
+import { X, Download, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MediaPreview } from '@/components/aeromedia/watermark-overlay'
 import { toast } from 'sonner'
-import { loadStripe } from '@stripe/stripe-js'
 
 interface MediaItem {
   id: string
@@ -40,7 +39,6 @@ interface MediaViewerWithPaywallProps {
   onPurchase: () => void
 }
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 export function MediaViewerWithPaywall({ 
   media, 
@@ -76,10 +74,6 @@ export function MediaViewerWithPaywall({
   }, [navigatePrevious, navigateNext, onClose])
 
   const handleDownload = async () => {
-    if (!hasAccess) {
-      toast.error('Please purchase this package to download')
-      return
-    }
 
     setIsLoading(true)
     try {
@@ -91,7 +85,7 @@ export function MediaViewerWithPaywall({
           packageId: packageData.id,
           mediaItemId: currentMedia.id,
           eventType: 'download_started',
-          email: userEmail
+          email: ''
         })
       })
 
@@ -180,27 +174,16 @@ export function MediaViewerWithPaywall({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {hasAccess ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleDownload}
-                  disabled={isLoading}
-                  className="border-white/20 text-white hover:bg-white/20"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  Download ({formatFileSize(currentMedia.file_size)})
-                </Button>
-              ) : (
-                <Button
-                  size="sm"
-                  onClick={onPurchase}
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Purchase & Download - ${((packageData.price_cents || 0) / 100).toFixed(2)}
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownload}
+                disabled={isLoading}
+                className="border-white/20 text-white hover:bg-white/20"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download ({formatFileSize(currentMedia.file_size)})
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
@@ -221,24 +204,9 @@ export function MediaViewerWithPaywall({
               thumbnail={currentMedia.thumbnail_url}
               alt={currentMedia.file_name}
               type={isVideo ? 'video' : 'photo'}
-              showWatermark={!hasAccess && packageData.requires_purchase}
+              showWatermark={false}
               className="max-w-full max-h-[80vh] object-contain"
             />
-
-            {/* Lock overlay for non-purchasers */}
-            {!hasAccess && packageData.requires_purchase && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
-                <div className="bg-black/80 backdrop-blur-sm p-6 rounded-lg text-center">
-                  <Lock className="h-12 w-12 text-orange-500 mx-auto mb-4" />
-                  <p className="text-white text-lg font-semibold mb-2">
-                    Purchase to Download
-                  </p>
-                  <p className="text-white/80 text-sm">
-                    Get instant access to all photos and videos
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
