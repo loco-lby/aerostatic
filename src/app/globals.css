@@ -2,6 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Font Declarations - The Picnic Club */
+
+/* Thin */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclub-thin-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclub-thin-webfont.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Thin Italic */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclubitalic-thinitalic-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclubitalic-thinitalic-webfont.woff') format('woff');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Light */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclub-light-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclub-light-webfont.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light Italic */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclubitalic-lightitalic-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclubitalic-lightitalic-webfont.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Regular */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclub-regular-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclub-regular-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Regular Italic */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclubitalic-regularitalic-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclubitalic-regularitalic-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclub-bold-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclub-bold-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclubitalic-bolditalic-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclubitalic-bolditalic-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Extra Bold */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclub-extrabold-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclub-extrabold-webfont.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Extra Bold Italic */
+@font-face {
+  font-family: 'Picnic Table';
+  src: url('/fonts/thepicnicclubitalic-extrabolditalic-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclubitalic-extrabolditalic-webfont.woff') format('woff');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Script variant as separate font-family */
+@font-face {
+  font-family: 'Picnic Script';
+  src: url('/fonts/thepicnicclub-script-webfont.woff2') format('woff2'),
+       url('/fonts/thepicnicclub-script-webfont.woff') format('woff'),
+       url('/fonts/ThePicnicClub-Script.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     /* Cinematic Dark Mode - Pure black with warm accents */
@@ -188,6 +301,14 @@
   
   .font-gin {
     font-family: "gin", serif;
+  }
+  
+  .font-picnic {
+    font-family: "Picnic Table", cursive;
+  }
+  
+  .font-picnic-script {
+    font-family: "Picnic Script", cursive;
   }
 
   /* Gradient text utilities */

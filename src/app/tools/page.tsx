@@ -4,30 +4,90 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 import {
     ArrowRight,
-    Smartphone,
-    Users,
-    Calendar,
-    MessageSquare,
-    Shield,
-    Cloud,
-    Download,
-    Github,
-    ExternalLink,
-    Clock,
-    Settings,
-    Database,
-    Video,
+    Play,
     Film,
-    FolderOpen,
-    Zap,
-    FileText,
-    Workflow
+    Camera,
+    Video,
+    Globe,
+    Mountain,
+    Sparkles,
+    Users,
+    ExternalLink,
+    Package,
+    Smartphone,
+    Cloud,
+    Plane,
+    MapPin,
+    Calendar,
+    Shield,
+    MessageSquare,
+    Download,
+    Check
 } from "lucide-react";
 import Link from "next/link";
 import { useContent } from "@/hooks/useContent";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
+
+// Tool definitions
+const tools = [
+    {
+        id: "aeromedia",
+        title: "AeroMedia",
+        tagline: "Turn chaos into stories worth telling",
+        description: "Professional media management and delivery platform. Organize, edit, and publish your content faster than ever.",
+        icon: Film,
+        status: "live",
+        href: "/tools/aeromedia",
+        features: [
+            "Smart media organization",
+            "Client delivery portals",
+            "Watermarked previews",
+            "Secure payment processing"
+        ],
+        techStack: ["Next.js", "Supabase", "Stripe", "TypeScript"],
+        color: "from-orange-500 to-red-600"
+    },
+    {
+        id: "travelpact",
+        title: "TravelPact",
+        tagline: "Coordinate trips that actually happen",
+        description: "Group travel planning made simple. Real-time collaboration, interactive maps, and smart scheduling for crews on the move.",
+        icon: MapPin,
+        status: "live",
+        href: "https://travelpact.io",
+        external: true,
+        features: [
+            "Interactive trip planning",
+            "Real-time collaboration",
+            "Smart itinerary building",
+            "Group coordination tools"
+        ],
+        techStack: ["Next.js", "Supabase", "Mapbox", "OpenAI"],
+        color: "from-blue-500 to-purple-600"
+    },
+    {
+        id: "aerostatus",
+        title: "AeroStatus",
+        tagline: "Operations software that survives reality",
+        description: "Built for balloon operations but works for any field team. Real-time coordination, equipment tracking, and digital checklists.",
+        icon: Smartphone,
+        status: "beta",
+        href: "/tools/aerostatus",
+        features: [
+            "Real-time crew coordination",
+            "Equipment tracking",
+            "Digital checklists",
+            "Works offline"
+        ],
+        techStack: ["React Native", "Expo", "Supabase", "TypeScript"],
+        color: "from-green-500 to-teal-600",
+        platforms: ["iOS", "Android"]
+    }
+];
 
 export default function ToolsPage() {
     const content = useContent();
@@ -37,271 +97,213 @@ export default function ToolsPage() {
             <Header />
 
             {/* Hero Section */}
-            <section className="pt-32 pb-20 px-6">
-                <div className="container mx-auto max-w-4xl text-center">
-                    <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
-                        FIELD-TESTED SOFTWARE
-                    </Badge>
-                    <h1 className="text-5xl md:text-7xl font-gelica font-bold text-white mb-6">
-                        Tools That Work
-                    </h1>
-                    <p className="text-2xl md:text-3xl text-orange-400 font-medium mb-8">
-                        Built in the field, not the boardroom
-                    </p>
-                    <p className="text-xl text-white/70 max-w-3xl mx-auto">
-                        Two flagship tools. One for coordinating chaos. One for turning footage into stories.
-                        Both tested at 4AM launches, equipment failures, and real operations.
-                    </p>
+            <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-purple-600/10" />
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="container mx-auto max-w-7xl relative z-10"
+                >
+                    <div className="text-center mb-16">
+                        <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
+                            Field-Tested Software
+                        </Badge>
+                        <h1 className="text-5xl md:text-7xl font-gelica font-bold text-white mb-6">
+                            Tools That Work
+                        </h1>
+                        <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto">
+                            Built in the field, not the boardroom. Software that handles real operations, 
+                            tested at 4AM launches and equipment failures.
+                        </p>
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* Tools Grid */}
+            <section className="py-20 px-6 bg-white/[0.02]">
+                <div className="container mx-auto max-w-7xl">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
+                            Our Software Suite
+                        </h2>
+                        <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                            Three flagship tools, each solving real problems we face every day
+                        </p>
+                    </motion.div>
+
+                    <div className="grid lg:grid-cols-3 gap-8">
+                        {tools.map((tool, index) => {
+                            const Icon = tool.icon;
+                            return (
+                                <motion.div
+                                    key={tool.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    viewport={{ once: true }}
+                                >
+                                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full group relative overflow-hidden">
+                                        {/* Gradient accent */}
+                                        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${tool.color}`} />
+                                        
+                                        <CardHeader className="pb-4">
+                                            <div className="flex items-start justify-between mb-4">
+                                                <Icon className="w-12 h-12 text-orange-400 group-hover:scale-110 transition-transform" />
+                                                <Badge 
+                                                    variant={tool.status === 'live' ? 'default' : 'outline'}
+                                                    className={tool.status === 'live' 
+                                                        ? 'bg-green-500/20 text-green-400 border-green-400/30' 
+                                                        : 'text-yellow-400 border-yellow-400/30'
+                                                    }
+                                                >
+                                                    {tool.status === 'live' ? 'Live' : 'Beta'}
+                                                </Badge>
+                                            </div>
+                                            <CardTitle className="text-2xl font-gelica text-white mb-2">
+                                                {tool.title}
+                                            </CardTitle>
+                                            <p className="text-lg text-orange-400 font-medium">
+                                                {tool.tagline}
+                                            </p>
+                                        </CardHeader>
+                                        <CardContent className="space-y-6">
+                                            <p className="text-white/70">
+                                                {tool.description}
+                                            </p>
+                                            
+                                            <ul className="space-y-2">
+                                                {tool.features.map((feature, i) => (
+                                                    <li key={i} className="flex items-center gap-2 text-sm text-white/60">
+                                                        <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                                                        {feature}
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            {tool.platforms && (
+                                                <div className="flex gap-2">
+                                                    {tool.platforms.map(platform => (
+                                                        <Badge 
+                                                            key={platform}
+                                                            variant="outline" 
+                                                            className="text-white/60 border-white/20"
+                                                        >
+                                                            {platform}
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            <div className="pt-4">
+                                                <Button
+                                                    className={`w-full bg-gradient-to-r ${tool.color} hover:opacity-90 text-white font-medium`}
+                                                    asChild
+                                                >
+                                                    <Link 
+                                                        href={tool.href}
+                                                        target={tool.external ? "_blank" : undefined}
+                                                        rel={tool.external ? "noopener noreferrer" : undefined}
+                                                    >
+                                                        {tool.status === 'live' ? 'Access Now' : 'Join Beta'}
+                                                        {tool.external ? (
+                                                            <ExternalLink className="ml-2 w-4 h-4" />
+                                                        ) : (
+                                                            <ArrowRight className="ml-2 w-4 h-4" />
+                                                        )}
+                                                    </Link>
+                                                </Button>
+                                            </div>
+
+                                            <div className="pt-4 border-t border-white/10">
+                                                <p className="text-xs text-white/40 mb-2">Built with:</p>
+                                                <div className="flex flex-wrap gap-1">
+                                                    {tool.techStack.map(tech => (
+                                                        <span 
+                                                            key={tech}
+                                                            className="text-xs px-2 py-1 bg-white/5 rounded text-white/50"
+                                                        >
+                                                            {tech}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
-            {/* AeroStatus Section */}
-            <section className="py-20 px-6 bg-white/[0.02]">
+            {/* Tech Philosophy */}
+            <section className="py-20 px-6">
                 <div className="container mx-auto max-w-6xl">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="grid lg:grid-cols-2 gap-12 items-center"
+                    >
                         <div>
                             <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
-                                TEAM COORDINATION
+                                Our Approach
                             </Badge>
-                            <h2 className="text-4xl md:text-6xl font-gelica font-bold text-white mb-6">
-                                AeroStatus
+                            <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
+                                Built By Operators, For Operators
                             </h2>
-                            <p className="text-2xl text-orange-400 font-medium mb-8">
-                                Operations software that survives reality
-                            </p>
-                            <p className="text-lg text-white/70 leading-relaxed mb-8">
-                                Not another app pitched by consultants. AeroStatus was born from pre-dawn launches,
-                                chase crew chaos, and the real needs of working operations. Every feature
-                                exists because we needed it ourselves.
-                            </p>
-
-                            <div className="space-y-4 mb-12">
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                                    <span className="text-white">Real-time crew coordination with offline mode</span>
-                                </div>
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                                    <span className="text-white">Equipment tracking that actually gets used</span>
-                                </div>
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                                    <span className="text-white">Digital checklists that don&apos;t slow you down</span>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <Button
-                                    size="lg"
-                                    className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
-                                >
-                                    Request Beta Access
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                                <Button
-                                    size="lg"
-                                    variant="outline"
-                                    className="border-white/20 text-white hover:bg-white/10 px-8 py-4"
-                                >
-                                    View Documentation
-                                </Button>
+                            <div className="space-y-4 text-lg text-white/70">
+                                <p>
+                                    We&apos;re not consultants pitching solutions. We&apos;re the ones in the field at dawn, 
+                                    dealing with equipment failures, coordinating crews, and managing media chaos.
+                                </p>
+                                <p>
+                                    Every feature exists because we needed it. Every workflow is tested in real operations. 
+                                    No bloat, no buzzwords, just tools that work when you need them.
+                                </p>
+                                <p>
+                                    From hot air balloon operations to adventure filmmaking, our software handles the 
+                                    unpredictable reality of field work.
+                                </p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <Card className="bg-white/5 border-white/10">
-                                <CardHeader>
-                                    <MessageSquare className="w-8 h-8 text-orange-400 mb-2" />
-                                    <CardTitle className="text-white text-lg">Live Ops Log</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-white/60 text-sm">Centralized communication with role-based messaging</p>
-                                </CardContent>
-                            </Card>
-                            <Card className="bg-white/5 border-white/10">
-                                <CardHeader>
-                                    <Calendar className="w-8 h-8 text-orange-400 mb-2" />
-                                    <CardTitle className="text-white text-lg">Crew Scheduling</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-white/60 text-sm">Automated notifications and assignments</p>
-                                </CardContent>
-                            </Card>
-                            <Card className="bg-white/5 border-white/10">
-                                <CardHeader>
-                                    <Shield className="w-8 h-8 text-orange-400 mb-2" />
-                                    <CardTitle className="text-white text-lg">Safety First</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-white/60 text-sm">Digital checklists for compliance</p>
-                                </CardContent>
-                            </Card>
-                            <Card className="bg-white/5 border-white/10">
-                                <CardHeader>
-                                    <Cloud className="w-8 h-8 text-orange-400 mb-2" />
-                                    <CardTitle className="text-white text-lg">Works Offline</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-white/60 text-sm">Critical features work without signal</p>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-
-                    {/* Tech Stack */}
-                    <div className="mt-16 p-6 bg-white/5 border border-white/10 rounded-xl">
-                        <h3 className="text-lg font-bold text-white mb-4">Built With:</h3>
-                        <div className="flex flex-wrap gap-3">
-                            <Badge variant="outline" className="text-white/70 border-white/30">React Native</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">TypeScript</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">Supabase</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">Expo</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">Offline-First</Badge>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* AeroMedia Section */}
-            <section className="py-20 px-6">
-                <div className="container mx-auto max-w-6xl">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div className="order-2 lg:order-1">
-                            <div className="grid grid-cols-2 gap-4">
-                                <Card className="bg-white/5 border-white/10">
-                                    <CardHeader>
-                                        <Film className="w-8 h-8 text-orange-400 mb-2" />
-                                        <CardTitle className="text-white text-lg">Auto-Organize</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-white/60 text-sm">Smart folders and metadata tagging</p>
-                                    </CardContent>
+                            <div className="space-y-4">
+                                <Card className="bg-white/5 border-white/10 p-6">
+                                    <Shield className="w-8 h-8 text-orange-400 mb-3" />
+                                    <h3 className="text-lg font-gelica text-white mb-2">Field Tested</h3>
+                                    <p className="text-sm text-white/60">Every feature proven in real operations</p>
                                 </Card>
-                                <Card className="bg-white/5 border-white/10">
-                                    <CardHeader>
-                                        <Workflow className="w-8 h-8 text-orange-400 mb-2" />
-                                        <CardTitle className="text-white text-lg">Quick Edits</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-white/60 text-sm">Timeline-based rough cut tools</p>
-                                    </CardContent>
+                                <Card className="bg-white/5 border-white/10 p-6">
+                                    <Cloud className="w-8 h-8 text-orange-400 mb-3" />
+                                    <h3 className="text-lg font-gelica text-white mb-2">Offline First</h3>
+                                    <p className="text-sm text-white/60">Works when cell towers don&apos;t</p>
                                 </Card>
-                                <Card className="bg-white/5 border-white/10">
-                                    <CardHeader>
-                                        <FileText className="w-8 h-8 text-orange-400 mb-2" />
-                                        <CardTitle className="text-white text-lg">Story Templates</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-white/60 text-sm">Field-tested narrative structures</p>
-                                    </CardContent>
+                            </div>
+                            <div className="space-y-4 pt-8">
+                                <Card className="bg-white/5 border-white/10 p-6">
+                                    <Users className="w-8 h-8 text-orange-400 mb-3" />
+                                    <h3 className="text-lg font-gelica text-white mb-2">Real Workflows</h3>
+                                    <p className="text-sm text-white/60">Designed for how teams actually work</p>
                                 </Card>
-                                <Card className="bg-white/5 border-white/10">
-                                    <CardHeader>
-                                        <Zap className="w-8 h-8 text-orange-400 mb-2" />
-                                        <CardTitle className="text-white text-lg">One-Click Export</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-white/60 text-sm">Optimized for every platform</p>
-                                    </CardContent>
+                                <Card className="bg-white/5 border-white/10 p-6">
+                                    <Sparkles className="w-8 h-8 text-orange-400 mb-3" />
+                                    <h3 className="text-lg font-gelica text-white mb-2">No Fluff</h3>
+                                    <p className="text-sm text-white/60">Features that matter, nothing else</p>
                                 </Card>
                             </div>
                         </div>
-
-                        <div className="order-1 lg:order-2">
-                            <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
-                                MEDIA ENGINE
-                            </Badge>
-                            <h2 className="text-4xl md:text-6xl font-gelica font-bold text-white mb-6">
-                                AeroMedia
-                            </h2>
-                            <p className="text-2xl text-orange-400 font-medium mb-8">
-                                Turn chaos into stories worth telling
-                            </p>
-                            <p className="text-lg text-white/70 leading-relaxed mb-8">
-                                You shoot hundreds of clips. Most die on a hard drive. AeroMedia helps you organize,
-                                edit, and publish faster than ever. Built for creators who work while they create.
-                            </p>
-
-                            <div className="space-y-4 mb-12">
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                                    <span className="text-white">Auto-import and smart organization</span>
-                                </div>
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                                    <span className="text-white">Story templates that actually work</span>
-                                </div>
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                                    <span className="text-white">Export optimized for every platform</span>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <Button
-                                    size="lg"
-                                    className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
-                                >
-                                    Join Waitlist
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                                <Button
-                                    size="lg"
-                                    variant="outline"
-                                    className="border-white/20 text-white hover:bg-white/10 px-8 py-4"
-                                >
-                                    Watch Demo
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Tech Stack */}
-                    <div className="mt-16 p-6 bg-white/5 border border-white/10 rounded-xl">
-                        <h3 className="text-lg font-bold text-white mb-4">Built With:</h3>
-                        <div className="flex flex-wrap gap-3">
-                            <Badge variant="outline" className="text-white/70 border-white/30">Electron</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">FFmpeg</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">React</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">AI-Powered</Badge>
-                            <Badge variant="outline" className="text-white/70 border-white/30">Cross-Platform</Badge>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Coming Soon Section */}
-            <section className="py-20 px-6 bg-white/[0.02]">
-                <div className="container mx-auto max-w-6xl">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-gelica font-bold text-white mb-4">
-                            More Tools in Development
-                        </h2>
-                        <p className="text-lg text-white/70 max-w-2xl mx-auto">
-                            We build what we need. When it&apos;s ready, you&apos;ll know.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                        <Card className="bg-white/5 border-white/10">
-                            <CardHeader>
-                                <CardTitle className="text-white text-xl">TimeCapsule</CardTitle>
-                                <CardDescription className="text-white/60">Long-term project archive</CardDescription>
-                            </CardHeader>
-                        </Card>
-                        <Card className="bg-white/5 border-white/10">
-                            <CardHeader>
-                                <CardTitle className="text-white text-xl">AeroKnot</CardTitle>
-                                <CardDescription className="text-white/60">Equipment maintenance tracker</CardDescription>
-                            </CardHeader>
-                        </Card>
-                        <Card className="bg-white/5 border-white/10">
-                            <CardHeader>
-                                <CardTitle className="text-white text-xl">TravelPact</CardTitle>
-                                <CardDescription className="text-white/60">Crew travel coordination</CardDescription>
-                            </CardHeader>
-                        </Card>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -309,37 +311,33 @@ export default function ToolsPage() {
             <section className="py-20 px-6">
                 <div className="container mx-auto max-w-4xl text-center">
                     <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-6">
-                        Built by operators, for operators
+                        Need Custom Tools?
                     </h2>
                     <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
-                        We&apos;re not consultants. We fly, we build, we test.
-                        Request access to the tools that actually work.
+                        We build software for unique operations. If you&apos;re doing something different 
+                        and need tools that actually work, let&apos;s talk.
                     </p>
-
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button
                             size="lg"
-                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                            asChild
                         >
-                            Request Beta Access
-                            <ArrowRight className="ml-2 h-5 w-5" />
+                            <Link href="/work-with-us">
+                                Build Something Together
+                                <ArrowRight className="ml-2 w-5 h-5" />
+                            </Link>
                         </Button>
                         <Button
                             size="lg"
                             variant="outline"
-                            className="border-white/20 text-white hover:bg-white/10 px-8 py-4"
+                            className="border-white/20 text-white hover:bg-white/10"
                             asChild
                         >
-                            <Link href="/build-with-us">
-                                Need Custom Tools?
+                            <Link href="mailto:info@aerostatic.io">
+                                Get In Touch
                             </Link>
                         </Button>
-                    </div>
-
-                    <div className="mt-12 p-6 bg-white/5 border border-white/10 rounded-xl">
-                        <p className="text-white/60 text-sm">
-                            Questions? Email us at <span className="text-orange-400">info@aerostatic.io</span>
-                        </p>
                     </div>
                 </div>
             </section>

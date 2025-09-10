@@ -77,6 +77,8 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         gelica: ["gelica", "sans-serif"],
         gin: ["gin", "serif"],
+        picnic: ["Picnic Table", "cursive"],
+        "picnic-script": ["Picnic Script", "cursive"],
       },
     },
   },

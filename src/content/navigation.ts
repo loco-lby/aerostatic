@@ -1,11 +1,7 @@
 export const navigationContent = {
   menuItems: [
-    { name: "Media", href: "/media" },
-    { name: "Tech", href: "/tech" },
-    { name: "Events", href: "/events" },
-    { name: "About", href: "/about" },
-    
-    // { name: "Collabs", href: "/collabs" },
+    { name: "Productions", href: "/productions" },
+    { name: "Technologies", href: "/technologies" },
   ],
   cta: "Work With Us",
   secondaryCta: {

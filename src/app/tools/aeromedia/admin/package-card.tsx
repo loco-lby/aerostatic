@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Calendar, Users, Upload, Trash2, Copy, Send, Loader2, FileVideo, FileImage, Settings } from 'lucide-react'
+import { Calendar, Users, Upload, Trash2, Copy, Send, Loader2, FileVideo, FileImage, Settings, DollarSign } from 'lucide-react'
 import { format } from 'date-fns'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
@@ -21,6 +21,9 @@ interface MediaPackage {
   expires_at: string
   is_active: boolean
   access_count: number
+  price_cents?: number | null
+  requires_purchase?: boolean
+  is_comp?: boolean
   media_items?: { count: number }[]
 }
 
@@ -31,6 +34,7 @@ interface PackageCardProps {
   onUploadClick: (pkg: MediaPackage) => void
   onDelete: (id: string) => void
   onManageMedia: (pkg: MediaPackage) => void
+  onSettings?: (pkg: MediaPackage) => void
 }
 
 interface UploadingFile {
@@ -47,7 +51,7 @@ const ALLOWED_TYPES = {
   'video/quicktime': ['.mov'],
 }
 
-export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDelete, onManageMedia }: PackageCardProps) {
+export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDelete, onManageMedia, onSettings }: PackageCardProps) {
   const [isDragActive, setIsDragActive] = useState(false)
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
@@ -309,10 +313,21 @@ export function PackageCard({ pkg, onCopyCode, onSendEmail, onUploadClick, onDel
               variant="outline"
               size="sm"
               onClick={() => onManageMedia(pkg)}
-              title="Manage media"
+              title="Manage media files"
             >
-              <Settings className="w-4 h-4" />
+              <FileImage className="w-4 h-4" />
             </Button>
+            {onSettings && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onSettings(pkg)}
+                title="Package settings & pricing"
+                className={pkg.requires_purchase ? "text-green-400 hover:text-green-300" : ""}
+              >
+                {pkg.requires_purchase ? <DollarSign className="w-4 h-4" /> : <Settings className="w-4 h-4" />}
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"

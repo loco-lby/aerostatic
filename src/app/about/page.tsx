@@ -289,6 +289,128 @@ export default function AboutPage() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Supporting Team */}
+          <div className="mt-20">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-gelica font-bold mb-4">
+                The Crew
+              </h3>
+              <p className="text-lg text-white/70 max-w-2xl mx-auto">
+                Every successful flight takes a skilled team. Meet the professionals who make it happen.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+              {/* Emily */}
+              <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-200">
+                <CardHeader className="pb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
+                    <span className="text-xl font-gelica font-bold text-white">E</span>
+                  </div>
+                  <CardTitle className="text-xl font-gelica text-white text-center">Emily</CardTitle>
+                  <CardDescription className="text-blue-400 text-center text-sm font-medium">
+                    Commercial Pilot
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/70 text-sm leading-relaxed text-center">
+                    FAA certified commercial pilot with expertise in passenger operations and cross-country navigation.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Patrick */}
+              <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-300">
+                <CardHeader className="pb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
+                    <span className="text-xl font-gelica font-bold text-white">P</span>
+                  </div>
+                  <CardTitle className="text-xl font-gelica text-white text-center">Patrick</CardTitle>
+                  <CardDescription className="text-green-400 text-center text-sm font-medium">
+                    Crew Chief
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/70 text-sm leading-relaxed text-center">
+                    Master of logistics and equipment. Ensures every piece of gear is where it needs to be, when it needs to be there.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Brandon */}
+              <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-400">
+                <CardHeader className="pb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
+                    <span className="text-xl font-gelica font-bold text-white">B</span>
+                  </div>
+                  <CardTitle className="text-xl font-gelica text-white text-center">Brandon</CardTitle>
+                  <CardDescription className="text-purple-400 text-center text-sm font-medium">
+                    Camera Operator
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/70 text-sm leading-relaxed text-center">
+                    Captures every moment with cinematic precision. Expert in aerial cinematography and dynamic storytelling.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Nate */}
+              <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-500">
+                <CardHeader className="pb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
+                    <span className="text-xl font-gelica font-bold text-white">N</span>
+                  </div>
+                  <CardTitle className="text-xl font-gelica text-white text-center">Nate</CardTitle>
+                  <CardDescription className="text-cyan-400 text-center text-sm font-medium">
+                    Commercial Drone Pilot
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/70 text-sm leading-relaxed text-center">
+                    Part 107 certified. Delivers stunning aerial perspectives with precision drone operations.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* AJ */}
+              <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-600">
+                <CardHeader className="pb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
+                    <span className="text-xl font-gelica font-bold text-white">A</span>
+                  </div>
+                  <CardTitle className="text-xl font-gelica text-white text-center">AJ</CardTitle>
+                  <CardDescription className="text-red-400 text-center text-sm font-medium">
+                    Video Editor
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/70 text-sm leading-relaxed text-center">
+                    Transforms raw footage into compelling narratives. Master of post-production and visual effects.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Kimball */}
+              <Card className="glass hover:glass-warm smooth-transition hover-lift group animate-fade-in-up animation-delay-700">
+                <CardHeader className="pb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform mx-auto">
+                    <span className="text-xl font-gelica font-bold text-white">K</span>
+                  </div>
+                  <CardTitle className="text-xl font-gelica text-white text-center">Kimball</CardTitle>
+                  <CardDescription className="text-indigo-400 text-center text-sm font-medium">
+                    Programmer
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/70 text-sm leading-relaxed text-center">
+                    Full-stack developer building the tools that power our operations. From field apps to media platforms.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </section>
 

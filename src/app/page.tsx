@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Camera, Palette, Wind, Globe, Users, Shield, Award, Play } from 'lucide-react';
+import { ArrowRight, Palette, Wind, Globe, Users, Shield, Award, Play } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
@@ -185,8 +185,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* CTA Button */}
+          <div className="flex justify-center">
             <Button
               asChild
               size="lg"
@@ -195,17 +195,6 @@ export default function HomePage() {
               <Link href="/work-with-us">
                 {content.home.hero.cta}
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-12 py-6 text-lg"
-            >
-              <Link href="/tools/aeromedia">
-                Access Your Photos
-                <Camera className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
@@ -291,6 +280,120 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* About Section */}
+      <section
+        id="about"
+        data-animate
+        className={`py-24 px-6 bg-gradient-to-b from-black via-black/95 to-black ${getAnimationClass('about')}`}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-4">
+              About Aerostatic
+            </Badge>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-6">
+              Meet the Crew
+            </h2>
+            <p className="text-lg font-sans text-white/60 max-w-3xl mx-auto">
+              Industry born balloon crew blending aircraft with storycraft
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+            <div className="space-y-8">
+              <div className="space-y-6 text-lg font-sans text-white/70 leading-relaxed">
+                <p>
+                  Aerostatic didn&apos;t start with a pitch deck. For <span className="font-picnic italic text-orange-400">Colby</span>, it began on a stepping stool he used to reach the burner when he was 10. For <span className="font-picnic italic text-orange-400">Matteo</span>, it started with a pieced together trailer, a stinky balloon, and a weird obsession with whatever this is that we do.
+                </p>
+                <p>
+                  We film as we go, partly to share the experience, partly so we don&apos;t forget how wild this all felt at the beginning.
+                </p>
+                <p>
+                  Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry leading safety standards.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="grid grid-cols-2 gap-6">
+                {/* Team Member Cards */}
+                <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <CardHeader className="pb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-600 rounded-full mb-4 flex items-center justify-center">
+                      <Users className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl font-gelica font-bold text-white">Colby</CardTitle>
+                    <p className="text-sm font-sans text-orange-400">Third-Gen Pilot & Creative</p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm font-sans text-white/70">
+                      Certified instructor and the brain behind design, media, and tech development.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <CardHeader className="pb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-600 rounded-full mb-4 flex items-center justify-center">
+                      <Shield className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl font-gelica font-bold text-white">Matteo</CardTitle>
+                    <p className="text-sm font-sans text-orange-400">Pilot & Client Relations</p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm font-sans text-white/70">
+                      Gifted communicator with roots in music, crafting custom activations that resonate.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Contractor Badges */}
+              <div className="mt-8 space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-white/70 border-white/20 px-3 py-1">
+                    <span className="font-medium">Will Macdonald</span>
+                    <span className="ml-2 text-white/50">Developer</span>
+                  </Badge>
+                  <Badge variant="outline" className="text-white/70 border-white/20 px-3 py-1">
+                    <span className="font-medium">Sam Barsketis</span>
+                    <span className="ml-2 text-white/50">Designer</span>
+                  </Badge>
+                </div>
+                <div className="text-xs font-sans text-white/40 italic">and growing...</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Values Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: "Safety First",
+                description: "Industry-leading standards in every flight"
+              },
+              {
+                icon: Palette,
+                title: "Story Focused",
+                description: "Every activation tells a unique narrative"
+              },
+              {
+                icon: Award,
+                title: "Experience Driven",
+                description: "Generations of expertise in the sky"
+              }
+            ].map((value, index) => (
+              <div key={index} className="text-center">
+                <value.icon className="w-12 h-12 text-orange-400 mx-auto mb-4" />
+                <h3 className="text-xl font-gelica font-bold text-white mb-2">{value.title}</h3>
+                <p className="font-sans text-white/60 text-sm">{value.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>

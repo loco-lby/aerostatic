@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Upload, Package, Calendar, Users, Download, Plus, LogOut, Trash2 } from 'lucide-react'
+import { Upload, Package, Calendar, Users, Download, Plus, LogOut, Trash2, Settings, Film } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,6 +24,7 @@ import { NewPackageForm } from './new-package-form'
 import { MediaUploader } from './media-uploader'
 import { PackageCard } from './package-card'
 import { MediaManager } from './media-manager'
+import { PackageDetailDialog } from './package-detail-dialog'
 import { useRouter } from 'next/navigation'
 
 interface MediaPackage {
@@ -34,18 +36,24 @@ interface MediaPackage {
   expires_at: string
   is_active: boolean
   access_count: number
+  price_cents?: number | null
+  requires_purchase?: boolean
+  is_comp?: boolean
   media_items?: { count: number }[]
 }
 
 interface AdminDashboardProps {
   recentPackages: MediaPackage[]
   stats: any
+  projects?: any[]
+  templates?: any[]
 }
 
-export function AdminDashboard({ recentPackages, stats }: AdminDashboardProps) {
+export function AdminDashboard({ recentPackages, stats, projects = [], templates = [] }: AdminDashboardProps) {
   const [showNewPackage, setShowNewPackage] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState<MediaPackage | null>(null)
   const [managingPackage, setManagingPackage] = useState<MediaPackage | null>(null)
+  const [detailPackage, setDetailPackage] = useState<MediaPackage | null>(null)
   const [packages, setPackages] = useState(recentPackages)
   const supabase = createClient()
   const router = useRouter()
@@ -53,6 +61,17 @@ export function AdminDashboard({ recentPackages, stats }: AdminDashboardProps) {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/tools/aeromedia')
+  }
+
+  const loadPackages = async () => {
+    const { data } = await supabase
+      .from('media_packages')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(10)
+    if (data) {
+      setPackages(data)
+    }
   }
 
   const handlePackageCreated = (newPackage: MediaPackage) => {
@@ -89,7 +108,7 @@ export function AdminDashboard({ recentPackages, stats }: AdminDashboardProps) {
             const { error: storageError } = await supabase.storage
               .from('aeromedia-media')
               .remove([filePath])
-            
+
             if (storageError) {
               console.error(`Failed to delete file ${filePath}:`, storageError)
             }
@@ -163,79 +182,107 @@ The Aerostatic Team
         </div>
       </header>
 
-      {/* Stats Overview */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="p-6 bg-white/5 border-white/10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Total Packages</p>
-                <p className="text-3xl font-bold">{stats?.total_packages || 0}</p>
-              </div>
-              <Package className="w-8 h-8 text-orange-500" />
-            </div>
-          </Card>
-          <Card className="p-6 bg-white/5 border-white/10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Total Media</p>
-                <p className="text-3xl font-bold">{stats?.total_media || 0}</p>
-              </div>
-              <Upload className="w-8 h-8 text-orange-500" />
-            </div>
-          </Card>
-          <Card className="p-6 bg-white/5 border-white/10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Total Downloads</p>
-                <p className="text-3xl font-bold">{stats?.total_downloads || 0}</p>
-              </div>
-              <Download className="w-8 h-8 text-orange-500" />
-            </div>
-          </Card>
-          <Card className="p-6 bg-white/5 border-white/10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Active Packages</p>
-                <p className="text-3xl font-bold">{stats?.active_packages || 0}</p>
-              </div>
-              <Users className="w-8 h-8 text-orange-500" />
-            </div>
-          </Card>
+      <Tabs defaultValue="packages" className="w-full">
+        <div className="border-b border-white/10 bg-black">
+          <div className="container mx-auto px-4">
+            <TabsList className="h-auto p-0 bg-black rounded-none border-0 gap-0">
+              <TabsTrigger
+                value="packages"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-orange-500 data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-none px-6 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-black"
+              >
+                <Package className="w-4 h-4 mr-2" />
+                Packages
+              </TabsTrigger>
+              <TabsTrigger
+                value="projects"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-orange-500 data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-none px-6 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-black"
+              >
+                <Film className="w-4 h-4 mr-2" />
+                Pre-Production
+              </TabsTrigger>
+            </TabsList>
+          </div>
         </div>
-      </section>
 
-      {/* Actions */}
-      <section className="container mx-auto px-4 pb-8">
-        <Button
-          onClick={() => setShowNewPackage(true)}
-          className="gap-2 bg-orange-500 hover:bg-orange-600"
-        >
-          <Plus className="w-4 h-4" />
-          Create New Package
-        </Button>
-      </section>
+        <TabsContent value="packages" className="mt-0">
+          {/* Stats Overview */}
+          <section className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card className="p-6 bg-white/5 border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Total Packages</p>
+                    <p className="text-3xl font-bold">{stats?.total_packages || 0}</p>
+                  </div>
+                  <Package className="w-8 h-8 text-orange-500" />
+                </div>
+              </Card>
+              <Card className="p-6 bg-white/5 border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Total Media</p>
+                    <p className="text-3xl font-bold">{stats?.total_media || 0}</p>
+                  </div>
+                  <Upload className="w-8 h-8 text-orange-500" />
+                </div>
+              </Card>
+              <Card className="p-6 bg-white/5 border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Total Downloads</p>
+                    <p className="text-3xl font-bold">{stats?.total_downloads || 0}</p>
+                  </div>
+                  <Download className="w-8 h-8 text-orange-500" />
+                </div>
+              </Card>
+              <Card className="p-6 bg-white/5 border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Active Packages</p>
+                    <p className="text-3xl font-bold">{stats?.active_packages || 0}</p>
+                  </div>
+                  <Users className="w-8 h-8 text-orange-500" />
+                </div>
+              </Card>
+            </div>
+          </section>
 
-      {/* Recent Packages */}
-      <section className="container mx-auto px-4 pb-16">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-gelica">Recent Packages</h2>
-          <p className="text-sm text-gray-400">💡 Drag and drop files directly onto packages for quick upload</p>
-        </div>
-        <div className="grid gap-4">
-          {packages.map((pkg) => (
-            <PackageCard
-              key={pkg.id}
-              pkg={pkg}
-              onCopyCode={copyAccessCode}
-              onSendEmail={sendAccessCode}
-              onUploadClick={setSelectedPackage}
-              onDelete={setDeleteConfirmId}
-              onManageMedia={setManagingPackage}
-            />
-          ))}
-        </div>
-      </section>
+          {/* Actions */}
+          <section className="container mx-auto px-4 pb-8">
+            <Button
+              onClick={() => setShowNewPackage(true)}
+              className="gap-2 bg-orange-500 hover:bg-orange-600"
+            >
+              <Plus className="w-4 h-4" />
+              Create New Package
+            </Button>
+          </section>
+
+          {/* Recent Packages */}
+          <section className="container mx-auto px-4 pb-16">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-gelica">Recent Packages</h2>
+              <p className="text-sm text-gray-400">💡 Drag and drop files directly onto packages for quick upload</p>
+            </div>
+            <div className="grid gap-4">
+              {packages.map((pkg) => (
+                <PackageCard
+                  key={pkg.id}
+                  pkg={pkg}
+                  onCopyCode={copyAccessCode}
+                  onSendEmail={sendAccessCode}
+                  onUploadClick={setSelectedPackage}
+                  onDelete={setDeleteConfirmId}
+                  onManageMedia={setManagingPackage}
+                  onSettings={setDetailPackage}
+                />
+              ))}
+            </div>
+          </section>
+        </TabsContent>
+
+
+      </Tabs>
 
       {/* New Package Dialog */}
       <Dialog open={showNewPackage} onOpenChange={setShowNewPackage}>
@@ -256,8 +303,8 @@ The Aerostatic Team
             </DialogTitle>
           </DialogHeader>
           {selectedPackage && (
-            <MediaUploader 
-              packageId={selectedPackage.id} 
+            <MediaUploader
+              packageId={selectedPackage.id}
               onComplete={() => {
                 setSelectedPackage(null)
                 toast.success('Media uploaded successfully!')
@@ -276,8 +323,8 @@ The Aerostatic Team
             </DialogTitle>
           </DialogHeader>
           {managingPackage && (
-            <MediaManager 
-              packageId={managingPackage.id} 
+            <MediaManager
+              packageId={managingPackage.id}
               packageCode={managingPackage.access_code}
             />
           )}
@@ -303,7 +350,7 @@ The Aerostatic Team
             <p className="mt-3 font-semibold text-orange-400">This action cannot be undone.</p>
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel 
+            <AlertDialogCancel
               className="bg-white/5 border-white/10 text-white hover:bg-white/10"
               disabled={isDeleting}
             >
@@ -323,6 +370,14 @@ The Aerostatic Team
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Package Detail Dialog */}
+      <PackageDetailDialog
+        pkg={detailPackage}
+        isOpen={!!detailPackage}
+        onClose={() => setDetailPackage(null)}
+        onUpdate={loadPackages}
+      />
     </div>
   )
 }

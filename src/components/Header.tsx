@@ -64,7 +64,7 @@ export const Navigation: FunctionComponent = () => {
             <Link
               href={item.href}
               className={cn(
-                "text-white/80 hover:text-white transition-colors font-medium tracking-wide",
+                "text-white/80 hover:text-white transition-all font-picnic font-light italic text-2xl tracking-wide hover:scale-105",
                 pathname === item.href && "text-white"
               )}
             >
@@ -113,7 +113,7 @@ export const Navigation: FunctionComponent = () => {
                   <Link
                     href={item.href}
                     className={cn(
-                      "text-2xl font-gelica text-white/80 hover:text-white transition-colors",
+                      "text-4xl font-picnic font-light italic text-white/80 hover:text-white transition-colors",
                       pathname === item.href && "text-orange-400"
                     )}
                     onClick={() => setIsOpen(false)}
@@ -127,18 +127,8 @@ export const Navigation: FunctionComponent = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="flex flex-col gap-4 mt-8"
+                className="mt-8"
               >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-orange-400/30 text-orange-400 hover:bg-orange-400/10"
-                  asChild
-                >
-                  <Link href={content.navigation.secondaryCta.href} onClick={() => setIsOpen(false)}>
-                    {content.navigation.secondaryCta.text}
-                  </Link>
-                </Button>
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
@@ -206,17 +196,8 @@ export const Header: FunctionComponent = () => {
           {/* Navigation */}
           <Navigation />
 
-          {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3">
-            <Button
-              variant="outline"
-              className="border-orange-400/30 text-orange-400 hover:bg-orange-400/10 hover:border-orange-400 font-medium px-5 py-2 rounded-lg transition-all duration-300"
-              asChild
-            >
-              <Link href={content.navigation.secondaryCta.href}>
-                {content.navigation.secondaryCta.text}
-              </Link>
-            </Button>
+          {/* CTA Button */}
+          <div className="hidden md:flex items-center">
             <Button
               className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
               asChild
