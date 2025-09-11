@@ -91,13 +91,14 @@ export const Navigation: FunctionComponent = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md"
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md"
+            style={{ top: 0 }}
           >
-            <div className="flex flex-col items-center justify-center h-full space-y-8">
+            <div className="flex flex-col items-center justify-center min-h-screen space-y-8 relative">
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-6 right-6 text-white hover:text-orange-400"
+                className="fixed top-6 right-6 z-[101] text-white hover:text-orange-400"
                 onClick={() => setIsOpen(false)}
               >
                 <X size="24" />
@@ -164,7 +165,7 @@ export const Header: FunctionComponent = () => {
   return (
     <motion.header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
         isScrolled
           ? "bg-black/80 backdrop-blur-md border-b border-white/10"
           : "bg-transparent"

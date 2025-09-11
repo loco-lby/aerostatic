@@ -148,9 +148,9 @@ export default function TechnologiesPage() {
                         </p>
                     </motion.div>
 
-                    {/* Main Tool Cards - AeroMedia and AeroStatus */}
-                    <div className="grid lg:grid-cols-2 gap-8 mb-12">
-                        {/* AeroMedia Card */}
+                    {/* Main Tool Cards - Three tools in a row */}
+                    <div className="grid md:grid-cols-3 gap-8 mb-12">
+                        {/* TravelPact Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -160,31 +160,30 @@ export default function TechnologiesPage() {
                             <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
                                 <CardHeader>
                                     <div className="flex items-start justify-between mb-4">
-                                        <Camera className="w-12 h-12 text-orange-400" />
-                                        <Badge className="bg-green-500/20 text-green-400 border-green-400/30">
-                                            live
+                                        <Plane className="w-12 h-12 text-orange-400" />
+                                        <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-400/30">
+                                            in development
                                         </Badge>
                                     </div>
-                                    <CardTitle className="text-3xl font-gelica font-bold text-white mb-2">
-                                        AeroMedia
+                                    <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
+                                        TravelPact
                                     </CardTitle>
-                                    <p className="text-lg font-sans text-orange-400">
-                                        Event Photo Distribution Platform
+                                    <p className="text-base font-sans text-orange-400">
+                                        Your Travel Journey Keeper
                                     </p>
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-white/70 font-sans mb-6">
-                                        Professional media delivery system for events, festivals, and productions. 
-                                        Secure, fast, and beautifully presented.
+                                        Keep a record of your travels and the connections you make along the way. The only ticket you need to start exploring the world.
                                     </p>
                                     
                                     <div className="space-y-2 mb-6">
                                         {[
-                                            "PIN-protected galleries",
-                                            "Bulk download options",
-                                            "Social sharing tools",
-                                            "Analytics dashboard",
-                                            "Custom branding"
+                                            "Travel journey tracking",
+                                            "Connection memories",
+                                            "Digital travel tickets",
+                                            "Exploration milestones",
+                                            "Social travel network"
                                         ].map((feature, i) => (
                                             <div key={i} className="flex items-center gap-2">
                                                 <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
@@ -194,13 +193,10 @@ export default function TechnologiesPage() {
                                     </div>
                                     
                                     <Button 
-                                        asChild
-                                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                                        disabled
+                                        className="w-full bg-white/10 text-white/50 cursor-not-allowed"
                                     >
-                                        <Link href="/tools/aeromedia">
-                                            Access Platform
-                                            <ExternalLink className="ml-2 h-4 w-4" />
-                                        </Link>
+                                        Coming Soon
                                     </Button>
                                 </CardContent>
                             </Card>
@@ -221,26 +217,25 @@ export default function TechnologiesPage() {
                                             beta
                                         </Badge>
                                     </div>
-                                    <CardTitle className="text-3xl font-gelica font-bold text-white mb-2">
+                                    <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
                                         AeroStatus
                                     </CardTitle>
-                                    <p className="text-lg font-sans text-orange-400">
-                                        Production Management System
+                                    <p className="text-base font-sans text-orange-400">
+                                        Balloon Operation Management
                                     </p>
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-white/70 font-sans mb-6">
-                                        Real-time project tracking and team coordination for complex productions 
-                                        and multi-location shoots.
+                                        Complete balloon operation management platform with advanced scheduling and real-time team coordination.
                                     </p>
                                     
                                     <div className="space-y-2 mb-6">
                                         {[
-                                            "Live project dashboards",
-                                            "Team collaboration tools",
-                                            "Resource scheduling",
-                                            "Budget tracking",
-                                            "Client portals"
+                                            "Advanced scheduling system",
+                                            "Employee message log",
+                                            "Equipment checklists",
+                                            "Ticket management",
+                                            "Equipment checkouts"
                                         ].map((feature, i) => (
                                             <div key={i} className="flex items-center gap-2">
                                                 <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
@@ -261,107 +256,104 @@ export default function TechnologiesPage() {
                                 </CardContent>
                             </Card>
                         </motion.div>
-                    </div>
 
-                    {/* Additional Tools Grid */}
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {/* Pre-Production Tools (AeroMedia 2.0) */}
+                        {/* AeroKnot Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                             viewport={{ once: true }}
                         >
-                            <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                                <CardHeader className="pb-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <Layers className="w-8 h-8 text-orange-400" />
-                                        <Badge variant="outline" className="text-yellow-400 border-yellow-400/30 text-xs">
-                                            coming soon
+                            <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
+                                <CardHeader>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <Layers className="w-12 h-12 text-orange-400" />
+                                        <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-400/30">
+                                            in development
                                         </Badge>
                                     </div>
-                                    <CardTitle className="text-xl font-gelica font-bold text-white">
-                                        Pre-Production Tools
+                                    <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
+                                        AeroKnot
                                     </CardTitle>
-                                    <p className="text-sm font-sans text-orange-400">AeroMedia 2.0</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm font-sans text-white/60">
-                                        Shot lists, storyboards, and location scouting - all in one place.
+                                    <p className="text-base font-sans text-orange-400">
+                                        Flight Planning & Navigation
                                     </p>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        {/* TravelPact */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.3 }}
-                            viewport={{ once: true }}
-                        >
-                            <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                                <CardHeader className="pb-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <Plane className="w-8 h-8 text-orange-400" />
-                                        <Badge variant="outline" className="text-blue-400 border-blue-400/30 text-xs">
-                                            development
-                                        </Badge>
-                                    </div>
-                                    <CardTitle className="text-xl font-gelica font-bold text-white">
-                                        TravelPact
-                                    </CardTitle>
-                                    <p className="text-sm font-sans text-orange-400">Travel Connection Companion</p>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-sm font-sans text-white/60">
-                                        Connect with fellow travelers and share experiences on the go.
+                                    <p className="text-white/70 font-sans mb-6">
+                                        Comprehensive flight planning and navigation app with integrated crew coordination for aerial operations.
                                     </p>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        {/* Idea Submission Card */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.4 }}
-                            viewport={{ once: true }}
-                        >
-                            <Card className="bg-gradient-to-br from-orange-500/10 to-red-600/10 border-orange-400/20 hover:border-orange-400/30 transition-all duration-300">
-                                <CardHeader className="pb-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <Lightbulb className="w-8 h-8 text-orange-400" />
-                                        <Badge className="bg-orange-500/20 text-orange-400 border-orange-400/30 text-xs">
-                                            contribute
-                                        </Badge>
+                                    
+                                    <div className="space-y-2 mb-6">
+                                        {[
+                                            "Flight route planning",
+                                            "Weather integration",
+                                            "Crew coordination",
+                                            "NOTAMs & TFRs",
+                                            "Fuel calculations"
+                                        ].map((feature, i) => (
+                                            <div key={i} className="flex items-center gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                                                <span className="text-sm font-sans text-white/80">{feature}</span>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <CardTitle className="text-xl font-gelica font-bold text-white">
-                                        Your Idea Here
-                                    </CardTitle>
-                                    <p className="text-sm font-sans text-orange-400">Suggest a utility-first tool</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-3">
-                                        <Textarea
-                                            placeholder="What tool would save you time?"
-                                            value={toolIdea}
-                                            onChange={(e) => setToolIdea(e.target.value)}
-                                            className="bg-white/5 border-white/20 text-white placeholder:text-white/40 text-sm resize-none h-20"
-                                        />
-                                        <Button 
-                                            onClick={handleToolIdeaSubmit}
-                                            disabled={isSubmitting}
-                                            className="w-full bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 border border-orange-400/30"
-                                        >
-                                            {isSubmitting ? "Submitting..." : "Submit Idea"}
-                                            <Send className="ml-2 h-3 w-3" />
-                                        </Button>
-                                    </div>
+                                    
+                                    <Button 
+                                        disabled
+                                        className="w-full bg-white/10 text-white/50 cursor-not-allowed"
+                                    >
+                                        Coming Soon
+                                    </Button>
                                 </CardContent>
                             </Card>
                         </motion.div>
                     </div>
+
+                    {/* Idea Submission Card - Now standalone below the tools */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        viewport={{ once: true }}
+                        className="max-w-2xl mx-auto"
+                    >
+                        <Card className="bg-gradient-to-br from-orange-500/10 to-red-600/10 border-orange-400/20 hover:border-orange-400/30 transition-all duration-300">
+                            <CardHeader>
+                                <div className="flex items-center justify-center gap-4 mb-4">
+                                    <Lightbulb className="w-10 h-10 text-orange-400" />
+                                    <Badge className="bg-orange-500/20 text-orange-400 border-orange-400/30">
+                                        contribute
+                                    </Badge>
+                                </div>
+                                <CardTitle className="text-2xl font-gelica font-bold text-white text-center">
+                                    Your Idea Here
+                                </CardTitle>
+                                <p className="text-base font-sans text-orange-400 text-center">Suggest a utility-first tool</p>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    <p className="text-white/70 font-sans text-center">
+                                        Have an idea for a tool that would save you time? We&apos;d love to hear it!
+                                    </p>
+                                    <Textarea
+                                        placeholder="What tool would save you time? Describe your idea..."
+                                        value={toolIdea}
+                                        onChange={(e) => setToolIdea(e.target.value)}
+                                        className="bg-white/5 border-white/20 text-white placeholder:text-white/40 resize-none h-24"
+                                    />
+                                    <Button 
+                                        onClick={handleToolIdeaSubmit}
+                                        disabled={isSubmitting}
+                                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                                    >
+                                        {isSubmitting ? "Submitting..." : "Submit Idea"}
+                                        <Send className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
                 </div>
             </section>
 
