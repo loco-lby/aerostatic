@@ -54,19 +54,20 @@ const tools = [
     {
         id: "travelpact",
         title: "TravelPact",
-        tagline: "Coordinate trips that actually happen",
-        description: "Group travel planning made simple. Real-time collaboration, interactive maps, and smart scheduling for crews on the move.",
+        tagline: "Travel planning & connection tracking made simple",
+        description: "Comprehensive platform combining AI-powered trip planning with global connection tracking. Interactive maps, smart packing lists, and a 3D globe to visualize your travel network.",
         icon: MapPin,
         status: "live",
         href: "https://travelpact.io",
         external: true,
         features: [
-            "Interactive trip planning",
-            "Real-time collaboration",
-            "Smart itinerary building",
-            "Group coordination tools"
+            "Interactive route planning with AI assistant",
+            "Smart packing lists with CSV import/export",
+            "Document hub with AI learning",
+            "3D global connection tracking",
+            "Automatic travel timelines from photos"
         ],
-        techStack: ["Next.js", "Supabase", "Mapbox", "OpenAI"],
+        techStack: ["Next.js", "Supabase", "Mapbox", "OpenAI", "Three.js"],
         color: "from-blue-500 to-purple-600"
     },
     {

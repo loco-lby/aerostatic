@@ -161,29 +161,29 @@ export default function TechnologiesPage() {
                                 <CardHeader>
                                     <div className="flex items-start justify-between mb-4">
                                         <Plane className="w-12 h-12 text-orange-400" />
-                                        <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-400/30">
-                                            in development
+                                        <Badge className="bg-green-500/20 text-green-400 border-green-400/30">
+                                            live
                                         </Badge>
                                     </div>
                                     <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
                                         TravelPact
                                     </CardTitle>
                                     <p className="text-base font-sans text-orange-400">
-                                        Your Travel Journey Keeper
+                                        Travel Planning & Connection Tracking
                                     </p>
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-white/70 font-sans mb-6">
-                                        Keep a record of your travels and the connections you make along the way. The only ticket you need to start exploring the world.
+                                        Comprehensive travel platform combining interactive trip planning with AI assistance and global connection tracking. Turn overwhelming travel planning into seamless adventures.
                                     </p>
                                     
                                     <div className="space-y-2 mb-6">
                                         {[
-                                            "Travel journey tracking",
-                                            "Connection memories",
-                                            "Digital travel tickets",
-                                            "Exploration milestones",
-                                            "Social travel network"
+                                            "Interactive route planning with maps",
+                                            "AI travel assistant with document learning",
+                                            "Smart packing lists with CSV import",
+                                            "3D global connection tracking",
+                                            "Automatic travel timelines from photos"
                                         ].map((feature, i) => (
                                             <div key={i} className="flex items-center gap-2">
                                                 <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
@@ -191,12 +191,15 @@ export default function TechnologiesPage() {
                                             </div>
                                         ))}
                                     </div>
-                                    
-                                    <Button 
-                                        disabled
-                                        className="w-full bg-white/10 text-white/50 cursor-not-allowed"
+
+                                    <Button
+                                        asChild
+                                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
                                     >
-                                        Coming Soon
+                                        <Link href="https://travelpact.io" target="_blank" rel="noopener noreferrer">
+                                            Visit TravelPact
+                                            <ExternalLink className="ml-2 h-4 w-4" />
+                                        </Link>
                                     </Button>
                                 </CardContent>
                             </Card>
