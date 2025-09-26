@@ -3,7 +3,24 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Adventure } from '@/lib/supabase';
+// Simple type definition for static content
+interface Adventure {
+    id: string;
+    title: string;
+    start_longitude: number;
+    start_latitude: number;
+    start_location_name: string;
+    end_location_name?: string;
+    is_journey?: boolean;
+    type: 'completed' | 'idea';
+    creator?: { username: string };
+    difficulty_score: number;
+    description: string;
+    success_metrics?: string[];
+    encouragements_count: number;
+    comments_count: number;
+    contributions_total: number;
+}
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

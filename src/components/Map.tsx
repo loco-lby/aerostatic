@@ -3,7 +3,14 @@
 import { useEffect, useState } from 'react';
 import Map, { Marker, NavigationControl, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Adventure } from '@/lib/supabase';
+// Simple type definition for static content
+interface Adventure {
+    id: string;
+    title: string;
+    start_longitude: number;
+    start_latitude: number;
+    start_location_name: string;
+}
 
 interface AdventureMapProps {
     adventures?: Adventure[];

@@ -23,7 +23,6 @@ import {
     Send
 } from 'lucide-react';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 
 export default function TechnologiesPage() {
@@ -39,16 +38,8 @@ export default function TechnologiesPage() {
 
         setIsSubmitting(true);
         try {
-            const supabase = createClient();
-            const { error } = await supabase
-                .from('tool_suggestions')
-                .insert({
-                    idea: toolIdea,
-                    source: 'technologies_page'
-                });
-
-            if (error) throw error;
-
+            // For static site, just show success message
+            // In production, this would integrate with your backend service
             toast.success("Thanks for your idea! We'll review it carefully.");
             setToolIdea('');
         } catch (error) {
@@ -64,12 +55,16 @@ export default function TechnologiesPage() {
             <Header />
 
             {/* Hero Section */}
-            <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+            <section className="pt-48 pb-32 px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-pink-600/10" />
+
+                {/* Animated aurora background elements */}
                 <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-600/10" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(251,146,60,0.1),transparent_50%)]" />
+                    <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl animate-pulse" />
+                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-emerald-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse delay-500" />
                 </div>
-                
+
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -77,7 +72,7 @@ export default function TechnologiesPage() {
                     className="container mx-auto max-w-7xl relative z-10"
                 >
                     <div className="text-center">
-                        <motion.h1 
+                        <motion.h1
                             className="text-6xl md:text-7xl lg:text-8xl font-picnic-script font-thin text-white mb-6 tracking-wide"
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -85,39 +80,39 @@ export default function TechnologiesPage() {
                         >
                             Technologies
                         </motion.h1>
-                        <motion.p 
+                        <motion.p
                             className="text-xl md:text-2xl font-sans text-white/70 max-w-4xl mx-auto leading-relaxed"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            Building the future of aerial media production. 
-                            Custom tools, cutting-edge tech, and innovations that push boundaries.
+
+                            Custom tools and cutting-edge tech to keep you on task.
                         </motion.p>
                     </div>
 
                     {/* Tech Philosophy */}
-                    <motion.div 
+                    <motion.div
                         className="grid md:grid-cols-3 gap-8 mt-16"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         {[
-                            { 
-                                icon: Zap, 
-                                title: "Performance", 
-                                description: "Lightning-fast tools that work at the speed of creativity" 
+                            {
+                                icon: Zap,
+                                title: "Performance",
+                                description: "Lightning-fast tools that work at the speed of creativity"
                             },
-                            { 
-                                icon: Shield, 
-                                title: "Security", 
-                                description: "Enterprise-grade protection for your media and data" 
+                            {
+                                icon: Shield,
+                                title: "Security",
+                                description: "Enterprise-grade protection for your media and data"
                             },
-                            { 
-                                icon: Globe, 
-                                title: "Accessibility", 
-                                description: "Tools that work anywhere, on any device, for everyone" 
+                            {
+                                icon: Globe,
+                                title: "Accessibility",
+                                description: "Tools that work anywhere, on any device, for everyone"
                             }
                         ].map((item, index) => (
                             <div key={index} className="text-center">
@@ -134,10 +129,7 @@ export default function TechnologiesPage() {
             <section className="py-20 px-6 bg-white/[0.02]">
                 <div className="container mx-auto max-w-7xl">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
+
                         className="mb-16"
                     >
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-6 text-center">
@@ -148,69 +140,11 @@ export default function TechnologiesPage() {
                         </p>
                     </motion.div>
 
-                    {/* Main Tool Cards - Three tools in a row */}
-                    <div className="grid md:grid-cols-3 gap-8 mb-12">
-                        {/* TravelPact Card */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            viewport={{ once: true }}
-                        >
-                            <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
-                                <CardHeader>
-                                    <div className="flex items-start justify-between mb-4">
-                                        <Plane className="w-12 h-12 text-orange-400" />
-                                        <Badge className="bg-green-500/20 text-green-400 border-green-400/30">
-                                            live
-                                        </Badge>
-                                    </div>
-                                    <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
-                                        TravelPact
-                                    </CardTitle>
-                                    <p className="text-base font-sans text-orange-400">
-                                        Travel Planning & Connection Tracking
-                                    </p>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-white/70 font-sans mb-6">
-                                        Comprehensive travel platform combining interactive trip planning with AI assistance and global connection tracking. Turn overwhelming travel planning into seamless adventures.
-                                    </p>
-                                    
-                                    <div className="space-y-2 mb-6">
-                                        {[
-                                            "Interactive route planning with maps",
-                                            "AI travel assistant with document learning",
-                                            "Smart packing lists with CSV import",
-                                            "3D global connection tracking",
-                                            "Automatic travel timelines from photos"
-                                        ].map((feature, i) => (
-                                            <div key={i} className="flex items-center gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                                                <span className="text-sm font-sans text-white/80">{feature}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <Button
-                                        asChild
-                                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                                    >
-                                        <Link href="https://travelpact.io" target="_blank" rel="noopener noreferrer">
-                                            Visit TravelPact
-                                            <ExternalLink className="ml-2 h-4 w-4" />
-                                        </Link>
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
+                    {/* Main Tool Cards - Two tools in a row */}
+                    <div className="grid md:grid-cols-2 gap-8 mb-12 max-w-5xl mx-auto">
                         {/* AeroStatus Card */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            viewport={{ once: true }}
+
                         >
                             <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
                                 <CardHeader>
@@ -231,7 +165,7 @@ export default function TechnologiesPage() {
                                     <p className="text-white/70 font-sans mb-6">
                                         Complete balloon operation management platform with advanced scheduling and real-time team coordination.
                                     </p>
-                                    
+
                                     <div className="space-y-2 mb-6">
                                         {[
                                             "Advanced scheduling system",
@@ -246,12 +180,12 @@ export default function TechnologiesPage() {
                                             </div>
                                         ))}
                                     </div>
-                                    
-                                    <Button 
+
+                                    <Button
                                         asChild
                                         className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
                                     >
-                                        <Link href="/tools/aerostatus">
+                                        <Link href="/technologies/aerostatus">
                                             Join Beta
                                             <ArrowRight className="ml-2 h-4 w-4" />
                                         </Link>
@@ -264,7 +198,7 @@ export default function TechnologiesPage() {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
                             viewport={{ once: true }}
                         >
                             <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
@@ -286,7 +220,7 @@ export default function TechnologiesPage() {
                                     <p className="text-white/70 font-sans mb-6">
                                         Comprehensive flight planning and navigation app with integrated crew coordination for aerial operations.
                                     </p>
-                                    
+
                                     <div className="space-y-2 mb-6">
                                         {[
                                             "Flight route planning",
@@ -301,8 +235,8 @@ export default function TechnologiesPage() {
                                             </div>
                                         ))}
                                     </div>
-                                    
-                                    <Button 
+
+                                    <Button
                                         disabled
                                         className="w-full bg-white/10 text-white/50 cursor-not-allowed"
                                     >
@@ -345,7 +279,7 @@ export default function TechnologiesPage() {
                                         onChange={(e) => setToolIdea(e.target.value)}
                                         className="bg-white/5 border-white/20 text-white placeholder:text-white/40 resize-none h-24"
                                     />
-                                    <Button 
+                                    <Button
                                         onClick={handleToolIdeaSubmit}
                                         disabled={isSubmitting}
                                         className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
@@ -378,15 +312,15 @@ export default function TechnologiesPage() {
                         </h2>
                         <div className="max-w-4xl mx-auto space-y-6 text-lg font-sans text-white/70 leading-relaxed">
                             <p>
-                                We create utility-first tools that solve our own problems in media and adventure. 
+                                We create utility-first tools that solve our own problems in media and adventure.
                                 We don&apos;t try to build products for the sake of taking money from users.
                             </p>
                             <p>
-                                If you have an idea, drop it in the box above and if we think it will save us 
+                                If you have an idea, drop it in the box above and if we think it will save us
                                 and others like us time, we might just build it.
                             </p>
                             <p className="text-xl text-orange-400 font-picnic italic">
-                                This is technology made to get you off your phone, 
+                                This is technology made to get you off your phone,
                                 to aid you in seeing the world through a new lens.
                             </p>
                         </div>

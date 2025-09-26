@@ -464,7 +464,7 @@ export default function GalleryPage() {
                             className="text-lg px-10 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 cinematic-glow font-semibold hover-lift"
                             asChild
                         >
-                            <Link href="/hire-us">
+                            <Link href="/work-with-us">
                                 Start Your Project
                             </Link>
                         </Button>

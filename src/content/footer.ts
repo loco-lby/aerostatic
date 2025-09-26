@@ -35,7 +35,7 @@ export const footerContent = {
   },
   
   legal: {
-    copyright: "© 2024 Aerostatic. All rights reserved.",
+    copyright: "© 2024 Aerostatic. All rights reserved. Designed & Developed by Colby @ Aerostatic",
     links: [
       { name: "Privacy", href: "/privacy" },
       { name: "Terms", href: "/terms" }

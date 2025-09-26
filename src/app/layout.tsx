@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -101,7 +103,7 @@ export default function RootLayout({
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      url: `${config.baseUrl}/hire-us`,
+      url: `${config.baseUrl}/work-with-us`,
     },
     sameAs: [
       // Add social media URLs when available
@@ -176,6 +178,8 @@ export default function RootLayout({
         <Providers>
           <main>{children}</main>
         </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -7,11 +7,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Palette, Wind, Globe, Users, Shield, Award, Play } from 'lucide-react';
+import { ArrowRight, Palette, Wind, Globe, Users, Shield, Award, Play, BookOpen } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { useContent } from "@/hooks/useContent";
+import { BackgroundVideo } from "@/components/CloudinaryVideo";
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
@@ -98,26 +98,10 @@ export default function HomePage() {
     setIsSubmitting(true)
 
     try {
-      const supabase = createClient()
-
-      const { error } = await supabase
-        .from('newsletter_signups')
-        .insert({
-          email: email,
-          source: 'hero'
-        })
-
-      if (error) {
-        if (error.code === '23505') { // Unique constraint violation
-          toast.success("You're already on board!")
-        } else {
-          console.error("Error signing up for newsletter:", error)
-          toast.error("Failed to sign up. Please try again.")
-        }
-      } else {
-        toast.success("Welcome aboard!")
-        setEmail("")
-      }
+      // For static site, just show success message
+      // In production, this would integrate with your email service
+      toast.success("Welcome aboard! We'll be in touch soon.")
+      setEmail("")
     } catch (error) {
       console.error("Error:", error)
       toast.error("An unexpected error occurred. Please try again.")
@@ -149,6 +133,15 @@ export default function HomePage() {
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
           {isMounted && (
+            // Option 1: Use Cloudinary video (once uploaded)
+            // <BackgroundVideo
+            //   src="aerostatic/hero1" // Cloudinary public ID
+            //   fallbackSrc="/videos/hero1.mp4" // Local fallback
+            //   className="w-full h-full object-cover"
+            //   overlay={false} // We add our own overlay below
+            // />
+
+            // Option 2: Keep using local video for now
             <video
               autoPlay
               muted
@@ -185,12 +178,23 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* CTA Button */}
-          <div className="flex justify-center">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               asChild
               size="lg"
               className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-12 py-6 text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+            >
+              <Link href="/academia">
+                I&apos;m curious about hot air balloons
+                <BookOpen className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white/30 text-white hover:bg-white/10 font-medium px-12 py-6 text-lg rounded-lg transition-all duration-300"
             >
               <Link href="/work-with-us">
                 {content.home.hero.cta}
@@ -256,10 +260,10 @@ export default function HomePage() {
                         >
                           <source
                             src={
-                              pillar.id === 'media' ? "/videos/wine_train.mp4" :
-                                pillar.id === 'tech' ? "/videos/your_event.mp4" :
-                                  pillar.id === 'events' ? "/videos/tether.mp4" :
-                                    pillar.id === 'gear' ? "/videos/thailand.mp4" :
+                              pillar.id === 'academia' ? "/videos/hero.mp4" :
+                                pillar.id === 'media' ? "/videos/wine_train.mp4" :
+                                  pillar.id === 'development' ? "/videos/your_event.mp4" :
+                                    pillar.id === 'merchandise' ? "/videos/thailand.mp4" :
                                       "/videos/hero.mp4"
                             }
                             type="video/mp4"
@@ -296,7 +300,8 @@ export default function HomePage() {
               Meet the Crew
             </h2>
             <p className="text-lg font-sans text-white/60 max-w-3xl mx-auto">
-              Industry born balloon crew blending aircraft with storycraft
+              Industry born balloon crew blending aircraft with storycraft.
+              Available for events, activations, and brand partnerships.
             </p>
           </div>
 
@@ -307,12 +312,22 @@ export default function HomePage() {
                   Aerostatic didn&apos;t start with a pitch deck. For <span className="font-picnic italic text-orange-400">Colby</span>, it began on a stepping stool he used to reach the burner when he was 10. For <span className="font-picnic italic text-orange-400">Matteo</span>, it started with a pieced together trailer, a stinky balloon, and a weird obsession with whatever this is that we do.
                 </p>
                 <p>
-                  We film as we go, partly to share the experience, partly so we don&apos;t forget how wild this all felt at the beginning.
+                  Today, we bring that same authentic passion to every event and brand activation. Static displays that stop crowds. Tethered rides that create memories. Aerial coverage that captures perspectives no one else can.
                 </p>
                 <p>
-                  Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry leading safety standards.
+                  Every activation we create is designed to capture attention, create memories, and deliver content that lives far beyond the moment, while following industry-leading safety standards.
                 </p>
               </div>
+              <Button
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-12 py-6 text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+              >
+                <Link href="/work-with-us">
+                  Book Us For Your Next Event
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
             </div>
 
             <div className="relative">
@@ -324,11 +339,11 @@ export default function HomePage() {
                       <Users className="w-8 h-8 text-white" />
                     </div>
                     <CardTitle className="text-xl font-gelica font-bold text-white">Colby</CardTitle>
-                    <p className="text-sm font-sans text-orange-400">Third-Gen Pilot & Creative</p>
+                    <p className="text-sm font-sans text-orange-400">Third-Gen Pilot & Creative Director</p>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm font-sans text-white/70">
-                      Certified instructor and the brain behind design, media, and tech development.
+                      FAA-certified instructor. Leads design, media production, and tech development. Born into ballooning.
                     </p>
                   </CardContent>
                 </Card>
@@ -339,11 +354,11 @@ export default function HomePage() {
                       <Shield className="w-8 h-8 text-white" />
                     </div>
                     <CardTitle className="text-xl font-gelica font-bold text-white">Matteo</CardTitle>
-                    <p className="text-sm font-sans text-orange-400">Pilot & Client Relations</p>
+                    <p className="text-sm font-sans text-orange-400">Pilot & Brand Partnerships</p>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm font-sans text-white/70">
-                      Gifted communicator with roots in music, crafting custom activations that resonate.
+                      Commercial pilot. Manages event activations and brand partnerships. Background in music production.
                     </p>
                   </CardContent>
                 </Card>
@@ -371,18 +386,18 @@ export default function HomePage() {
             {[
               {
                 icon: Shield,
-                title: "Safety First",
-                description: "Industry-leading standards in every flight"
+                title: "FAA Certified",
+                description: "Licensed pilots, insured operations, zero compromises on safety"
               },
               {
                 icon: Palette,
-                title: "Story Focused",
-                description: "Every activation tells a unique narrative"
+                title: "Content That Converts",
+                description: "Every flight generates shareable moments that extend your reach"
               },
               {
                 icon: Award,
-                title: "Experience Driven",
-                description: "Generations of expertise in the sky"
+                title: "Proven Track Record",
+                description: "From Burning Man to brand launches—we deliver spectacle"
               }
             ].map((value, index) => (
               <div key={index} className="text-center">

@@ -1,7 +1,14 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import type { Adventure } from '@/lib/supabase';
+// Simple type definition for static content
+interface Adventure {
+    id: string;
+    title: string;
+    start_longitude: number;
+    start_latitude: number;
+    start_location_name: string;
+}
 
 const AdventureMap = dynamic(() => import('./Map'), {
     ssr: false,

@@ -1,34 +1,42 @@
 export const homeContent = {
   hero: {
     title: "We rise to meet your moment.",
-    subtitle: "Tech that works. Media that moves. Just look up, we're Aerostatic.",
-    cta: "Work With Us"
+    subtitle: "Balloon-born media and technology company. We make ballooning accessible, relevant, and inspiring in the 21st century.",
+    cta: "Book Us For Your Event"
   },
   
   pillars: [
     {
+      id: "academia",
+      title: "Academia",
+      description: "Your hub for all things hot air.",
+      content: "Dive deep into the untold stories of aeronauts, the rich history of ballooning, and answers to every question about life in the sky. From technical breakdowns to legendary tales, we're documenting and sharing the knowledge that keeps this culture alive.",
+      cta: "Explore Academia",
+      href: "/academia"
+    },
+    {
       id: "media",
-      title: "Media Production",
-      description: "Cinematic content that moves.",
-      content: "From docuseries and branded campaigns to full-scale event coverage, we bring the camera where others don't. Documentary-style storytelling that captures reality while it's still breathing.",
-      cta: "View our work",
+      title: "Media",
+      description: "Producing cinematic adventure marketing.",
+      content: "From docuseries and branded campaigns to full-scale event coverage, we bring the camera where others don't. Documentary-style storytelling that captures reality while it's still breathing. Every flight becomes portfolio content that extends your event's reach.",
+      cta: "Book us for your event",
       href: "/productions"
     },
     {
-      id: "tech",
-      title: "Tech Solutions",
-      description: "Built in the field, refined through daily use.",
-      content: "Purpose-built software for real operations. AeroMedia for photo distribution, custom tools for your unique challenges. Not flashy, not bloated. Just sharp, reliable tech that solves real problems.",
-      cta: "Explore solutions",
+      id: "development",
+      title: "Development",
+      description: "Building practical, field-tested software.",
+      content: "AeroStatus for flight operations and AeroKnot for navigation & planning. Purpose-built software for real balloon operations. Not flashy, not bloated—just sharp, reliable tech that solves real problems and builds trust within the community.",
+      cta: "Explore our tools",
       href: "/technologies"
     },
     {
-      id: "events",
-      title: "Event Services",
-      description: "Spectacle that stops crowds.",
-      content: "We've elevated Cathedral City, Singha International, Burning Man, and Balloons Over Bend. Static displays, tethered rides, aerial coverage. When the moment calls for it, we bring visuals that make your audience stop and feel something.",
-      cta: "Book your event",
-      href: "/productions"
+      id: "merchandise",
+      title: "Merchandise",
+      description: "Adventure gear for those who get it.",
+      content: "Caps, embroidered patches, and Napa Valley-specific apparel designed by balloonists for balloonists. Each piece tells a story from the sky. Future drops include leather goods and premium embroidered pieces. Every purchase directly supports our mission of preserving ballooning culture.",
+      cta: "Shop the collection",
+      href: "/merch"
     }
   ]
 };

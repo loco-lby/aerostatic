@@ -81,7 +81,7 @@ export function generateOrganizationStructuredData() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      url: `${config.baseUrl}/hire-us`,
+      url: `${config.baseUrl}/work-with-us`,
       availableLanguage: 'English',
     },
     address: {

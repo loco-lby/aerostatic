@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
-import { createClient } from '@/lib/supabase/client';
 import { motion } from 'framer-motion';
 import {
     MapPin,
@@ -196,18 +195,8 @@ export default function EventsPage() {
         setIsSubmitting(true);
 
         try {
-            const supabase = createClient();
-            const { error } = await supabase
-                .from('hire_requests')
-                .insert([{
-                    ...formData,
-                    services: formData.services.join(', '),
-                    source: 'events_page',
-                    status: 'pending'
-                }]);
-
-            if (error) throw error;
-
+            // For static site, just show success message
+            // In production, this would integrate with your backend service
             toast.success('Request submitted! We\'ll be in touch within 24 hours.');
 
             // Reset form

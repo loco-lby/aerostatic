@@ -12,6 +12,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "fourthwall.imgix.net",
+      },
+      {
+        protocol: "https",
         hostname: "itefmyqvukpolpfuprgf.supabase.co",
       },
     ],

@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
-import { createClient } from '@/lib/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Film,
@@ -78,18 +77,8 @@ function MediaForm() {
         setIsSubmitting(true);
 
         try {
-            const supabase = createClient();
-            const { error } = await supabase
-                .from('hire_requests')
-                .insert([{
-                    ...formData,
-                    services: formData.services.join(', '),
-                    source: 'work_with_us_media',
-                    status: 'pending'
-                }]);
-
-            if (error) throw error;
-
+            // For static site, just show success message
+            // In production, this would integrate with your backend service
             toast.success('Request submitted! We\'ll be in touch within 24 hours.');
 
             // Reset form
@@ -285,18 +274,8 @@ function EventsForm() {
         setIsSubmitting(true);
 
         try {
-            const supabase = createClient();
-            const { error } = await supabase
-                .from('hire_requests')
-                .insert([{
-                    ...formData,
-                    services: formData.services.join(', '),
-                    source: 'work_with_us_events',
-                    status: 'pending'
-                }]);
-
-            if (error) throw error;
-
+            // For static site, just show success message
+            // In production, this would integrate with your backend service
             toast.success('Request submitted! We\'ll be in touch within 24 hours.');
 
             // Reset form
@@ -472,17 +451,8 @@ function TechForm() {
         setIsSubmitting(true);
 
         try {
-            const supabase = createClient();
-            const { error } = await supabase
-                .from('hire_requests')
-                .insert([{
-                    ...formData,
-                    source: 'work_with_us_tech',
-                    status: 'pending'
-                }]);
-
-            if (error) throw error;
-
+            // For static site, just show success message
+            // In production, this would integrate with your backend service
             toast.success('Request submitted! We\'ll be in touch within 48 hours.');
 
             // Reset form

@@ -1,523 +1,130 @@
 "use client";
 
-import { useState, useEffect } from 'react';
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Plus, Minus, Check, Star } from 'lucide-react';
-import Image from 'next/image';
-import { toast } from "sonner";
-
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    images: string[];
-    variants: Array<{
-        id: string;
-        name: string;
-        price: number;
-        available: boolean;
-    }>;
-}
+import { motion } from 'framer-motion';
+import { ExternalLink, ShoppingCart, ArrowRight } from 'lucide-react';
 
 export default function MerchPage() {
-    const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
-    const [isMounted, setIsMounted] = useState(false);
-    const [selectedVariant, setSelectedVariant] = useState<string>('');
-    const [quantity, setQuantity] = useState(1);
-    const [isAddingToCart, setIsAddingToCart] = useState(false);
-    const [products, setProducts] = useState<Product[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    // Fallback product data for the Napa Valley hat
-    const fallbackProduct: Product = {
-        id: 'napa-valley-exclusive',
-        name: 'Napa Valley – Exclusive',
-        price: 30,
-        description: 'A stitched window into the valley that started it all. This hat features embroidered hot air balloons floating over Napa\'s rolling vineyards, a tribute to where we first worked as crew chiefs and built this life in the sky.\n\nThis isn\'t about manufacturing a vibe. It\'s about funding the tools, media, and infrastructure that keep ballooning alive. Every purchase directly supports our mission: preserving and evolving a disappearing craft through field-tested technology and cinematic storytelling.\n\nMerch exists, but not as a core offering. It\'s there if you want it, to support the mission and signal alignment. What matters most is keeping the craft alive.',
-        images: [
-            '/images/placeholder.webp', // Will be replaced with actual product images
-            '/images/placeholder.webp',
-            '/images/placeholder.webp'
-        ],
-        variants: [
-            { id: 'one-size', name: 'One Size', price: 30, available: true }
-        ]
-    };
-
-    useEffect(() => {
-        setIsMounted(true);
-        fetchProducts();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        if (products.length > 0 && products[0].variants.length > 0) {
-            setSelectedVariant(products[0].variants[0].id);
-        } else if (fallbackProduct.variants.length > 0) {
-            setSelectedVariant(fallbackProduct.variants[0].id);
-        }
-    }, [products]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch('/api/fourthwall/products');
-            if (response.ok) {
-                const data = await response.json();
-                if (data.data && data.data.length > 0) {
-                    // Transform Fourthwall product data to our format
-                    const transformedProducts = data.data.map((item: any) => ({
-                        id: item.id,
-                        name: item.name,
-                        price: item.price ? item.price / 100 : 30, // Convert cents to dollars, fallback to $30
-                        description: item.description || fallbackProduct.description,
-                        images: item.images && item.images.length > 0 ? item.images.map((img: any) => img.url) : fallbackProduct.images,
-                        variants: item.variants && item.variants.length > 0
-                            ? item.variants.map((variant: any) => ({
-                                id: variant.id,
-                                name: variant.name || 'One Size',
-                                price: variant.price ? variant.price / 100 : 30,
-                                available: variant.available !== false
-                            }))
-                            : fallbackProduct.variants
-                    }));
-                    setProducts(transformedProducts);
-                } else {
-                    // No products from API, use fallback
-                    setProducts([fallbackProduct]);
-                }
-            } else {
-                // API failed, use fallback
-                console.warn('Failed to fetch products from Fourthwall, using fallback');
-                setProducts([fallbackProduct]);
-            }
-        } catch (error) {
-            console.error('Error fetching products:', error);
-            setProducts([fallbackProduct]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (!isMounted) return;
-
-        // Initialize visibility state for all sections
-        setIsVisible({
-            product: true, // Start with product section visible
-            story: true    // Start with story section visible
-        });
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(prev => ({
-                            ...prev,
-                            [entry.target.id]: true
-                        }));
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '50px' }
-        );
-
-        const sections = document.querySelectorAll('[data-animate]');
-        sections.forEach((section) => {
-            observer.observe(section);
-        });
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [isMounted]);
-
-    const getAnimationClass = (sectionId: string, baseClass: string = '') => {
-        const baseClasses = `${baseClass} transition-all duration-1000`;
-
-        if (!isMounted) {
-            return `${baseClasses} opacity-100`;
-        }
-
-        // Always show content if intersection observer hasn't triggered yet
-        // This ensures content is visible even if observer fails
-        const isIntersected = isVisible[sectionId];
-        if (isIntersected === undefined) {
-            return `${baseClasses} opacity-100 translate-y-0`;
-        }
-
-        return `${baseClasses} ${isIntersected ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`;
-    };
-
-    const addToCart = async () => {
-        if (!selectedVariant) {
-            toast.error("Please select a size");
-            return;
-        }
-
-        const currentProduct = products[0] || fallbackProduct;
-        const selectedVariantData = currentProduct.variants.find(v => v.id === selectedVariant);
-
-        if (!selectedVariantData) {
-            toast.error("Selected variant not found");
-            return;
-        }
-
-        setIsAddingToCart(true);
-
-        try {
-            // Create checkout session directly with Fourthwall API
-            const response = await fetch('/api/fourthwall/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cart: [{
-                        variantId: selectedVariant, // Use the actual variant ID from the product
-                        quantity: quantity
-                    }]
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to create checkout session');
-            }
-
-            const data = await response.json();
-
-            if (data.fallback) {
-                // Show message about being redirected to main store
-                toast.success("Redirecting to our store...");
-            } else if (data.cartId) {
-                // Show success message for cart creation
-                toast.success("Taking you to checkout...");
-            }
-
-            // Redirect to checkout URL (either specific cart or main store)
-            window.location.href = data.checkoutUrl;
-
-        } catch (error) {
-            console.error('Error creating checkout:', error);
-            toast.error("Unable to process checkout. Redirecting to our main store...");
-
-            // Fallback redirect to main Fourthwall store
-            setTimeout(() => {
-                window.location.href = "https://aerostatic-shop.fourthwall.com";
-            }, 2000);
-        } finally {
-            setIsAddingToCart(false);
-        }
-    };
-
-    const currentProduct = products[0] || fallbackProduct;
-
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="text-center">
-                    <div className="w-8 h-8 border-2 border-orange-500/20 border-t-orange-500 rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-white/60">Loading products...</p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="min-h-screen bg-black">
             <Header />
 
             {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                {/* Video Background */}
-                <div className="absolute inset-0 z-0">
-                    {isMounted && (
-                        <video
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="w-full h-full object-cover"
-                            style={{ filter: 'brightness(0.3) contrast(1.2)' }}
-                        >
-                            <source src="/videos/hero1.mp4" type="video/mp4" />
-                        </video>
-                    )}
-                    <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
+            <section className="pt-48 pb-32 px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-yellow-600/10" />
+
+                {/* Animated background elements */}
+                <div className="absolute inset-0">
+                    <div className="absolute top-20 left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse" />
+                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
                 </div>
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 z-10"></div>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="container mx-auto max-w-4xl relative z-10"
+                >
+                    <div className="text-center">
+                        <motion.h1
+                            className="text-6xl md:text-7xl lg:text-8xl font-picnic-script font-thin text-white mb-6 tracking-wide"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                        >
+                            Merch
+                        </motion.h1>
 
-                {/* Hero Content */}
-                <div className="relative z-20 text-center max-w-4xl mx-auto px-6">
-                    <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6 text-sm">
-                        Support the Mission
+                        <motion.p
+                            className="text-xl md:text-2xl font-sans text-white/70 max-w-3xl mx-auto leading-relaxed mb-4"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            Every purchase funds the mission. Get your gear and support
+                            the future of flight.
+                        </motion.p>
+
+                        <motion.p
+                            className="text-lg font-sans text-orange-400 max-w-2xl mx-auto mb-12"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                        >
+                            Visit our Fourthwall store for the latest collection
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="flex flex-col sm:flex-row gap-4 justify-center"
+                        >
+                            <Button
+                                size="lg"
+                                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-lg px-8 py-6"
+                                asChild
+                            >
+                                <a href="https://aerostatic-shop.fourthwall.com" target="_blank" rel="noopener noreferrer">
+                                    <ShoppingCart className="mr-2 h-5 w-5" />
+                                    Shop Now on Fourthwall
+                                    <ExternalLink className="ml-2 h-4 w-4" />
+                                </a>
+                            </Button>
+                        </motion.div>
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* Simple Message Section */}
+            <section className="py-20 px-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="container mx-auto max-w-4xl text-center"
+                >
+                    <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
+                        First Generation Collection
                     </Badge>
-                    <h1 className="text-6xl md:text-7xl font-gelica font-bold mb-6 leading-tight">
-                        You Don&apos;t Need a Hat to Be Part of This
-                    </h1>
-                    <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                        But it helps fund the next flight. Every piece supports the mission, proof that flight still matters. We&apos;ll fly it forward.
-                    </p>
 
-                    <div className="flex gap-4 justify-center">
-                        <Button
-                            size="lg"
-                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-8"
-                            onClick={() => {
-                                const element = document.getElementById('product');
-                                if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                            }}
-                        >
-                            Shop Now
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="border-white/20 text-white hover:bg-white/10 px-8"
-                            onClick={() => {
-                                const element = document.getElementById('story');
-                                if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                            }}
-                        >
-                            Why We Build
-                        </Button>
+                    <h2 className="text-4xl md:text-5xl font-gelica font-bold text-white mb-8">
+                        All I Need Is A Nap And A Million Dollars
+                    </h2>
+
+                    <div className="max-w-3xl mx-auto space-y-6 text-lg font-sans text-white/70 leading-relaxed">
+                        <p>
+                            The perfect shirt for balloon pilots who start before dawn and dream big.
+                            Along with hoodies, hats, and patches from our adventures around the world.
+                        </p>
+                        <p>
+                            We&apos;re not just selling merch. Every dollar goes directly into keeping
+                            hot air ballooning alive through technology, media, and experiences.
+                        </p>
+                        <p className="text-xl text-orange-400 font-picnic italic">
+                            Your purchase helps fund our dawn flights and the tools we&apos;re building for the community.
+                        </p>
                     </div>
-                </div>
 
-                {/* Scroll Indicator */}
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce opacity-60">
-                    <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center">
-                        <div className="w-1 h-3 bg-white/40 rounded-full mt-2 animate-pulse"></div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Product Section */}
-            <section
-                id="product"
-                data-animate
-                className={`py-32 px-6 relative ${getAnimationClass('product')}`}
-            >
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-                        {/* Product Images */}
-                        <div className="space-y-6">
-                            <div className="aspect-square bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-2xl overflow-hidden relative group">
-                                <Image
-                                    src={currentProduct.images[0]}
-                                    alt={currentProduct.name}
-                                    fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                                />
-                                <div className="absolute top-4 right-4 z-10">
-                                    <Badge className="bg-orange-500 text-white">
-                                        Limited Edition
-                                    </Badge>
-                                </div>
-                            </div>
-
-                            {/* Thumbnail Gallery */}
-                            <div className="grid grid-cols-3 gap-4">
-                                {currentProduct.images.slice(1).map((image, index) => (
-                                    <div key={index} className="aspect-square bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg overflow-hidden relative group cursor-pointer">
-                                        <Image
-                                            src={image}
-                                            alt={`${currentProduct.name} view ${index + 2}`}
-                                            fill
-                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Product Details */}
-                        <div className="space-y-8">
-                            <div>
-                                <h2 className="text-4xl md:text-5xl font-gelica font-bold mb-4 text-white">
-                                    {currentProduct.name}
-                                </h2>
-                                <div className="flex items-center gap-4 mb-6">
-                                    <span className="text-3xl font-bold text-orange-400">
-                                        ${currentProduct.price}
-                                    </span>
-                                    <div className="flex items-center gap-1">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="w-5 h-5 fill-orange-400 text-orange-400" />
-                                        ))}
-                                        <span className="text-white/60 ml-2">(Limited Reviews)</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* <div className="prose prose-invert max-w-none">
-                                <p className="text-lg text-white/80 leading-relaxed whitespace-pre-line">
-                                    {currentProduct.description}
-                                </p>
-                            </div> */}
-
-                            {/* Size Selection */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-white">Size</h3>
-                                <div className="flex gap-2">
-                                    {currentProduct.variants.map((variant) => (
-                                        <Button
-                                            key={variant.id}
-                                            variant={selectedVariant === variant.id ? "default" : "outline"}
-                                            className={selectedVariant === variant.id
-                                                ? "bg-orange-500 hover:bg-orange-600"
-                                                : "border-white/20 text-white hover:bg-white/10"
-                                            }
-                                            onClick={() => setSelectedVariant(variant.id)}
-                                            disabled={!variant.available}
-                                        >
-                                            {variant.name}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Quantity Selection */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-white">Quantity</h3>
-                                <div className="flex items-center gap-4">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="border-white/20 text-white hover:bg-white/10"
-                                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    >
-                                        <Minus className="w-4 h-4" />
-                                    </Button>
-                                    <span className="text-lg font-semibold w-8 text-center text-white">{quantity}</span>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="border-white/20 text-white hover:bg-white/10"
-                                        onClick={() => setQuantity(quantity + 1)}
-                                    >
-                                        <Plus className="w-4 h-4" />
-                                    </Button>
-                                </div>
-                            </div>
-
-                            {/* Add to Cart */}
-                            <div className="space-y-4">
-                                <Button
-                                    size="lg"
-                                    className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                                    onClick={addToCart}
-                                    disabled={isAddingToCart}
-                                >
-                                    {isAddingToCart ? (
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                                            Processing...
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <ShoppingCart className="w-5 h-5 mr-2" />
-                                            Buy Now - ${(currentProduct.price * quantity).toFixed(2)}
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Story Section */}
-            <section
-                id="story"
-                data-animate
-                className={`py-32 px-6 bg-white/[0.02] relative ${getAnimationClass('story')}`}
-            >
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        {/* Content */}
-                        <div className="space-y-8">
-                            <div>
-                                <Badge variant="outline" className="border-orange-500/30 text-orange-400 mb-6">
-                                    Why We Build
-                                </Badge>
-                                <h2 className="text-5xl md:text-6xl font-gelica font-bold mb-8 leading-tight text-white">
-                                    This Isn&apos;t About the Hat
-                                </h2>
-                            </div>
-
-                            <div className="space-y-6 text-lg text-white/80 leading-relaxed">
-                                <p>
-                                    It&apos;s about keeping a disappearing craft alive through field-tested tools and cinematic storytelling.
-                                </p>
-                                <p>
-                                    We fly before dawn, build in our off-hours, and fund it all ourselves. Our media arm produces content that reignites public imagination. Our tech tools, Aerostatus and Aether, are built in the field and quietly offered to others walking the same path.
-                                </p>
-
-                                <p className="text-orange-400 font-semibold">
-                                    Every purchase directly funds this mission. You&apos;re not buying merch, you&apos;re investing in the future of flight.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Media Grid */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-4">
-                                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-lg overflow-hidden relative group">
-                                    {isMounted && (
-                                        <video
-                                            autoPlay
-                                            muted
-                                            loop
-                                            playsInline
-                                            className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                        >
-                                            <source src="/videos/wine_train.mp4" type="video/mp4" />
-                                        </video>
-                                    )}
-                                </div>
-                                <div className="aspect-square bg-gradient-to-br from-amber-900/20 to-orange-900/20 rounded-lg overflow-hidden relative group">
-                                    <Image
-                                        src="/images/placeholder.webp"
-                                        alt="Hat detail"
-                                        fill
-                                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-4 pt-8">
-                                <div className="aspect-square bg-gradient-to-br from-red-900/20 to-orange-900/20 rounded-lg overflow-hidden relative group">
-                                    <Image
-                                        src="/images/stinky.jpg"
-                                        alt="Napa Valley balloon flight"
-                                        fill
-                                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                    />
-                                </div>
-                                <div className="aspect-[3/4] bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg overflow-hidden relative group">
-                                    <Image
-                                        src="/images/me_and_matteo.jpg"
-                                        alt="The team"
-                                        fill
-                                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <Button
+                        size="lg"
+                        variant="outline"
+                        className="mt-12 border-orange-400/30 text-orange-400 hover:bg-orange-400/10 text-lg px-8"
+                        asChild
+                    >
+                        <a href="https://aerostatic-shop.fourthwall.com" target="_blank" rel="noopener noreferrer">
+                            View Full Collection
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </a>
+                    </Button>
+                </motion.div>
             </section>
 
             <Footer />
         </div>
     );
-} 
+}
