@@ -1,5 +1,5 @@
 export const footerContent = {
-  description: "A media production company built for people in motion. We chase the light, ride the wind, and tell stories that move.",
+  description: "Bringing ballooning into the 21st century through media that captures its soul and technology that removes the friction.",
   
   sections: {
     services: {
@@ -8,7 +8,6 @@ export const footerContent = {
         { name: "Media Production", href: "/media" },
         { name: "Tech Solutions", href: "/tech" },
         { name: "Event Services", href: "/events" },
-        { name: "Partnerships", href: "/partnerships" },
         { name: "Work With Us", href: "/work-with-us" },
         { name: "About", href: "/about" }
       ]
@@ -17,9 +16,9 @@ export const footerContent = {
       title: "Connect",
       socialLinks: [
         // { name: "Email", href: "mailto:info@aerostatic.io" },
-        { name: "Instagram", href: "https://instagram.com/aerostatic" },
+        { name: "Instagram", href: "https://instagram.com/aerostatic.io" },
         // { name: "Twitter", href: "https://twitter.com/aerostatic" },
-        { name: "YouTube", href: "https://youtube.com/@team.aerostatic" }
+        { name: "YouTube", href: "https://youtube.com/@TeamAerostatic" }
       ]
     }
   },

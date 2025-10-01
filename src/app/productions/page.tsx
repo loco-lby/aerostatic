@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MerchCTA } from "@/components/MerchCTA";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from "@/components/ui/badge";
@@ -77,7 +78,7 @@ const productionServices = [
         id: "events",
         title: "Event Productions",
         subtitle: "From festivals to private gatherings",
-        description: "We bring both the spectacle and the documentation. Our balloons become the centerpiece while our cameras capture every moment.",
+        description: "We bring both the spectacle and the story. Our balloons create the experience while our cameras capture every moment of magic.",
         icon: Wind,
         services: [
             "Static balloon displays",
@@ -91,8 +92,8 @@ const productionServices = [
     {
         id: "social",
         title: "Social Media Marketing",
-        subtitle: "Viral-worthy content that rises above the noise",
-        description: "Create scroll-stopping social content with our unique aerial perspective and professional production quality.",
+        subtitle: "Content that rises above the noise",
+        description: "Scroll-stopping social content with our unique aerial perspective. Because the best marketing doesn&apos;t feel like marketing.",
         icon: Globe,
         services: [
             "Instagram Reels & TikTok content",
@@ -106,8 +107,8 @@ const productionServices = [
     {
         id: "branded",
         title: "Branded Campaigns",
-        subtitle: "Authentic content for mission-aligned brands",
-        description: "Put your brand literally and figuratively in the sky with custom balloon branding and cinematic production.",
+        subtitle: "For brands that get it",
+        description: "Put your brand in the sky—literally and figuratively. Custom balloon branding meets cinematic storytelling for brands that align with adventure, freedom, and doing things differently.",
         icon: Camera,
         services: [
             "Custom balloon branding",
@@ -160,7 +161,7 @@ export default function ProductionsPage() {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            Where hot air balloons meet Hollywood
+                            Capturing the soul of ballooning—the philosophy, the moments, the culture that exists between flights.
                         </motion.p>
                     </div>
 
@@ -180,7 +181,7 @@ export default function ProductionsPage() {
                             Featured Work
                         </h2>
                         <p className="text-lg font-sans text-white/60 text-center max-w-3xl mx-auto">
-                            From international festivals to intimate gatherings, every production tells a unique story
+                            The moments you only hear about if you&apos;ve been in a chase vehicle at dawn, or stood in a field watching an envelope fill.
                         </p>
                     </motion.div>
 
@@ -245,7 +246,7 @@ export default function ProductionsPage() {
                             What We Do
                         </h2>
                         <p className="text-lg font-sans text-white/60 max-w-3xl mx-auto">
-                            Full-service production from pre to post, with hot air balloons as our signature
+                            Not bucket list tourism—authentic storytelling that shows what ballooning really is: a way of life.
                         </p>
                     </motion.div>
 
@@ -397,6 +398,8 @@ export default function ProductionsPage() {
                     </div>
                 </motion.div>
             </section>
+
+            <MerchCTA />
 
             <Footer />
         </div>

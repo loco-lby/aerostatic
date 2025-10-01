@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     // and get a specific checkout URL
 
     // Build URL with product information if needed
-    const checkoutUrl = 'https://aerostatic-shop.fourthwall.com';
+    const checkoutUrl = 'https://aerostatic-shop.fourthwall.com/en-usd/collections/all';
 
     return NextResponse.json({
       success: true,
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error: 'Failed to create checkout',
-        checkoutUrl: 'https://aerostatic-shop.fourthwall.com',
+        checkoutUrl: 'https://aerostatic-shop.fourthwall.com/en-usd/collections/all',
         fallback: true
       },
       { status: 500 }

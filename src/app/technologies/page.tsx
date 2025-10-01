@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from 'react';
+import { ProductInterestModal } from '@/components/ProductInterestModal';
+import { MerchCTA } from '@/components/MerchCTA';
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from '@/components/ui/button';
@@ -8,6 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from '@/components/ui/textarea';
 import { motion } from 'framer-motion';
+import { createClient } from '@/lib/supabase';
+import { track } from '@vercel/analytics';
 import {
     ArrowRight,
     Camera,
@@ -29,6 +33,12 @@ export default function TechnologiesPage() {
     const [hoveredTool, setHoveredTool] = useState<string | null>(null);
     const [toolIdea, setToolIdea] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showInterestModal, setShowInterestModal] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<{
+        id: 'aerostatus' | 'aeronav',
+        name: string,
+        description: string
+    } | null>(null);
 
     const handleToolIdeaSubmit = async () => {
         if (!toolIdea.trim()) {
@@ -38,9 +48,23 @@ export default function TechnologiesPage() {
 
         setIsSubmitting(true);
         try {
-            // For static site, just show success message
-            // In production, this would integrate with your backend service
+            const supabase = createClient();
+
+            const { error } = await supabase
+                .from('tool_suggestions')
+                .insert([{
+                    idea: toolIdea,
+                    source: 'technologies_page',
+                }]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+                toast.error("Failed to submit idea. Please try again.");
+                return;
+            }
+
             toast.success("Thanks for your idea! We'll review it carefully.");
+            track('form_submission', { form: 'tool_suggestion' });
             setToolIdea('');
         } catch (error) {
             console.error('Error submitting tool idea:', error);
@@ -136,7 +160,7 @@ export default function TechnologiesPage() {
                             Our Tools
                         </h2>
                         <p className="text-lg font-sans text-white/60 text-center max-w-3xl mx-auto">
-                            Purpose-built platforms that solve real problems for creators and event organizers
+                            No more spreadsheets. No more paper logbooks. No more software that wasn&apos;t built for balloons.
                         </p>
                     </motion.div>
 
@@ -163,7 +187,7 @@ export default function TechnologiesPage() {
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-white/70 font-sans mb-6">
-                                        Complete balloon operation management platform with advanced scheduling and real-time team coordination.
+                                        Operations management designed for balloon companies. Everything you&apos;re currently doing the hard way—crew scheduling, flight logging, maintenance tracking—finally in one place.
                                     </p>
 
                                     <div className="space-y-2 mb-6">
@@ -181,20 +205,37 @@ export default function TechnologiesPage() {
                                         ))}
                                     </div>
 
-                                    <Button
-                                        asChild
-                                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                                    >
-                                        <Link href="/technologies/aerostatus">
-                                            Join Beta
-                                            <ArrowRight className="ml-2 h-4 w-4" />
-                                        </Link>
-                                    </Button>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Button
+                                            asChild
+                                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                                        >
+                                            <Link href="/technologies/aerostatus">
+                                                Join Beta
+                                                <ArrowRight className="ml-2 h-4 w-4" />
+                                            </Link>
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                setSelectedProduct({
+                                                    id: 'aerostatus',
+                                                    name: 'AeroStatus',
+                                                    description: 'Get early access and help shape the future of balloon operation management.'
+                                                });
+                                                setShowInterestModal(true);
+                                                track('product_interest_click', { product: 'aerostatus' });
+                                            }}
+                                            variant="outline"
+                                            className="border-orange-400/30 text-orange-400 hover:bg-orange-500/10"
+                                        >
+                                            I&apos;m Interested
+                                        </Button>
+                                    </div>
                                 </CardContent>
                             </Card>
                         </motion.div>
 
-                        {/* AeroKnot Card */}
+                        {/* AeroNav Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -210,7 +251,7 @@ export default function TechnologiesPage() {
                                         </Badge>
                                     </div>
                                     <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
-                                        AeroKnot
+                                        AeroNav
                                     </CardTitle>
                                     <p className="text-base font-sans text-orange-400">
                                         Flight Planning & Navigation
@@ -218,7 +259,7 @@ export default function TechnologiesPage() {
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-white/70 font-sans mb-6">
-                                        Comprehensive flight planning and navigation app with integrated crew coordination for aerial operations.
+                                        Flight planning and navigation built specifically for balloonists. Real-time weather integration, route planning that understands how balloons actually fly, and tools that keep you safe in the air.
                                     </p>
 
                                     <div className="space-y-2 mb-6">
@@ -237,10 +278,18 @@ export default function TechnologiesPage() {
                                     </div>
 
                                     <Button
-                                        disabled
-                                        className="w-full bg-white/10 text-white/50 cursor-not-allowed"
+                                        onClick={() => {
+                                            setSelectedProduct({
+                                                id: 'aeronav',
+                                                name: 'AeroNav',
+                                                description: 'Join the waitlist and be the first to know when we launch our flight planning platform.'
+                                            });
+                                            setShowInterestModal(true);
+                                            track('product_interest_click', { product: 'aeronav' });
+                                        }}
+                                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
                                     >
-                                        Coming Soon
+                                        I&apos;m Interested
                                     </Button>
                                 </CardContent>
                             </Card>
@@ -271,7 +320,7 @@ export default function TechnologiesPage() {
                             <CardContent>
                                 <div className="space-y-4">
                                     <p className="text-white/70 font-sans text-center">
-                                        Have an idea for a tool that would save you time? We&apos;d love to hear it!
+                                        We build tools that solve our own problems. If you have a pain point that needs solving, we want to hear it.
                                     </p>
                                     <Textarea
                                         placeholder="What tool would save you time? Describe your idea..."
@@ -312,23 +361,35 @@ export default function TechnologiesPage() {
                         </h2>
                         <div className="max-w-4xl mx-auto space-y-6 text-lg font-sans text-white/70 leading-relaxed">
                             <p>
-                                We create utility-first tools that solve our own problems in media and adventure.
-                                We don&apos;t try to build products for the sake of taking money from users.
+                                If you&apos;re a pilot, operator, or crew member, you know the pain. The spreadsheets. The outdated software. The paper logbooks. The weather apps that weren&apos;t built for balloons. The communication chaos when coordinating a flight.
                             </p>
                             <p>
-                                If you have an idea, drop it in the box above and if we think it will save us
-                                and others like us time, we might just build it.
+                                We&apos;re building the tools that should have existed years ago—not to make money, but to remove the friction that keeps people from falling in love with this sport.
                             </p>
                             <p className="text-xl text-orange-400 font-picnic italic">
-                                This is technology made to get you off your phone,
-                                to aid you in seeing the world through a new lens.
+                                Technology should get you off your phone and into the air.
                             </p>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
+            <MerchCTA />
+
             <Footer />
+
+            {selectedProduct && (
+                <ProductInterestModal
+                    isOpen={showInterestModal}
+                    onClose={() => {
+                        setShowInterestModal(false);
+                        setSelectedProduct(null);
+                    }}
+                    product={selectedProduct.id}
+                    productName={selectedProduct.name}
+                    productDescription={selectedProduct.description}
+                />
+            )}
         </div>
     );
 }

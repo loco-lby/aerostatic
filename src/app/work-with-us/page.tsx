@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MerchCTA } from "@/components/MerchCTA";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createClient } from '@/lib/supabase';
+import { track } from '@vercel/analytics';
 import {
     Film,
     Calendar,
@@ -77,9 +80,34 @@ function MediaForm() {
         setIsSubmitting(true);
 
         try {
-            // For static site, just show success message
-            // In production, this would integrate with your backend service
+            const supabase = createClient();
+
+            const { error } = await supabase
+                .from('media_project_requests')
+                .insert([{
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone || null,
+                    company: formData.company || null,
+                    project_type: formData.projectType || null,
+                    timeline: formData.timeline || null,
+                    budget: formData.budget || null,
+                    description: formData.description,
+                    services: formData.services,
+                    metadata: {
+                        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : null,
+                        referrer: typeof document !== 'undefined' ? document.referrer : null,
+                    }
+                }]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+                toast.error('Something went wrong. Please try again.');
+                return;
+            }
+
             toast.success('Request submitted! We\'ll be in touch within 24 hours.');
+            track('form_submission', { form: 'media_project_request' });
 
             // Reset form
             setFormData({
@@ -274,9 +302,37 @@ function EventsForm() {
         setIsSubmitting(true);
 
         try {
-            // For static site, just show success message
-            // In production, this would integrate with your backend service
+            const supabase = createClient();
+
+            const { error } = await supabase
+                .from('event_service_requests')
+                .insert([{
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone || null,
+                    company: formData.company || null,
+                    event_type: formData.eventType || null,
+                    event_date: formData.eventDate || null,
+                    location: formData.location,
+                    attendees: formData.attendees || null,
+                    services: formData.services,
+                    description: formData.description,
+                    timeline: formData.timeline || null,
+                    additional_requests: formData.additionalRequests || null,
+                    metadata: {
+                        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : null,
+                        referrer: typeof document !== 'undefined' ? document.referrer : null,
+                    }
+                }]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+                toast.error('Something went wrong. Please try again.');
+                return;
+            }
+
             toast.success('Request submitted! We\'ll be in touch within 24 hours.');
+            track('form_submission', { form: 'event_service_request' });
 
             // Reset form
             setFormData({
@@ -451,9 +507,32 @@ function TechForm() {
         setIsSubmitting(true);
 
         try {
-            // For static site, just show success message
-            // In production, this would integrate with your backend service
+            const supabase = createClient();
+
+            const { error } = await supabase
+                .from('tech_project_requests')
+                .insert([{
+                    name: formData.name,
+                    email: formData.email,
+                    organization: formData.organization || null,
+                    project_type: formData.projectType,
+                    timeline: formData.timeline || null,
+                    budget: formData.budget || null,
+                    description: formData.description,
+                    metadata: {
+                        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : null,
+                        referrer: typeof document !== 'undefined' ? document.referrer : null,
+                    }
+                }]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+                toast.error('Something went wrong. Please try again.');
+                return;
+            }
+
             toast.success('Request submitted! We\'ll be in touch within 48 hours.');
+            track('form_submission', { form: 'tech_project_request' });
 
             // Reset form
             setFormData({
@@ -751,6 +830,8 @@ export default function WorkWithUsPage() {
                     </div>
                 </div>
             </section>
+
+            <MerchCTA />
 
             <Footer />
         </div>

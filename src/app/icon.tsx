@@ -1,0 +1,31 @@
+import fs from 'fs'
+import path from 'path'
+import sharp from 'sharp'
+
+export const size = {
+  width: 32,
+  height: 32,
+}
+
+export const contentType = 'image/png'
+
+export default async function Icon() {
+  // Read and resize the icon_white.png file from public/images
+  const iconPath = path.join(process.cwd(), 'public', 'images', 'icon_white.png')
+
+  // Use sharp to resize with proper aspect ratio and padding
+  const resizedImage = await sharp(iconPath)
+    .resize(32, 32, {
+      fit: 'contain',
+      background: { r: 0, g: 0, b: 0, alpha: 1 }
+    })
+    .png()
+    .toBuffer()
+
+  return new Response(resizedImage, {
+    headers: {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    },
+  })
+}

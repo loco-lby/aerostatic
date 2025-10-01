@@ -17,6 +17,28 @@ export default function robots(): MetadataRoute.Robots {
           '*.json',
         ],
       },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/auth/',
+          '/profile/',
+          '/submit/',
+          '/admin/',
+        ],
+      },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/auth/',
+          '/profile/',
+          '/submit/',
+          '/admin/',
+        ],
+      },
     ],
     sitemap: `${config.baseUrl}/sitemap.xml`,
     host: config.baseUrl,

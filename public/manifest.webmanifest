@@ -1,0 +1,11 @@
+{
+  "name": "Aerostatic - Adventure is in the Air",
+  "short_name": "Aerostatic",
+  "description": "Professional hot air balloon displays and cinematic coverage for festivals, brand launches, and private experiences.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "icons": []
+}

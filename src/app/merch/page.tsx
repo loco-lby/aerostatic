@@ -68,7 +68,7 @@ export default function MerchPage() {
                                 className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-lg px-8 py-6"
                                 asChild
                             >
-                                <a href="https://aerostatic-shop.fourthwall.com" target="_blank" rel="noopener noreferrer">
+                                <a href="https://aerostatic-shop.fourthwall.com/en-usd/collections/all" target="_blank" rel="noopener noreferrer">
                                     <ShoppingCart className="mr-2 h-5 w-5" />
                                     Shop Now on Fourthwall
                                     <ExternalLink className="ml-2 h-4 w-4" />
@@ -116,7 +116,7 @@ export default function MerchPage() {
                         className="mt-12 border-orange-400/30 text-orange-400 hover:bg-orange-400/10 text-lg px-8"
                         asChild
                     >
-                        <a href="https://aerostatic-shop.fourthwall.com" target="_blank" rel="noopener noreferrer">
+                        <a href="https://aerostatic-shop.fourthwall.com/en-usd/collections/all" target="_blank" rel="noopener noreferrer">
                             View Full Collection
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </a>

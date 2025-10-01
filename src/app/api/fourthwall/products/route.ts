@@ -7,7 +7,7 @@ export async function GET() {
     // Use the STOREFRONT API - not the Open API
     const response = await fetch('https://api.fourthwall.com/v1.2/store/aerostatic-shop/offers', {
       headers: {
-        'X-Storefront-Token': STOREFRONT_TOKEN,
+        'X-Storefront-Token': STOREFRONT_TOKEN || '',
         'Accept': 'application/json',
       },
     });
@@ -37,7 +37,7 @@ export async function GET() {
       })) || [],
       featured: offer.featured || false,
       stock: offer.available ? 'In Stock' : 'Limited',
-      url: `https://aerostatic-shop.fourthwall.com/products/${offer.slug}`
+      url: `https://aerostatic-shop.fourthwall.com/en-usd/products/${offer.slug}`
     }));
 
     return NextResponse.json({
@@ -61,7 +61,7 @@ export async function GET() {
           variants: [],
           featured: true,
           stock: 'Available',
-          url: 'https://aerostatic-shop.fourthwall.com'
+          url: 'https://aerostatic-shop.fourthwall.com/en-usd/collections/all'
         }
       ]
     });

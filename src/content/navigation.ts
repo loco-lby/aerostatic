@@ -1,15 +1,15 @@
 export const navigationContent = {
   menuItems: [
-    { name: "Academia", href: "/academia" },
     { name: "Productions", href: "/productions" },
     { name: "Technologies", href: "/technologies" },
+    { name: "Events", href: "/events" },
     { name: "Merchandise", href: "/merch" },
   ],
   cta: "Work with us",
   secondaryCta: {
-    text: "Explore Academia",
-    href: "/academia"
+    text: "Join the Movement",
+    href: "/#join"
   }
 };
 
-export type NavigationContent = typeof navigationContent; 
+export type NavigationContent = typeof navigationContent;

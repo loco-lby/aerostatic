@@ -13,7 +13,8 @@ import { toast } from 'sonner'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import Image from 'next/image'
-// Supabase client removed for static site
+import { createClient } from '@/lib/supabase'
+import { track } from '@vercel/analytics'
 import { MediaViewer } from './media-viewer'
 import JSZip from 'jszip'
 import {
@@ -228,9 +229,30 @@ export function MediaGallery({ mediaPackage, groupedMedia, accessCode }: MediaGa
     setIsSubmitting(true)
 
     try {
-      // For static site, just show success message
-      // In production, this would integrate with your backend service
+      const supabase = createClient()
+
+      const { error } = await supabase
+        .from('media_enhancement_requests')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          services: formData.services,
+          message: formData.message,
+          package_code: accessCode,
+          metadata: {
+            userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : null,
+            referrer: typeof document !== 'undefined' ? document.referrer : null,
+          }
+        }])
+
+      if (error) {
+        console.error('Supabase error:', error)
+        toast.error('Something went wrong. Please try again.')
+        return
+      }
+
       toast.success('Request submitted! We\'ll be in touch soon.')
+      track('form_submission', { form: 'media_enhancement_request', package_code: accessCode })
 
       // Reset form
       setFormData({
