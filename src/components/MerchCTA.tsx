@@ -33,7 +33,7 @@ export function MerchCTA() {
   };
 
   return (
-    <section className="py-20 px-6 bg-gradient-to-br from-orange-500/5 via-transparent to-red-600/5">
+    <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-br from-orange-500/5 via-transparent to-red-600/5">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -41,13 +41,13 @@ export function MerchCTA() {
         viewport={{ once: true }}
         className="container mx-auto max-w-6xl"
       >
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500/10 to-red-600/10 border border-orange-400/20 p-12">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500/10 to-red-600/10 border border-orange-400/20 p-6 md:p-12">
           <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.015] mix-blend-overlay" />
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Stacked Cards */}
-            <div className="relative h-[400px] flex items-center justify-center order-2 lg:order-1">
-              <div className="relative w-[280px] h-[350px]">
+            <div className="relative h-[300px] md:h-[400px] flex items-center justify-center order-2 lg:order-1">
+              <div className="relative w-[220px] md:w-[280px] h-[280px] md:h-[350px]">
                 {merchImages.map((image, index) => {
                   const isHovered = hoveredCard === image.id;
                   const isOtherHovered = hoveredCard !== null && hoveredCard !== image.id;
@@ -80,7 +80,7 @@ export function MerchCTA() {
                           alt={image.alt}
                           fill
                           className="object-cover"
-                          sizes="280px"
+                          sizes="(max-width: 768px) 220px, 280px"
                         />
                         {/* Overlay on hover */}
                         <motion.div
@@ -102,25 +102,25 @@ export function MerchCTA() {
 
             {/* Text Content */}
             <div className="relative z-10 text-center lg:text-left order-1 lg:order-2">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-500/20 mb-6 lg:mx-0 mx-auto">
-                <ShoppingBag className="w-8 h-8 text-orange-400" />
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 mb-4 md:mb-6 lg:mx-0 mx-auto">
+                <ShoppingBag className="w-6 h-6 md:w-8 md:h-8 text-orange-400" />
               </div>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-gelica font-bold text-white mb-4">
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-gelica font-bold text-white mb-3 md:mb-4">
                 Support the Movement
               </h2>
 
-              <p className="text-lg md:text-xl text-white/70 mb-8 leading-relaxed">
+              <p className="text-base md:text-lg lg:text-xl text-white/70 mb-6 md:mb-8 leading-relaxed">
                 Every purchase helps us bring ballooning into the 21st century. Wear the mission, support the cause.
               </p>
 
               <Button
                 onClick={handleButtonClick}
                 size="lg"
-                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium text-lg px-8 py-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium text-base md:text-lg px-6 md:px-8 py-4 md:py-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25 w-full sm:w-auto"
               >
                 Shop Merch
-                <ExternalLink className="ml-2 h-5 w-5" />
+                <ExternalLink className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </Button>
             </div>
           </div>

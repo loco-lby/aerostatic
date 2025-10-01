@@ -38,7 +38,7 @@ const featuredProductions = [
         date: "November 2020-2024",
         location: "Cathedral City, CA",
         description: "Five years of capturing the magic of dawn patrol flights and competitive races in the California desert",
-        media: "/videos/your_event.mp4",
+        media: "https://res.cloudinary.com/aerostatic/video/upload/v1759347704/videos/your_event_yhyxze.mp4",
         highlights: ["2nd place 2023", "3rd place 2024", "Official media partner"]
     },
     {
@@ -48,7 +48,7 @@ const featuredProductions = [
         date: "February 2020-2024",
         location: "Chiang Rai, Thailand",
         description: "Documenting one of Asia's premier balloon festivals with cinematic storytelling across cultures",
-        media: "/videos/thailand.mp4"
+        media: "https://res.cloudinary.com/aerostatic/video/upload/v1759347722/videos/thailand_l7lpog.mp4"
     },
     {
         id: 3,
@@ -57,7 +57,7 @@ const featuredProductions = [
         date: "August 2023-2024",
         location: "Black Rock City, NV",
         description: "Hot air balloons meet radical self-expression in the Nevada desert",
-        media: "/videos/hero.mp4",
+        media: "https://res.cloudinary.com/aerostatic/video/upload/v1759347722/videos/hero_xonr3g.mp4",
         highlights: ["Sunrise flights over the playa", "Art car collaborations", "Desert documentation"]
     },
     {

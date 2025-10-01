@@ -91,7 +91,7 @@ export const Navigation: FunctionComponent = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md"
+            className="fixed inset-0 z-[100] bg-black backdrop-blur-md"
             style={{ top: 0 }}
           >
             <div className="flex flex-col items-center justify-center min-h-screen space-y-8 relative">

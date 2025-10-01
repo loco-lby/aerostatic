@@ -39,7 +39,7 @@ export default function HomePage() {
               className="w-full h-full object-cover"
               style={{ filter: 'brightness(0.4) contrast(1.1)' }}
             >
-              <source src="/videos/hero1.mp4" type="video/mp4" />
+              <source src="https://res.cloudinary.com/aerostatic/video/upload/v1759347738/videos/hero1_upwcus.mp4" type="video/mp4" />
             </video>
           )}
           <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
@@ -49,11 +49,11 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70 z-10"></div>
 
         {/* Hero Content */}
-        <div className="relative z-20 text-center max-w-5xl mx-auto px-6 pt-32 pb-20">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-gelica font-bold text-white mb-8 leading-tight">
+        <div className="relative z-20 text-center max-w-5xl mx-auto px-4 md:px-6 pt-32 pb-20">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-gelica font-bold text-white mb-6 md:mb-8 leading-tight">
             {content.home.hero.title}
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 font-light mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl lg:text-2xl text-white/80 font-light mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed">
             {content.home.hero.subtitle}
           </p>
 
@@ -63,7 +63,7 @@ export default function HomePage() {
               setShowEmailModal(true);
             }}
             size="lg"
-            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-12 py-6 text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 md:px-12 py-5 md:py-6 text-base md:text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25 w-full sm:w-auto"
           >
             {content.home.hero.cta}
             <ArrowRight className="ml-2 h-5 w-5" />
@@ -80,7 +80,7 @@ export default function HomePage() {
       />
 
       {/* Mission Section */}
-      <section className="py-24 px-6 bg-black">
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-black">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-16">
             <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
@@ -99,7 +99,7 @@ export default function HomePage() {
       </section>
 
       {/* Two Fronts Section */}
-      <section className="py-24 px-6 bg-white/[0.02]">
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-white/[0.02]">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-4">
@@ -110,10 +110,10 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
             {/* Media Card */}
             <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-8 h-full flex flex-col">
+              <CardContent className="p-6 md:p-8 h-full flex flex-col">
                 <h3 className="text-2xl md:text-3xl font-gelica font-bold text-white mb-6">
                   {content.home.twoFronts.media.title}
                 </h3>
@@ -153,7 +153,7 @@ export default function HomePage() {
 
             {/* Tech Card */}
             <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-8 h-full flex flex-col">
+              <CardContent className="p-6 md:p-8 h-full flex flex-col">
                 <h3 className="text-2xl md:text-3xl font-gelica font-bold text-white mb-6">
                   {content.home.twoFronts.tech.title}
                 </h3>
@@ -200,7 +200,7 @@ export default function HomePage() {
       </section>
 
       {/* About Colby Section */}
-      <section className="py-24 px-6 bg-black">
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-black">
         <div className="container mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -224,7 +224,7 @@ export default function HomePage() {
                   playsInline
                   className="w-full h-full object-cover"
                 >
-                  <source src="/videos/profile.mp4" type="video/mp4" />
+                  <source src="https://res.cloudinary.com/aerostatic/video/upload/v1759347751/videos/profile_ewiluj.mp4" type="video/mp4" />
                 </video>
               )}
             </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
       </section>
 
       {/* Join the Movement Section */}
-      <section className="py-24 px-6 bg-gradient-to-b from-black via-white/[0.02] to-black">
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-gradient-to-b from-black via-white/[0.02] to-black">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-6">
@@ -244,12 +244,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-12">
             {content.home.joinMovement.ctas.map((cta, index) => {
               if (cta.type === "email") {
                 return (
                   <Card key={index} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <CardContent className="p-8 text-center">
+                    <CardContent className="p-6 md:p-8 text-center">
                       <Mail className="w-12 h-12 text-orange-400 mx-auto mb-4" />
                       <h3 className="text-xl font-gelica font-bold text-white mb-2">
                         {cta.title}
@@ -271,7 +271,7 @@ export default function HomePage() {
               if (cta.type === "social" && "links" in cta && cta.links) {
                 return (
                   <Card key={index} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <CardContent className="p-8 text-center">
+                    <CardContent className="p-6 md:p-8 text-center">
                       <div className="flex justify-center gap-2 mb-4">
                         <Instagram className="w-8 h-8 text-orange-400" />
                         <TikTok className="w-8 h-8 text-orange-400" />
@@ -303,7 +303,7 @@ export default function HomePage() {
               if (cta.type === "contact" && "href" in cta && cta.href) {
                 return (
                   <Card key={index} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <CardContent className="p-8 text-center">
+                    <CardContent className="p-6 md:p-8 text-center">
                       <ArrowRight className="w-12 h-12 text-orange-400 mx-auto mb-4" />
                       <h3 className="text-xl font-gelica font-bold text-white mb-2">
                         {cta.title}
@@ -339,7 +339,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer Tagline Section */}
-      <section className="py-16 px-6 bg-gradient-to-b from-black to-orange-900/10">
+      <section className="py-12 md:py-16 px-4 md:px-6 bg-gradient-to-b from-black to-orange-900/10">
         <div className="container mx-auto max-w-4xl text-center">
           <h3 className="text-3xl md:text-4xl font-gelica font-bold text-white mb-4">
             {content.home.footer.tagline}

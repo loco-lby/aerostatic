@@ -56,7 +56,7 @@ interface BackgroundVideoProps {
 
 export function BackgroundVideo({
   src,
-  fallbackSrc = "/videos/hero.mp4",
+  fallbackSrc = "https://res.cloudinary.com/aerostatic/video/upload/v1759347722/videos/hero_xonr3g.mp4",
   className = "w-full h-full object-cover",
   overlay = true,
 }: BackgroundVideoProps) {

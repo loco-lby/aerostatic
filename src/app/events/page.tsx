@@ -42,7 +42,7 @@ const pastEvents = [
         location: "Cathedral City, CA",
         type: "Media Coverage & Ride Activations",
         description: "Annual festival coverage with spectacular sunrise flights over the desert",
-        images: ["/videos/your_event.mp4"],
+        images: ["https://res.cloudinary.com/aerostatic/video/upload/v1759347704/videos/your_event_yhyxze.mp4"],
         testimonial: "Five years of incredible aerial coverage and passenger experiences.",
         highlights: ["5 consecutive years", "2nd place 2023", "3rd place 2024"]
     },
@@ -53,7 +53,7 @@ const pastEvents = [
         location: "Chiang Rai, Thailand",
         type: "International Media Production",
         description: "Documenting one of Asia's premier balloon festivals with cinematic storytelling",
-        images: ["/videos/thailand.mp4"],
+        images: ["https://res.cloudinary.com/aerostatic/video/upload/v1759347722/videos/thailand_l7lpog.mp4"],
         stats: { flights: 60, countries: 15, mediaReach: "5M+" },
         testimonial: "Their ability to capture the scale and beauty of our international event is unmatched.",
         client: "Singha Festival Committee"
