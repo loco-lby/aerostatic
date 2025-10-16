@@ -2,19 +2,31 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FunctionComponent, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useContent } from "@/hooks/useContent";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 interface MenuItem {
   name: string;
   href: string;
   isSection?: boolean;
   openInNewTab?: boolean;
+  dropdown?: {
+    name: string;
+    href: string;
+  }[];
 }
 
 const smoothScrollToSection = (sectionId: string) => {
@@ -54,25 +66,50 @@ export const Navigation: FunctionComponent = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center gap-8">
-        {content.navigation.menuItems.map((item) => (
-          <motion.div
-            key={item.href}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              href={item.href}
-              className={cn(
-                "text-white/80 hover:text-white transition-all font-picnic font-light italic text-2xl tracking-wide hover:scale-105",
-                pathname === item.href && "text-white"
+      <NavigationMenu className="hidden md:flex">
+        <NavigationMenuList className="gap-8">
+          {content.navigation.menuItems.map((item) => (
+            <NavigationMenuItem key={item.href}>
+              {item.dropdown ? (
+                <>
+                  <NavigationMenuTrigger className="bg-transparent hover:bg-transparent data-[state=open]:bg-transparent text-white/80 hover:text-white font-picnic font-light italic text-2xl tracking-wide">
+                    {item.name}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="w-56 p-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg">
+                      {item.dropdown.map((dropdownItem) => (
+                        <li key={dropdownItem.href}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              href={dropdownItem.href}
+                              className={cn(
+                                "block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-white/5 hover:text-white focus:bg-white/5 focus:text-white text-white/80 font-picnic font-light italic text-xl",
+                                pathname === dropdownItem.href && "text-orange-400 bg-white/5"
+                              )}
+                            >
+                              {dropdownItem.name}
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </>
+              ) : (
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "text-white/80 hover:text-white transition-all font-picnic font-light italic text-2xl tracking-wide hover:scale-105",
+                    pathname === item.href && "text-white"
+                  )}
+                >
+                  {item.name}
+                </Link>
               )}
-            >
-              {item.name}
-            </Link>
-          </motion.div>
-        ))}
-      </nav>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
 
       {/* Mobile Navigation */}
       <div className="md:hidden">
@@ -110,17 +147,41 @@ export const Navigation: FunctionComponent = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  className="flex flex-col items-center gap-4"
                 >
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "text-4xl font-picnic font-light italic text-white/80 hover:text-white transition-colors",
-                      pathname === item.href && "text-orange-400"
-                    )}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
+                  {item.dropdown ? (
+                    <>
+                      <div className="text-4xl font-picnic font-light italic text-white/80">
+                        {item.name}
+                      </div>
+                      <div className="flex flex-col items-center gap-3">
+                        {item.dropdown.map((dropdownItem) => (
+                          <Link
+                            key={dropdownItem.href}
+                            href={dropdownItem.href}
+                            className={cn(
+                              "text-2xl font-picnic font-light italic text-white/70 hover:text-white transition-colors",
+                              pathname === dropdownItem.href && "text-orange-400"
+                            )}
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "text-4xl font-picnic font-light italic text-white/80 hover:text-white transition-colors",
+                        pathname === item.href && "text-orange-400"
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
 
@@ -150,6 +211,7 @@ export const Navigation: FunctionComponent = () => {
 
 export const Header: FunctionComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [bannerHeight, setBannerHeight] = useState(0);
   const router = useRouter();
   const content = useContent();
 
@@ -158,18 +220,41 @@ export const Header: FunctionComponent = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
+    const updateBannerHeight = () => {
+      const banner = document.querySelector('[data-announcement-banner]');
+      if (banner) {
+        setBannerHeight(banner.clientHeight);
+      } else {
+        setBannerHeight(0);
+      }
+    };
+
+    // Initial check
+    updateBannerHeight();
+
+    // Watch for changes (banner dismissal)
+    const observer = new MutationObserver(updateBannerHeight);
+    observer.observe(document.body, { childList: true, subtree: true });
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', updateBannerHeight);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateBannerHeight);
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <motion.header
       className={cn(
-        "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
+        "fixed left-0 right-0 z-40 transition-all duration-300",
         isScrolled
           ? "bg-black/80 backdrop-blur-md border-b border-white/10"
           : "bg-transparent"
       )}
+      style={{ top: `${bannerHeight}px` }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}

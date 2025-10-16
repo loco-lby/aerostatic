@@ -22,7 +22,7 @@ export default async function Icon() {
     .png()
     .toBuffer()
 
-  return new Response(resizedImage, {
+  return new Response(resizedImage as BodyInit, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': 'public, max-age=31536000, immutable',

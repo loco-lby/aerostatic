@@ -87,7 +87,7 @@ export function DownloadDialog({
       }
 
       // Combine chunks into blob
-      const blob = new Blob(chunks, { type: response.headers.get('content-type') || 'application/octet-stream' })
+      const blob = new Blob(chunks as BlobPart[], { type: response.headers.get('content-type') || 'application/octet-stream' })
 
       // Create download link
       const blobUrl = window.URL.createObjectURL(blob)
