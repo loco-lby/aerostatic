@@ -29,7 +29,7 @@ export default function GoldilocksPage() {
     const [activeSection, setActiveSection] = useState<string | null>(null);
 
     // Fundraising stats - update these as campaign progresses
-    const GOAL = 250000;
+    const GOAL = 150000;
     const CURRENT = 0; // Update this value as donations come in
     const SUPPORTERS = 0; // Update supporter count
     const percentRaised = (CURRENT / GOAL) * 100;
@@ -215,86 +215,109 @@ export default function GoldilocksPage() {
                 </motion.div>
             </section>
 
-            {/* MISSION STATEMENT SECTION */}
+            {/* DESIGN SHOWCASE SECTION */}
             <section className="py-20 md:py-32 px-6 bg-black/65">
                 <div className="container mx-auto max-w-7xl">
-                    <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-                        {/* Left Column - The Problem */}
+                    {/* Overlapped Images Row */}
+                    <div className="flex items-center justify-center mb-16">
+                        {/* Image 1 - Left */}
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                             viewport={{ once: true }}
-                            className="space-y-6"
+                            className="relative z-10 -mr-16 md:-mr-24 lg:-mr-32"
                         >
-                            <div className="inline-block">
-                                <Badge className="bg-red-500/20 text-red-400 border-red-400/30 text-sm px-4 py-1 mb-4">
-                                    THE CRISIS
-                                </Badge>
-                            </div>
-
-                            <div className="space-y-4 text-white/80 font-sans leading-relaxed">
-                                <p>
-                                    For billions of years, Earth&apos;s biosphere has been autopoietic—
-                                    self-creating, self-maintaining, never undermining the conditions
-                                    it needs to survive.
-                                </p>
-                                <p className="text-xl text-white font-medium">
-                                    Then we invented the technosphere.
-                                </p>
-                                <p>
-                                    In just 200 years, we built machines and systems that are
-                                    actively destroying the planetary conditions they depend on.
-                                </p>
-                                <p className="text-lg text-red-400 font-medium">
-                                    Climate collapse. Ecosystem breakdown.
-                                </p>
-                                <p>
-                                    This is what astrophysicist Adam Frank calls an{' '}
-                                    <span className="text-orange-400 font-semibold italic">immature technosphere</span>
-                                    : technology that&apos;s killing itself and us in the process.
-                                </p>
+                            <div className="w-72 md:w-96 lg:w-[480px] overflow-hidden rounded-lg border-2 border-orange-400/30 hover:border-orange-400/60 transition-all duration-300 shadow-2xl shadow-orange-500/20 hover:scale-105 hover:z-30">
+                                <Image
+                                    src="/images/goldilocks/image_A8891E0E-03B5-46A5-B4B9-3ACEC48C074E.JPG"
+                                    alt="Goldilocks Design Option 1"
+                                    width={800}
+                                    height={1067}
+                                    className="w-full h-auto"
+                                />
                             </div>
                         </motion.div>
 
-                        {/* Right Column - The Solution */}
+                        {/* Image 2 - Center (overlaps both sides) */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.15 }}
+                            viewport={{ once: true }}
+                            className="relative z-20"
+                        >
+                            <div className="w-80 md:w-[420px] lg:w-[560px] overflow-hidden rounded-lg border-2 border-orange-400/40 hover:border-orange-400/70 transition-all duration-300 shadow-2xl shadow-orange-500/30 hover:scale-105 hover:z-30">
+                                <Image
+                                    src="/images/goldilocks/image_4C3CE228-BDAD-4D97-94BD-C8336AAB0775.JPG"
+                                    alt="Goldilocks Design Option 2"
+                                    width={800}
+                                    height={1067}
+                                    className="w-full h-auto"
+                                />
+                            </div>
+                        </motion.div>
+
+                        {/* Image 3 - Right */}
                         <motion.div
                             initial={{ opacity: 0, x: 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
                             viewport={{ once: true }}
-                            className="space-y-6"
+                            className="relative z-10 -ml-16 md:-ml-24 lg:-ml-32"
                         >
-                            <div className="inline-block">
-                                <Badge className="bg-green-500/20 text-green-400 border-green-400/30 text-sm px-4 py-1 mb-4">
-                                    THE ANSWER
-                                </Badge>
-                            </div>
-
-                            <div className="space-y-4 text-white/80 font-sans leading-relaxed">
-                                <p>
-                                    A mature technosphere would work like the biosphere—in balance
-                                    with the planet. Regenerative. Sustainable across geological
-                                    timescales.
-                                </p>
-                                <p>
-                                    We&apos;re not there yet. But someone has to start practicing it.
-                                </p>
-                                <p className="text-xl text-white font-medium">
-                                    Meet Goldilocks.
-                                </p>
-                                <p>
-                                    A 100,000 cubic foot hot air balloon printed with nature&apos;s own
-                                    geometry. Fractals—the same patterns you see in mycelial networks,
-                                    rivers, trees, lightning, and coastlines—now flying through the sky.
-                                </p>
-                                <p className="text-lg text-orange-400 font-medium">
-                                    It&apos;s not just art. It&apos;s a statement printed 10 stories tall that
-                                    says technology can remember where it came from.
-                                </p>
+                            <div className="w-72 md:w-96 lg:w-[480px] overflow-hidden rounded-lg border-2 border-orange-400/30 hover:border-orange-400/60 transition-all duration-300 shadow-2xl shadow-orange-500/20 hover:scale-105 hover:z-30">
+                                <Image
+                                    src="/images/goldilocks/image_DC7AC31A-401B-4F69-95A6-BD6C99F7D40B.JPG"
+                                    alt="Goldilocks Design Option 3"
+                                    width={800}
+                                    height={1067}
+                                    className="w-full h-auto"
+                                />
                             </div>
                         </motion.div>
                     </div>
+
+                    {/* Description */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.5 }}
+                        viewport={{ once: true }}
+                        className="max-w-3xl mx-auto text-center"
+                    >
+                        <p className="text-lg md:text-xl text-white/80 font-sans leading-relaxed">
+                            This design is updated frequently. Supporters can join the collaborative design process and cast a vote for their favorite design. The moment the goal is reached, a winner will be chosen.
+                        </p>
+                        <p className="text-base md:text-lg text-orange-400 font-semibold mt-4">
+                            If you voted for the final balloon, you will receive a pin of it.
+                        </p>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* MISSION STATEMENT SECTION */}
+            <section className="py-20 md:py-32 px-6 bg-black/65">
+                <div className="container mx-auto max-w-5xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="text-center space-y-8"
+                    >
+                        <div className="space-y-6 text-white/80 font-sans text-lg leading-relaxed">
+                            <p className="text-2xl text-white font-semibold">
+                                Most balloons are flying advertisements.
+                            </p>
+                            <p className="text-2xl text-orange-400 font-semibold">
+                                Goldilocks is art.
+                            </p>
+                            <p>
+                                A 100,000 cubic foot canvas printed with nature&apos;s own geometry—fractals that appear in mycelial networks, river deltas, lightning strikes, and coastlines. The same mathematical patterns that have shaped Earth for 4 billion years, now floating through the atmosphere.
+                            </p>
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -311,9 +334,6 @@ export default function GoldilocksPage() {
                         <h2 className="text-4xl md:text-6xl font-gelica font-bold text-white mb-8">
                             WHY &quot;GOLDILOCKS&quot;?
                         </h2>
-                        <p className="text-xl text-orange-400 font-picnic italic">
-                            Because we&apos;re done pretending technology can ignore planetary limits
-                        </p>
                     </motion.div>
 
                     <motion.div
@@ -327,48 +347,38 @@ export default function GoldilocksPage() {
                             Earth exists in a Goldilocks Zone.
                         </p>
                         <p>
-                            Not too hot. Not too cold. Not too acidic. Not too much CO₂. Not too little oxygen.
-                            An impossibly narrow band where everything has to be <span className="text-orange-400 font-semibold">just right</span> for life to exist.
-                        </p>
-                        <p className="text-xl text-red-400 font-medium">
-                            Right now, we&apos;re pushing ourselves out of that zone.
+                            100 billion stars in our galaxy, and we were born on the one planet with a calm atmosphere. A garden of Eden suspended in the violence of space.
                         </p>
                         <p>
-                            And yet most technology acts like limits don&apos;t exist. Infinite growth. Unlimited extraction.
-                            Move fast and break things—including the atmosphere.
+                            For 4 billion years, the biosphere has floated in this narrow band—not too hot, not too cold, just right. Self-regulating. Self-sustaining. A trillion cells dancing together, never undermining the fragile conditions they need to exist.
                         </p>
-                        <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-400/40 rounded-lg p-8 my-8">
-                            <p className="text-xl text-white font-semibold mb-4">
-                                Goldilocks the balloon refuses to play that game.
-                            </p>
-                            <p className="text-white/90">
-                                Yes, it burns propane. Yes, it has a carbon footprint. We&apos;re not hiding from that.
-                                But it <span className="text-orange-400 font-semibold">only flies when conditions are just right</span>.
-                            </p>
-                            <p className="text-white/90 mt-4">
-                                Too much wind? Grounded. Wrong temperature? Grounded. Unstable air? Grounded.
-                            </p>
-                            <p className="text-white/90 mt-4">
-                                It <span className="text-orange-400 font-semibold">respects its constraints</span>. It works <span className="text-orange-400 font-semibold">with</span> the
-                                atmosphere, not against it. It knows its limits—and thrives within them.
-                            </p>
-                        </div>
-                        <p className="text-2xl text-white font-semibold text-center py-6">
-                            That&apos;s the future we&apos;re building toward.
+                        <p className="text-xl text-white font-semibold">
+                            Then humans built the technosphere. And we&apos;re forgetting how rare calm is.
                         </p>
-                        <p className="text-center">
-                            Technology that doesn&apos;t fight nature. Technology that learns from 4 billion years
-                            of biological evolution. Technology that understands: <span className="text-orange-400 font-semibold italic">the limits aren&apos;t bugs, they&apos;re features</span>.
+                        <p>
+                            Most balloons are flying billboards—advertisements for the immature technosphere. Corporate logos. Commercial messages. Technology as domination.
                         </p>
-                        <p className="text-xl text-white text-center font-medium pt-8">
-                            And when we operate within those limits?
+                        <p className="text-xl text-orange-400 font-semibold">
+                            Goldilocks is different.
                         </p>
-                        <p className="text-2xl text-orange-400 text-center font-bold font-picnic italic">
-                            Magic happens.
+                        <p>
+                            It&apos;s a billboard for fragility itself. 100 billion pixels, arranged in fractals—nature&apos;s own mathematics—printed on fabric that only exists when the atmosphere allows it.
                         </p>
-                        <div className="bg-white/5 border border-white/10 rounded-lg p-6 mt-8">
-                            <p className="text-white/70 text-center italic">
-                                Goldilocks isn&apos;t just a balloon. It&apos;s a 10-story billboard that says: <span className="text-white font-semibold">we can do better</span>.
+                        <p>
+                            Balloons can only fly in calm. Too much wind and the whole thing collapses. That&apos;s not a limitation—that&apos;s the truth we keep ignoring. Our entire civilization, our bodies, our survival—all of it depends on this impossibly narrow band of atmospheric calm that shouldn&apos;t even exist.
+                        </p>
+                        <p>
+                            When you fly a balloon, you become nature in a strange sense. No propulsion. No fighting. You&apos;re pushed and pulled by pockets of air, floating WITH the wind, completely at the mercy of forces you can&apos;t control.
+                        </p>
+                        <p>
+                            It&apos;s the most honest relationship with technology you can have. Man and machine, yes—but only when Mother Nature permits it. Only when we remember that we&apos;re not separate from these systems. We&apos;re in them.
+                        </p>
+                        <p className="text-xl text-white font-semibold pt-4">
+                            That&apos;s what Goldilocks represents: Technology remembering where it came from. Technology that bows to the atmosphere instead of pretending it can be conquered.
+                        </p>
+                        <div className="bg-white/5 border border-orange-400/30 rounded-lg p-8 mt-8">
+                            <p className="text-xl text-white text-center font-semibold italic">
+                                A 10-story reminder that we&apos;re floating in a garden we didn&apos;t create—and if we want to keep floating, we need to respect how fragile calm actually is.
                             </p>
                         </div>
                     </motion.div>
@@ -501,33 +511,20 @@ export default function GoldilocksPage() {
                             What if a balloon could be a statement?
                         </p>
                         <p>
-                            Goldilocks is being manufactured by Kubicek—one of the world&apos;s premier
-                            balloon makers—custom-built to carry a message 10 stories tall.
+                            Goldilocks is being manufactured by Kubicek—one of the world&apos;s premier balloon makers—custom-built to carry a message 10 stories tall.
                         </p>
                         <p>
-                            We&apos;re printing it with a <span className="text-orange-400 font-semibold">Mandelbox fractal</span>—a
-                            geometric pattern that echoes the structures you see everywhere in nature.
-                            Mycelial networks. River deltas. Lightning. Coastlines. The same mathematics
-                            that built this planet, now floating through Earth&apos;s atmosphere.
+                            We&apos;re printing it with a <span className="text-orange-400 font-semibold">Mandelbox fractal</span>—the same geometric pattern that shows up in mycelial networks, river deltas, lightning strikes, and coastlines. Nature&apos;s mathematics, repeated at every scale. The blueprint that built this planet for 4 billion years, now printed on fabric floating through Earth&apos;s atmosphere.
+                        </p>
+                        <p>
+                            We named it Goldilocks because Earth exists in one. An impossibly narrow band where temperature, atmosphere, and chemistry align just right for life. And balloons can only fly in that same narrow band—calm conditions, stable air, gentle winds.
                         </p>
                         <p className="text-xl text-white font-semibold">
-                            This isn&apos;t just decoration. It&apos;s a declaration.
-                        </p>
-                        <p>
-                            We named it Goldilocks because it only flies when conditions are just right.
-                            No fighting the wind. No forcing it. It respects planetary constraints—the same
-                            ones keeping all of us alive.
+                            When most technology pretends limits don&apos;t exist, Goldilocks makes them visible.
                         </p>
                         <p className="text-orange-400 italic text-lg">
-                            Respect the limits. Work within the constraints. Fly beautifully anyway.
+                            No propulsion. No fighting the wind. You float WITH the atmosphere or you don&apos;t fly at all. It&apos;s the most honest relationship with nature you can have—complete surrender to forces larger than yourself.
                         </p>
-                        <div className="bg-white/5 border border-orange-400/30 rounded-lg p-6 mt-8">
-                            <p className="text-white/90">
-                                <span className="text-orange-400 font-semibold">And this is just the beginning.</span> Goldilocks
-                                is the first. If this campaign succeeds, it proves there&apos;s appetite for technology
-                                that respects nature—and we&apos;ll build more.
-                            </p>
-                        </div>
                     </motion.div>
                 </div>
             </section>
@@ -550,11 +547,10 @@ export default function GoldilocksPage() {
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid md:grid-cols-3 gap-6">
                         {[
                             { label: "Volume", value: "100,000 cu ft", icon: Wind },
                             { label: "Height", value: "~100 feet", icon: Mountain },
-                            { label: "Fuel", value: "Propane (LPG)", icon: Flame },
                             { label: "Pattern", value: "Mandelbox Fractal", icon: Globe }
                         ].map((spec, index) => (
                             <motion.div
@@ -581,40 +577,6 @@ export default function GoldilocksPage() {
                         ))}
                     </div>
 
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        viewport={{ once: true }}
-                        className="mt-12 bg-white/5 border border-white/10 rounded-lg p-8"
-                    >
-                        <h3 className="text-2xl font-gelica font-bold text-white mb-4">
-                            The Honest Truth About Impact
-                        </h3>
-                        <div className="space-y-4 text-white/70 font-sans leading-relaxed">
-                            <p>
-                                Yes, Goldilocks burns propane. A typical flight uses 30-40 gallons,
-                                emitting roughly 600-800 lbs of CO₂.
-                            </p>
-                            <p>
-                                We&apos;re not claiming this is carbon-neutral. It&apos;s not. But it&apos;s also not
-                                about perfection—it&apos;s about <span className="text-orange-400 font-semibold">direction</span>.
-                            </p>
-                            <p>
-                                We fly only when atmospheric conditions allow—not when we want to, but when
-                                the planet permits. We use every flight as an opportunity to start conversations
-                                about what a mature technosphere could look like.
-                            </p>
-                            <p>
-                                We&apos;re building this with Kubicek, a manufacturer known for quality and longevity.
-                                This balloon is meant to fly for decades, not be disposable technology.
-                            </p>
-                            <p className="text-white text-lg">
-                                We&apos;re practicing what we preach: technology that respects limits and
-                                works within them. And if Goldilocks proves the concept, we&apos;ll build more.
-                            </p>
-                        </div>
-                    </motion.div>
                 </div>
             </section>
 
@@ -632,7 +594,7 @@ export default function GoldilocksPage() {
                             SUPPORT THE MOVEMENT
                         </h2>
                         <p className="text-xl text-white/80 max-w-3xl mx-auto font-sans leading-relaxed">
-                            Goldilocks flies because of people who believe technology can learn from nature.
+                            Goldilocks flies because of people who believe in the power of art to shift perspectives.
                             Every flight is funded by community support.
                         </p>
                     </motion.div>
@@ -926,11 +888,9 @@ export default function GoldilocksPage() {
                         </h3>
                         <div className="grid md:grid-cols-2 gap-6">
                             {[
-                                { label: "Balloon Production", amount: "$100,000", description: "Kubicek manufacturing, fractal printing, shipping" },
-                                { label: "Lighting System", amount: "$25,000", description: "8 DMX LED lights, controller, installation" },
-                                { label: "Operations & Logistics", amount: "$50,000", description: "Transport vehicle, crew training, insurance, fuel" },
-                                { label: "Marketing & Media", amount: "$50,000", description: "Documentary production, website, campaign management" },
-                                { label: "Carbon Offsetting", amount: "$25,000", description: "Flight tracking system, 5-year offset reserve" }
+                                { label: "Balloon Production", amount: "$125,000", description: "Kubicek manufacturing, fractal printing, shipping" },
+                                { label: "Lighting System", amount: "$15,000", description: "DMX LED lights, controller, installation" },
+                                { label: "Operations & Logistics", amount: "$10,000", description: "Transport vehicle, crew training, insurance, fuel" }
                             ].map((item, index) => (
                                 <div key={index} className="bg-white/5 rounded-lg p-4">
                                     <div className="flex items-baseline justify-between mb-2">
@@ -963,8 +923,7 @@ export default function GoldilocksPage() {
                         <span className="font-picnic italic font-light text-orange-400">This is just</span> the beginning
                     </h2>
                     <p className="text-xl text-white/70 font-sans mb-12 leading-relaxed">
-                        Goldilocks is a proof of concept. A statement. A reminder that technology
-                        doesn&apos;t have to destroy the world—it can learn from it instead.
+                        Goldilocks is the first of what we hope will be many explorations of nature&apos;s patterns in the sky. An art project that makes the invisible visible.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button

@@ -72,52 +72,52 @@ const featuredProductions = [
     }
 ];
 
-// Production Services
+// Production Focus
 const productionServices = [
     {
-        id: "events",
-        title: "Event Productions",
-        subtitle: "From festivals to private gatherings",
-        description: "We bring both the spectacle and the story. Our balloons create the experience while our cameras capture every moment of magic.",
-        icon: Wind,
+        id: "documentary",
+        title: "Documentary Storytelling",
+        subtitle: "Stories of flying with the wind",
+        description: "Telling the stories of what it means to float at the mercy of atmospheric conditions. Shot with two cloudhoppers and a balloon from the 80s—fragile crafts that only fly when nature allows.",
+        icon: Film,
         services: [
-            "Static balloon displays",
-            "Tethered ride experiences",
-            "Multi-camera event coverage",
-            "Same-day highlight reels",
-            "Social media content packages"
+            "Ballooning culture and philosophy",
+            "Profiles of pilots and crew",
+            "Festival and event documentation",
+            "Behind-the-scenes storytelling",
+            "Cinematic aerial perspectives"
         ],
-        idealFor: "Festivals, Corporate Events, Weddings, Brand Launches"
+        idealFor: "Balloon festivals, aviation culture, authentic storytelling"
     },
     {
-        id: "social",
-        title: "Social Media Marketing",
-        subtitle: "Content that rises above the noise",
-        description: "Scroll-stopping social content with our unique aerial perspective. Because the best marketing doesn&apos;t feel like marketing.",
-        icon: Globe,
+        id: "goldilocks",
+        title: "Goldilocks Art Project",
+        subtitle: "Nature's mathematics in the sky",
+        description: "A 100,000 cubic foot balloon printed with fractal geometry. Not a commercial vehicle—a flying canvas for movements and productions we believe in.",
+        icon: Palette,
         services: [
-            "Instagram Reels & TikTok content",
-            "YouTube Shorts production",
-            "Content calendar planning",
-            "Platform-specific optimization",
-            "Engagement analytics & reporting"
+            "Art installations in the atmosphere",
+            "Collaborations with artists and scientists",
+            "Event participation for aligned causes",
+            "Documentary coverage of flights",
+            "Educational outreach"
         ],
-        idealFor: "Brand Awareness, Influencer Marketing, Social Campaigns"
+        idealFor: "Art movements, cultural events, educational initiatives"
     },
     {
-        id: "branded",
-        title: "Branded Campaigns",
-        subtitle: "For brands that get it",
-        description: "Put your brand in the sky—literally and figuratively. Custom balloon branding meets cinematic storytelling for brands that align with adventure, freedom, and doing things differently.",
+        id: "selective",
+        title: "Selective Collaborations",
+        subtitle: "For projects that matter",
+        description: "We don't work with everyone. We choose collaborations that align with our philosophy—projects that celebrate craft, honor constraints, and tell stories worth telling.",
         icon: Camera,
         services: [
-            "Custom balloon branding",
-            "Product integration",
-            "Influencer collaborations",
-            "Performance tracking",
-            "Multi-platform delivery"
+            "Cinematic event coverage",
+            "Brand partnerships with aligned values",
+            "Social impact campaigns",
+            "Cultural documentation",
+            "Custom content creation"
         ],
-        idealFor: "Product Launches, Brand Awareness, Content Marketing"
+        idealFor: "Aligned brands, cultural events, meaningful causes"
     }
 ];
 
@@ -161,7 +161,7 @@ export default function ProductionsPage() {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            Capturing the soul of ballooning—the philosophy, the moments, the culture that exists between flights.
+                            Documentary storytelling with two cloudhoppers and a worn balloon from the 80s. Art projects that bring nature&apos;s patterns to the sky.
                         </motion.p>
                     </div>
 
@@ -243,99 +243,45 @@ export default function ProductionsPage() {
                         className="text-center mb-16"
                     >
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-6">
-                            What We Do
+                            Our Focus
                         </h2>
                         <p className="text-lg font-sans text-white/60 max-w-3xl mx-auto">
-                            Not bucket list tourism—authentic storytelling that shows what ballooning really is: a way of life.
+                            Documentary work, art projects, and selective collaborations that honor the craft of ballooning.
                         </p>
                     </motion.div>
 
-                    <div className="space-y-8">
-                        {/* First row - two columns */}
-                        <div className="grid md:grid-cols-2 gap-8">
-                            {productionServices.slice(0, 2).map((service, index) => {
-                                const Icon = service.icon;
-                                return (
-                                    <motion.div
-                                        key={service.id}
-                                        initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                                        viewport={{ once: true }}
-                                        onMouseEnter={() => setHoveredService(service.id)}
-                                        onMouseLeave={() => setHoveredService(null)}
-                                    >
-                                        <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
-                                            <CardHeader className="pb-4">
-                                                <div className="flex items-start justify-between mb-4">
-                                                    <Icon className="w-12 h-12 text-orange-400" />
-                                                    <Sparkles className={`w-6 h-6 text-orange-400 transition-opacity ${hoveredService === service.id ? 'opacity-100' : 'opacity-0'}`} />
-                                                </div>
-                                                <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
-                                                    {service.title}
-                                                </CardTitle>
-                                                <p className="text-base font-sans text-orange-400">
-                                                    {service.subtitle}
-                                                </p>
-                                            </CardHeader>
-                                            <CardContent>
-                                                <p className="text-white/70 font-sans mb-6">
-                                                    {service.description}
-                                                </p>
-
-                                                <div className="space-y-2 mb-6">
-                                                    {service.services.map((item, i) => (
-                                                        <div key={i} className="flex items-center gap-2">
-                                                            <ChevronRight className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                                                            <span className="text-sm font-sans text-white/80">{item}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="pt-4 border-t border-white/10">
-                                                    <p className="text-xs font-sans text-orange-400/80">
-                                                        <span className="font-picnic italic">Ideal for:</span> {service.idealFor}
-                                                    </p>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </motion.div>
-                                );
-                            })}
-                        </div>
-
-                        {/* Second row - full width for Branded Campaigns */}
-                        {productionServices.slice(2, 3).map((service, index) => {
+                    <div className="grid lg:grid-cols-3 gap-8">
+                        {productionServices.map((service, index) => {
                             const Icon = service.icon;
                             return (
                                 <motion.div
                                     key={service.id}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: 0.2 }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
                                     viewport={{ once: true }}
                                     onMouseEnter={() => setHoveredService(service.id)}
                                     onMouseLeave={() => setHoveredService(null)}
                                 >
-                                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
+                                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
                                         <CardHeader className="pb-4">
                                             <div className="flex items-start justify-between mb-4">
                                                 <Icon className="w-12 h-12 text-orange-400" />
                                                 <Sparkles className={`w-6 h-6 text-orange-400 transition-opacity ${hoveredService === service.id ? 'opacity-100' : 'opacity-0'}`} />
                                             </div>
-                                            <CardTitle className="text-3xl font-gelica font-bold text-white mb-2">
+                                            <CardTitle className="text-2xl font-gelica font-bold text-white mb-2">
                                                 {service.title}
                                             </CardTitle>
-                                            <p className="text-lg font-sans text-orange-400">
+                                            <p className="text-base font-sans text-orange-400">
                                                 {service.subtitle}
                                             </p>
                                         </CardHeader>
                                         <CardContent>
-                                            <p className="text-white/70 font-sans mb-6 text-lg">
+                                            <p className="text-white/70 font-sans mb-6">
                                                 {service.description}
                                             </p>
 
-                                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+                                            <div className="space-y-2 mb-6">
                                                 {service.services.map((item, i) => (
                                                     <div key={i} className="flex items-center gap-2">
                                                         <ChevronRight className="w-4 h-4 text-orange-400 flex-shrink-0" />
@@ -345,7 +291,7 @@ export default function ProductionsPage() {
                                             </div>
 
                                             <div className="pt-4 border-t border-white/10">
-                                                <p className="text-sm font-sans text-orange-400/80">
+                                                <p className="text-xs font-sans text-orange-400/80">
                                                     <span className="font-picnic italic">Ideal for:</span> {service.idealFor}
                                                 </p>
                                             </div>
@@ -369,9 +315,11 @@ export default function ProductionsPage() {
                     className="container mx-auto max-w-4xl text-center pb-24 pt-12"
                 >
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-12">
-                        <span className="font-picnic italic font-light text-orange-400">Ready to</span> Create?
+                        <span className="font-picnic italic font-light text-orange-400">Want to</span> Collaborate?
                     </h2>
-
+                    <p className="text-lg font-sans text-white/60 max-w-2xl mx-auto mb-8">
+                        We work with projects that align with our values. If you have an idea for a collaboration, we&apos;d love to hear it.
+                    </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button
@@ -380,7 +328,7 @@ export default function ProductionsPage() {
                             asChild
                         >
                             <Link href="/work-with-us">
-                                Start Your Production
+                                Get in Touch
                                 <ArrowRight className="ml-2 w-5 h-5" />
                             </Link>
                         </Button>
@@ -390,9 +338,9 @@ export default function ProductionsPage() {
                             className="border-orange-400/30 text-orange-400 hover:bg-orange-400/10 font-medium text-lg px-8"
                             asChild
                         >
-                            <Link href="#featured">
-                                View Our Work
-                                <Play className="ml-2 w-5 h-5" />
+                            <Link href="/goldilocks">
+                                Support Goldilocks
+                                <ArrowRight className="ml-2 w-5 h-5" />
                             </Link>
                         </Button>
                     </div>

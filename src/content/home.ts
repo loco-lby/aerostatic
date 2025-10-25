@@ -19,18 +19,19 @@ export const homeContent = {
     subtitle: "How we're making ballooning matter",
 
     media: {
-      title: "Media: The Stories That Need Telling",
+      title: "Media: Art That Flies",
       content: [
-        "We're giving voice to the philosophy and stories of ballooning—the ones you only hear if you've been in a chase vehicle at dawn, or stood in a field watching an envelope fill. The moments of beauty, the hard-earned wisdom, the culture that exists between flights.",
-        "Through video, photography, and authentic storytelling, we're showing the world what ballooning really is: not a bucket list item for tourists, but a way of life for people who refuse to stay grounded."
+        "Colby owns two chair balloons (cloudhoppers) and a worn balloon from the 80s. These are the subjects of his documentary work—telling the stories of what it means to fly with the wind, not against it.",
+        "Goldilocks is his first art project. A 100,000 cubic foot balloon printed with fractal geometry—not a commercial vehicle, but a flying canvas for movements and productions we believe in.",
+        "Every flight is intentional. Every flight tells a story worth telling."
       ],
       features: [
-        "Philosophy videos exploring what it means to fly with the wind",
-        "Profiles of pilots, crew, and operators keeping the sport alive",
-        "Behind-the-scenes looks at the culture, the camaraderie, the chaos",
-        "Educational content that lowers the barrier for newcomers"
+        "Documentary-style storytelling about ballooning and atmospheric constraints",
+        "Art projects exploring nature's patterns in the sky",
+        "Collaborations with artists, scientists, and storytellers",
+        "Cinematic photography and video production"
       ],
-      cta: "Watch Our Stories",
+      cta: "See Our Work",
       href: "/productions"
     },
 

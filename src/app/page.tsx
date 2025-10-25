@@ -58,15 +58,14 @@ export default function HomePage() {
           </p>
 
           <Button
-            onClick={() => {
-              track("cta_click", { location: "hero", action: "join_movement" });
-              setShowEmailModal(true);
-            }}
+            asChild
             size="lg"
             className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 md:px-12 py-5 md:py-6 text-base md:text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25 w-full sm:w-auto"
           >
-            {content.home.hero.cta}
-            <ArrowRight className="ml-2 h-5 w-5" />
+            <Link href="/goldilocks" onClick={() => track("cta_click", { location: "hero", action: "support_goldilocks" })}>
+              Support Goldilocks
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
           </Button>
         </div>
       </section>
