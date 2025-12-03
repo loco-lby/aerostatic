@@ -1,357 +1,617 @@
 "use client";
 
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { EmailCapture } from "@/components/EmailCapture";
-import { MerchCTA } from "@/components/MerchCTA";
 import { useEffect, useState } from 'react';
+import { FractalsShaders } from "@/components/ui/shadcn-io/fractals-shaders";
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, CheckCircle, Instagram, Music2 as TikTok, Youtube, Mail } from 'lucide-react';
-import { useContent } from "@/hooks/useContent";
-import { track } from "@vercel/analytics";
 
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const content = useContent();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   return (
-    <div className="min-h-screen bg-black">
-      <Header />
+    <div className="min-h-screen relative bg-black">
+      {/* Fractal Background */}
+      <div className="fixed inset-0 z-0">
+        <FractalsShaders
+          speed={0.15}
+          iterations={4}
+          colorShift={0.2}
+          brightness={0.4}
+          zoom={1.5}
+        />
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0">
-          {isMounted && (
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-              style={{ filter: 'brightness(0.4) contrast(1.1)' }}
-            >
-              <source src="https://res.cloudinary.com/aerostatic/video/upload/v1759347738/videos/hero1_upwcus.mp4" type="video/mp4" />
-            </video>
-          )}
-          <div className="w-full h-full bg-gradient-to-br from-orange-900/20 to-red-900/20"></div>
-        </div>
+      {/* Content */}
+      <div className="relative z-10">
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70 z-10"></div>
-
-        {/* Hero Content */}
-        <div className="relative z-20 text-center max-w-5xl mx-auto px-4 md:px-6 pt-32 pb-20">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-gelica font-bold text-white mb-6 md:mb-8 leading-tight">
-            {content.home.hero.title}
-          </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-white/80 font-light mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed">
-            {content.home.hero.subtitle}
-          </p>
-
-          <Button
-            asChild
-            size="lg"
-            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium px-8 md:px-12 py-5 md:py-6 text-base md:text-lg rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25 w-full sm:w-auto"
+        {/* Opening silence */}
+        <section className="h-screen flex items-center justify-center">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            transition={{ duration: 2, delay: 1 }}
+            className="text-sm md:text-base text-white/30 font-light tracking-widest lowercase"
           >
-            <Link href="/goldilocks" onClick={() => track("cta_click", { location: "hero", action: "support_goldilocks" })}>
-              Support Goldilocks
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+            take a scroll with me
+          </motion.p>
+        </section>
+
+        {/* The Story */}
+        <div className="max-w-2xl mx-auto px-8">
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white/80 font-light leading-relaxed mb-32"
+          >
+            When I was a kid I thought adults had it figured out.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-40"
+          >
+            You grow up, you get the job, you do the thing. Life happens somewhere in there.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/70 font-light leading-relaxed mb-32"
+          >
+            Then I became an adult and realized... no. Most people are just keeping it together. Trying not to think too hard about whether this is it.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white font-light leading-relaxed mb-24"
+          >
+            I didn&apos;t want that. I still don&apos;t.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-40"
+          >
+            So I build stuff. I help people figure out how to leave the country. The insurance, the logistics, the stuff nobody wants to think about but everyone needs before they can actually go.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-48"
+          >
+            It&apos;s not glamorous. But someone comments &ldquo;I thought this was just for trust funders until I made it happen myself&rdquo; and that&apos;s... I don&apos;t know. That&apos;s real.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-32"
+          >
+            I live in Mexico. I&apos;m flying to Thailand next month. Then Brazil. I run everything from my laptop. Airports. Cafes. My girlfriend&apos;s couch. Whatever.
+          </motion.p>
+
+          <div className="h-16" />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-2xl md:text-3xl text-white font-light leading-relaxed mb-24"
+          >
+            And I&apos;m broke.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-40"
+          >
+            Like, actually broke. Not &ldquo;investor money running low&rdquo; broke. Just... the math doesn&apos;t work yet. I&apos;m betting it will. I have to bet it will.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-32"
+          >
+            Nobody talks about that part. You see the photos. The flights. The freedom. You don&apos;t see the part where you&apos;re not sure how next month works.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/70 font-light leading-relaxed mb-56"
+          >
+            I&apos;m telling you because I don&apos;t know how else to explain why I&apos;m doing this.
+          </motion.p>
+
+          {/* The Balloon */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white/90 font-light leading-relaxed mb-32"
+          >
+            I fly hot air balloons.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-40"
+          >
+            I can&apos;t steer them. You go where the wind goes. You can&apos;t optimize it. You can&apos;t scale it. There&apos;s no business model.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-32"
+          >
+            It&apos;s the most useless thing I do.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white/90 font-light leading-relaxed mb-48"
+          >
+            And I can&apos;t stop.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/70 font-light leading-relaxed mb-32"
+          >
+            When I&apos;m up there, my brain goes quiet. Which never happens. I&apos;m always building the next thing, chasing the next thing. That&apos;s just how I am. Probably always will be.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-40"
+          >
+            But up there... I just look. I look at the world with wonder. Like I used to when I was a kid. Before everything became a problem to solve.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-32"
+          >
+            I don&apos;t have some big insight about that. I just need it.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white/80 font-light leading-relaxed mb-40"
+          >
+            I need that look in people&apos;s eyes when they see what I see. A world that&apos;s worth wondering about.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-56"
+          >
+            So I keep doing it.
+          </motion.p>
+
         </div>
-      </section>
 
-      {/* Email Capture Modal */}
-      <EmailCapture
-        variant="modal"
-        isOpen={showEmailModal}
-        onClose={() => setShowEmailModal(false)}
-        source="Homepage Hero"
-      />
-
-      {/* Mission Section */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-black">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="text-orange-400 border-orange-400/30 mb-6">
-              {content.home.mission.title}
-            </Badge>
-          </div>
-
-          <div className="space-y-8 text-lg md:text-xl text-white/80 leading-relaxed">
-            {content.home.mission.paragraphs.map((paragraph, index) => (
-              <p key={index} className={index === 1 ? "text-2xl md:text-3xl font-gelica font-bold text-orange-400 text-center py-4" : ""}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Two Fronts Section */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-white/[0.02]">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-4">
-              {content.home.twoFronts.title}
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              {content.home.twoFronts.subtitle}
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-            {/* Media Card */}
-            <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6 md:p-8 h-full flex flex-col">
-                <h3 className="text-2xl md:text-3xl font-gelica font-bold text-white mb-6">
-                  {content.home.twoFronts.media.title}
-                </h3>
-
-                <div className="space-y-4 mb-6 flex-grow">
-                  {content.home.twoFronts.media.content.map((paragraph, index) => (
-                    <p key={index} className="text-white/70 leading-relaxed">
-                      {paragraph}
-                    </p>
-                  ))}
-
-                  <div className="pt-4">
-                    <p className="text-white font-medium mb-3">What we&apos;re creating:</p>
-                    <ul className="space-y-2">
-                      {content.home.twoFronts.media.features.map((feature, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
-                          <span className="text-white/70">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+        {/* Fractal Balloon Images */}
+        <section className="py-24 md:py-32 px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            <div className="flex items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1 }}
+                viewport={{ once: true }}
+                className="relative z-10 -mr-6 md:-mr-12 lg:-mr-20"
+              >
+                <div className="w-40 md:w-64 lg:w-80 overflow-hidden rounded-sm opacity-70 hover:opacity-100 transition-opacity duration-700">
+                  <Image
+                    src="/images/goldilocks/image_A8891E0E-03B5-46A5-B4B9-3ACEC48C074E.JPG"
+                    alt="Fractal balloon design"
+                    width={800}
+                    height={1067}
+                    className="w-full h-auto"
+                  />
                 </div>
+              </motion.div>
 
-                <Button
-                  asChild
-                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium mt-4"
-                  onClick={() => track("cta_click", { location: "two_fronts", action: "watch_stories" })}
-                >
-                  <Link href={content.home.twoFronts.media.href}>
-                    {content.home.twoFronts.media.cta}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Tech Card */}
-            <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6 md:p-8 h-full flex flex-col">
-                <h3 className="text-2xl md:text-3xl font-gelica font-bold text-white mb-6">
-                  {content.home.twoFronts.tech.title}
-                </h3>
-
-                <div className="space-y-4 mb-6 flex-grow">
-                  {content.home.twoFronts.tech.content.map((paragraph, index) => (
-                    <p key={index} className="text-white/70 leading-relaxed">
-                      {paragraph}
-                    </p>
-                  ))}
-
-                  <div className="pt-4 space-y-4">
-                    {content.home.twoFronts.tech.tools.map((tool, index) => (
-                      <div key={index} className="bg-white/5 rounded-lg p-4">
-                        <h4 className="text-orange-400 font-gelica font-bold mb-2">
-                          {tool.name}
-                        </h4>
-                        <p className="text-white/70 text-sm">
-                          {tool.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <p className="text-white/60 italic text-sm pt-2">
-                    {content.home.twoFronts.tech.footer}
-                  </p>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="relative z-20"
+              >
+                <div className="w-48 md:w-72 lg:w-96 overflow-hidden rounded-sm">
+                  <Image
+                    src="/images/goldilocks/image_4C3CE228-BDAD-4D97-94BD-C8336AAB0775.JPG"
+                    alt="Fractal balloon design"
+                    width={800}
+                    height={1067}
+                    className="w-full h-auto"
+                  />
                 </div>
+              </motion.div>
 
-                <Button
-                  asChild
-                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-medium mt-4"
-                  onClick={() => track("cta_click", { location: "two_fronts", action: "see_tech" })}
-                >
-                  <Link href={content.home.twoFronts.tech.href}>
-                    {content.home.twoFronts.tech.cta}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* About Colby Section */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-black">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-gelica font-bold text-white mb-6">
-                {content.home.about.title}
-              </h2>
-
-              {content.home.about.content.map((paragraph, index) => (
-                <p key={index} className="text-lg text-white/70 leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, delay: 0.4 }}
+                viewport={{ once: true }}
+                className="relative z-10 -ml-6 md:-ml-12 lg:-ml-20"
+              >
+                <div className="w-40 md:w-64 lg:w-80 overflow-hidden rounded-sm opacity-70 hover:opacity-100 transition-opacity duration-700">
+                  <Image
+                    src="/images/goldilocks/image_DC7AC31A-401B-4F69-95A6-BD6C99F7D40B.JPG"
+                    alt="Fractal balloon design"
+                    width={800}
+                    height={1067}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </motion.div>
             </div>
 
-            <div className="relative aspect-[4/5] bg-gradient-to-br from-orange-900/20 to-red-900/20 rounded-2xl overflow-hidden">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center text-white/30 text-sm mt-8"
+            >
+              designed by Jonathan at the{' '}
+              <a
+                href="https://fractalfoundation.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/40 hover:text-white/60 transition-colors underline underline-offset-2"
+              >
+                fractalfoundation.org
+              </a>
+            </motion.p>
+          </motion.div>
+        </section>
+
+        {/* The Dream */}
+        <div className="max-w-2xl mx-auto px-8 pt-24">
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-2xl md:text-3xl text-orange-400/90 font-light leading-relaxed mb-40"
+          >
+            I want to build a fractal balloon.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-32"
+          >
+            You know those patterns that repeat at every scale? Ferns. River deltas. The way your lungs branch. Lightning. It&apos;s the same shape over and over, smaller and smaller.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/70 font-light leading-relaxed mb-40"
+          >
+            I want to share this fascination. I want the look in my passengers&apos; eyes when they see the world from above to be shared with everyone who looks at it from below.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-32"
+          >
+            I don&apos;t have it yet. I have a balloon that&apos;s kind of beat up. It gets me and mine in the air. That&apos;s enough for now.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-48"
+          >
+            I don&apos;t know how I&apos;m going to fund the real one. Probably the same way I fund everything. Make stuff, try to share it (and get people to pay for it teehee), figure it out, keep going.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white/80 font-light leading-relaxed mb-32"
+          >
+            Why?
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-40"
+          >
+            Honestly I&apos;m not totally sure. I just think... most people never get high enough to see how big everything is. And I think if they did, even once, it might change something.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-32"
+          >
+            Not in a big way. Just... a little crack in the way they see things.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-56"
+          >
+            I don&apos;t know. But I&apos;m doing it anyway.
+          </motion.p>
+
+        </div>
+
+        {/* This is Aerostatic */}
+        <section className="py-32 px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight text-white/90 tracking-[0.2em] uppercase mb-16">
+              Aerostatic
+            </h1>
+          </motion.div>
+        </section>
+
+        <div className="max-w-2xl mx-auto px-8">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-32"
+          >
+            If you want to watch someone build a life that doesn&apos;t make sense, I&apos;ll be here.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-24"
+          >
+            I&apos;m not asking you to follow me.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-xl md:text-2xl text-white/80 font-light leading-relaxed mb-48"
+          >
+            I&apos;m asking what you&apos;d do if you stopped waiting.
+          </motion.p>
+        </div>
+
+        {/* Video Section */}
+        <section className="py-16 md:py-24">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+            viewport={{ once: true }}
+            className="w-full"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden">
               {isMounted && (
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-40"
                 >
                   <source src="https://res.cloudinary.com/aerostatic/video/upload/v1759347751/videos/profile_ewiluj.mp4" type="video/mp4" />
                 </video>
               )}
             </div>
-          </div>
+          </motion.div>
+        </section>
+
+        {/* Day Jobs */}
+        <div className="max-w-2xl mx-auto px-8 py-32">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-16"
+          >
+            Until I&apos;m able to lift this off the ground, I&apos;ll be attempting to fund it with my day jobs. If you want to help me, maybe one of these will help you. If it helps you, you can help me.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
+            <Link
+              href="https://travelpact.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group"
+            >
+              <p className="text-lg md:text-xl text-white/70 group-hover:text-orange-400/80 transition-colors font-light">
+                <span className="text-white/90 group-hover:text-orange-400 transition-colors">travelpact.io</span>
+                <span className="text-white/40 ml-3">the travel planner I never had</span>
+              </p>
+            </Link>
+
+            <Link
+              href="https://freedomabroad.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group"
+            >
+              <p className="text-lg md:text-xl text-white/70 group-hover:text-orange-400/80 transition-colors font-light">
+                <span className="text-white/90 group-hover:text-orange-400 transition-colors">freedomabroad.io</span>
+                <span className="text-white/40 ml-3">the advice I never had</span>
+              </p>
+            </Link>
+
+            <Link
+              href="https://expatinsurance.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group"
+            >
+              <p className="text-lg md:text-xl text-white/70 group-hover:text-orange-400/80 transition-colors font-light">
+                <span className="text-white/90 group-hover:text-orange-400 transition-colors">expatinsurance.com</span>
+                <span className="text-white/40 ml-3">the safety net I never had</span>
+              </p>
+            </Link>
+          </motion.div>
         </div>
-      </section>
 
-      {/* Join the Movement Section */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-gradient-to-b from-black via-white/[0.02] to-black">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-gelica font-bold text-white mb-6">
-              {content.home.joinMovement.title}
-            </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-              {content.home.joinMovement.subtitle}
-            </p>
-          </div>
+        {/* Hire Me */}
+        <div className="max-w-2xl mx-auto px-8 py-32 border-t border-white/10">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-16"
+          >
+            And if you REALLY want to throw money at a fractal balloon... hire me.
+          </motion.p>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-12">
-            {content.home.joinMovement.ctas.map((cta, index) => {
-              if (cta.type === "email") {
-                return (
-                  <Card key={index} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <CardContent className="p-6 md:p-8 text-center">
-                      <Mail className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-                      <h3 className="text-xl font-gelica font-bold text-white mb-2">
-                        {cta.title}
-                      </h3>
-                      <p className="text-white/70 mb-6 text-sm">
-                        {cta.description}
-                      </p>
-                      <Button
-                        onClick={() => setShowEmailModal(true)}
-                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                      >
-                        Sign Up
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              }
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-16"
+          >
+            I build websites. Apps. The kind of stuff that actually works and looks good too.
+          </motion.p>
 
-              if (cta.type === "social" && "links" in cta && cta.links) {
-                return (
-                  <Card key={index} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <CardContent className="p-6 md:p-8 text-center">
-                      <div className="flex justify-center gap-2 mb-4">
-                        <Instagram className="w-8 h-8 text-orange-400" />
-                        <TikTok className="w-8 h-8 text-orange-400" />
-                        <Youtube className="w-8 h-8 text-orange-400" />
-                      </div>
-                      <h3 className="text-xl font-gelica font-bold text-white mb-2">
-                        {cta.title}
-                      </h3>
-                      <p className="text-white/70 mb-6 text-sm">
-                        {cta.description}
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        <Button
-                          asChild
-                          variant="outline"
-                          className="w-full border-white/20 hover:bg-white/10 text-white"
-                        >
-                          <a href={cta.links.instagram} target="_blank" rel="noopener noreferrer">
-                            <Instagram className="w-4 h-4 mr-2" />
-                            Instagram
-                          </a>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              }
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true, margin: "-20%" }}
+            className="text-lg md:text-xl text-white/60 font-light leading-relaxed mb-16"
+          >
+            A few solid contracts and Goldilocks gets off the ground. You get a real project delivered... and a lifetime priority boarding pass.
+          </motion.p>
 
-              if (cta.type === "contact" && "href" in cta && cta.href) {
-                return (
-                  <Card key={index} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <CardContent className="p-6 md:p-8 text-center">
-                      <ArrowRight className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-                      <h3 className="text-xl font-gelica font-bold text-white mb-2">
-                        {cta.title}
-                      </h3>
-                      <p className="text-white/70 mb-6 text-sm">
-                        {cta.description}
-                      </p>
-                      <Button
-                        asChild
-                        className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                      >
-                        <Link href={cta.href}>
-                          Get in Touch
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              }
-
-              return null;
-            })}
-          </div>
-
-          {/* Inline Email Capture */}
-          <div className="max-w-2xl mx-auto">
-            <EmailCapture
-              variant="inline"
-              source="Homepage Join Movement"
-            />
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true }}
+          >
+            <Link
+              href="https://colbykimball.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg md:text-xl text-white/90 hover:text-orange-400 transition-colors font-light underline underline-offset-4"
+            >
+              colbykimball.com
+            </Link>
+          </motion.div>
         </div>
-      </section>
 
-      {/* Footer Tagline Section */}
-      <section className="py-12 md:py-16 px-4 md:px-6 bg-gradient-to-b from-black to-orange-900/10">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h3 className="text-3xl md:text-4xl font-gelica font-bold text-white mb-4">
-            {content.home.footer.tagline}
-          </h3>
-          <p className="text-lg text-white/70 leading-relaxed">
-            {content.home.footer.subtitle}
-          </p>
-        </div>
-      </section>
+        {/* Final space */}
+        <section className="h-64" />
 
-      <MerchCTA />
-
-      <Footer />
+      </div>
     </div>
   );
 }
